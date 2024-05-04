@@ -1,0 +1,27 @@
+.navbar {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    z-index: 1000; /* Ensure navbar appears above map */
+    display: flexbox;
+    justify-content: space-around;
+   
+}
+
+#input-section{
+    width:30%;
+}
+
+#input-section input:focus {
+    outline: none;
+    background-color: #e7e6e661; /* Light gray background */
+    border: 1px solid #ffffff; /* Dark gray border */
+}
+#input-section input{
+    width: 100%;
+    border:0;
+    border-radius: 2px;
+    padding:5px;
+}
