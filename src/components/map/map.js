@@ -5,11 +5,23 @@ import ApiManager from '../apis/apiCountryManager.js';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-
+/**
+ * Map rendering component.
+ *
+ * @component
+ * @param {Object} props - The component accepts text props.
+ * @param {text} props.country - The name of the country to focus on the map.
+ * @returns {JSX.Element} The rendered map component.
+ *
+ * @example
+ * // Render a map component with a countryfocus.
+ * <Map country='colombia' />
+ */
 const MapComponent = ({country}) => {
   const [map, setMap] = useState(null);
   useEffect(() => {
     const getCountry = async () => {
+        console.log(country);
         const countryInfo = await ApiManager.fetchInfo(country);
         if (map && countryInfo) {
           const { latlng } = countryInfo;

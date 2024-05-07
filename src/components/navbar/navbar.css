@@ -1,27 +1,17 @@
-.navbar {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 95%;
-    z-index: 1000; /* Ensure navbar appears above map */
-    display: flexbox;
-    justify-content: space-around;
-   
-}
 
-#input-section{
-    width:30%;
-}
+.navbar-brand{
+    margin-left:30px;
+    margin-right:10px;
+  }
+  .navbar{
+    background-color: #e7e6e661;
+    /* padding: 5px; */
+    height:10vh;
+    border-radius: 10px;
+  }
 
-#input-section input:focus {
-    outline: none;
-    background-color: #e7e6e661; /* Light gray background */
-    border: 1px solid #ffffff; /* Dark gray border */
-}
-#input-section input{
-    width: 100%;
-    border:0;
-    border-radius: 2px;
-    padding:5px;
-}
+  .navbar-nav > li{
+    padding-left:5px;
+    padding-right:5px;
+  }
+

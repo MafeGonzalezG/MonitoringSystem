@@ -1,4 +1,9 @@
 #App{
-    height: 100%;
-    width:100%;
+  display: block;
+  height: 100vh;
+}
+.app-body {
+    width: 100%;
+    padding: 30px;
+    display: block;
 }

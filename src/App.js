@@ -2,6 +2,7 @@ import React, { Component, useState,useEffect } from 'react';
 import logo from './logo.svg';
 import Navbar from './components/navbar/navbar';
 import MapComponent from './components/map/map';
+import Sidebar from './components/Sidebar/Sidebar';
 import './App.css';
 
 export default function App() {
@@ -9,7 +10,10 @@ export default function App() {
     return (
       
       <div className="App">
-        <Navbar onChange={(newCountry) => setCountry(newCountry)}/>
+        <div className="app-body">
+         <Navbar onChange={(newCountry) => setCountry(newCountry)}/>
+         <Sidebar />
+        </div>
         <MapComponent country={country} />
       </div>
 );

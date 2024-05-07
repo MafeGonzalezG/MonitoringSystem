@@ -1,0 +1,11 @@
+.sidebar {
+    width: 25%;  /* Width of the sidebar */
+    height: 70vh; /* Full height */
+    background-color: #e7e6e661; /* Light grey background */
+    padding: 20px; /* Padding inside the sidebar */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow for a bit of depth */
+    margin: 10px;
+    font-size: small;
+
+    
+  }
