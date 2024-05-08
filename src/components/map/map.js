@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './map.css';
 import mapboxgl from 'mapbox-gl';
-import ApiManager from '../apis/apiCountryManager.js';
-
+import LayersLogic from './layersLogic.js';
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
 /**
@@ -18,54 +17,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd
  * <Map country='colombia' />
  */
 const MapComponent = ({country,mapType}) => {
+
   const [map, setMap] = useState(null);
-  useEffect(() => {
-    if (mapType === 'Meteorology') {
-        const layerId = 'weatherLayer';
-        // First, check if the layer already exists and remove it if it does
-        if (map.getLayer(layerId)) {
-            map.removeLayer(layerId);
-            map.removeSource(layerId);
-        }
-
-        // Add the layer with weather data
-        map.addLayer({
-            'id': layerId,
-            'type': 'raster',
-            'source': {
-                'type': 'raster',
-                'tiles': [
-                    'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=81951b48765f92b240133d040298e4e9' // Ensure you replace this with your actual API key
-                ],
-                'tileSize': 256
-            },
-            'paint': {
-                // Add custom styling if necessary
-            }
-        });
-    }
-}, [mapType]); // Depend on map and mapType
-  
-  useEffect(() => {
-    const getCountry = async () => {
-        const countryInfo = await ApiManager.fetchInfo(country);
-        if (map && countryInfo) {
-          const { latlng } = countryInfo;
-          map.flyTo({
-            center: [latlng[1], latlng[0]],
-            zoom: 4,
-            speed: 2,
-            curve: 1,
-            easing(t) {
-              return t;
-            },
-          });
-        }
-      };
-    getCountry();
- }, [country]);
-
-
   const initializeMap = () => {
     const newMap = new mapboxgl.Map({
       container: 'map', // container ID
@@ -79,6 +32,8 @@ const MapComponent = ({country,mapType}) => {
   useEffect(() => {
     initializeMap();
   }, []);
+
+  LayersLogic({map,country,mapType});
 
   return (
       <div id="map" ></div>

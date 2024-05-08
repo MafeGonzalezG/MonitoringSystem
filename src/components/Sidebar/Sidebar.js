@@ -11,7 +11,7 @@ function Sidebar({onChange}) {
       Carbon Units
       <Dropdown options={['Especie','Parameter','Diameter','Evolution']} defaultText="Select an option" onChange={optionChange}/>
       Climate 
-      <Dropdown options={['Meteorology','Satellites','Fires','Water quality','Air quality']} defaultText="Select an option" onChange={optionChange}/>
+      <Dropdown options={['Precipitation','Pressure','Temperature','Clouds','Wind']} defaultText="Select an option" onChange={optionChange}/>
       Communities
       <Dropdown options={['Agriculture','Transport','Mining','Health','Education','Fishing']} defaultText="Select an option" onChange={optionChange}/>
       Biodiversity
