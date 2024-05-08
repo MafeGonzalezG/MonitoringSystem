@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-const Dropdown = ({ options, defaultText }) => {
+const Dropdown = ({ options, defaultText, onChange }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
+    onChange(option);
   };
 
   return (
