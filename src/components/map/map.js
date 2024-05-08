@@ -17,11 +17,37 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd
  * // Render a map component with a countryfocus.
  * <Map country='colombia' />
  */
-const MapComponent = ({country}) => {
+const MapComponent = ({country,mapType}) => {
   const [map, setMap] = useState(null);
   useEffect(() => {
+    if (mapType === 'Meteorology') {
+        const layerId = 'weatherLayer';
+        // First, check if the layer already exists and remove it if it does
+        if (map.getLayer(layerId)) {
+            map.removeLayer(layerId);
+            map.removeSource(layerId);
+        }
+
+        // Add the layer with weather data
+        map.addLayer({
+            'id': layerId,
+            'type': 'raster',
+            'source': {
+                'type': 'raster',
+                'tiles': [
+                    'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=81951b48765f92b240133d040298e4e9' // Ensure you replace this with your actual API key
+                ],
+                'tileSize': 256
+            },
+            'paint': {
+                // Add custom styling if necessary
+            }
+        });
+    }
+}, [mapType]); // Depend on map and mapType
+  
+  useEffect(() => {
     const getCountry = async () => {
-        console.log(country);
         const countryInfo = await ApiManager.fetchInfo(country);
         if (map && countryInfo) {
           const { latlng } = countryInfo;
@@ -38,7 +64,6 @@ const MapComponent = ({country}) => {
       };
     getCountry();
  }, [country]);
-  
 
 
   const initializeMap = () => {
