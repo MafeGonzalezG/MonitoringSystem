@@ -1,7 +1,7 @@
 import ApiManager from '../apis/apiCountryManager.js';
 import Layers from './layers.js';
 import { useEffect,useState} from 'react';
-
+import BiodiversityApiCall from '../apis/biodiversityApi.js';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -55,6 +55,12 @@ function LayersLogic({map,country,mapType}){
             setCurrentLayer(layerId);
             map.addLayer(Layers(mapType,layerId));
         }
+        else if (map && mapType === 'Biodiversity'){
+            const layerId = 'Biodiversity';
+            BiodiversityApiCall().then((data) => {
+                console.log(data);
+            }
+            );}
     }, [map,mapType]); 
       
     useEffect(() => {
