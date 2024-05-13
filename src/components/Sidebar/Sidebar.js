@@ -7,7 +7,7 @@ function Sidebar({onChange}) {
     onChange(option);
   };
   return (
-    <div className="sidebar navbar-expand-lg navbar-light bg-light">
+    <div className="sidebar navbar-expand-lg navbar-light bg-transparent.bg-gradient text-dark">
       Carbon Units
       <Dropdown options={['Especie','Parameter','Diameter','Evolution']} defaultText="Select an option" onChange={optionChange}/>
       Climate 

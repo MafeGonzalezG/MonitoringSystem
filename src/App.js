@@ -14,11 +14,11 @@ export default function App() {
     return (
       
       <div className="App">
-        <div className="app-body">
-         <Navbar onChange={(newCountry) => setCountry(newCountry)}/>
-         <Sidebar onChange={(newMapType)=> setMapType(newMapType)}/>
-        </div>
         <MapComponent country={country} mapType={mapType}/>
+        <div className="app-body">
+          <Navbar onChange={(newCountry) => setCountry(newCountry)}/>
+          <Sidebar onChange={(newMapType)=> setMapType(newMapType)}/>
+        </div>
       </div>
 );
 }

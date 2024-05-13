@@ -19,7 +19,7 @@ function Navbar({onChange}) {
       };
       const [input, setInput] = useState('');
       return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-transparent.bg-gradient text-dark">
       <a className="navbar-brand" href="#">Monitoring</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
