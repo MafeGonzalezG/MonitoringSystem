@@ -1,0 +1,14 @@
+.slidebar {
+    width:65%;  /* Width of the sidebar */
+    height:10%;
+    background-color: #e7e6e661; /* Light grey background */
+    padding: 10px; /* Padding inside the sidebar */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.44); /* Shadow for a bit of depth */
+    margin: 10px;
+    font-size: small;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 10%;
+    left: 60%;
+    transform: translateX(-50%);
+  }

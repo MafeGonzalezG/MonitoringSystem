@@ -15,6 +15,8 @@ import LayersLogic from './layersLogic.js';
  * // Render a map component with a countryfocus.
  * <Map country='colombia' />
  */
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
+
 const MapComponent = ({country,mapType}) => {
 
   const [map, setMap] = useState(null);
