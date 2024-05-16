@@ -8,17 +8,19 @@ import './App.css';
 export default function App() {
     const [country, setCountry] = useState('');
     const [mapType, setMapType] = useState('');
+    const [year, setYear] = useState(2002);
+
     useEffect(() => {
       console.log('mapType:', mapType);
     }, [mapType]);
     return (
       
       <div className="App">
-        <MapComponent country={country} mapType={mapType}/>
+        <MapComponent country={country} mapType={mapType} year={year}/>
         <div className="app-body">
           <Navbar onChange={(newCountry) => setCountry(newCountry)}/>
           <Sidebar onChange={(newMapType)=> setMapType(newMapType)}/>
-         <Slidebar/> 
+          <Slidebar onChange={(newYear)=>setYear(newYear)}/> 
         </div>
       </div>
 );

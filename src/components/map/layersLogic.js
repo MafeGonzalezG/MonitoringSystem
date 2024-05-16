@@ -22,7 +22,7 @@ function moveMap( countryInfo, map){
         },
     });
 }
-function LayersLogic({map,country,mapType}){
+function LayersLogic({map,country,mapType,year}){
     const [currentLayer,setCurrentLayer] = useState('');
     useEffect(() => {
         if (map && mapType === 'Precipitation') {
@@ -67,26 +67,24 @@ function LayersLogic({map,country,mapType}){
             checkLayer(map, layerId);
             checkLayer(map, currentLayer);  
             setCurrentLayer(layerId);
-            map.addSource('wms-test-source', {
+            map.addSource(layerId, {
                 'type': 'raster',
-                // use the tiles option to specify a WMS tile source URL
-                // https://docs.mapbox.comhttps://docs.mapbox.com/style-spec/reference/sources/
                 'tiles': [
-                    'http://localhost:8080/geoserver/forest/wms?service=WMS&version=1.1.0&request=GetMap&layers=forest:0&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png'
+                    `http://localhost:8080/geoserver/forest/wms?service=WMS&version=1.1.0&request=GetMap&layers=forest:${year}&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`
                 ],
                 'tileSize': 256
             });
             map.addLayer(
                 {
-                    'id': 'wms-test-layer',
+                    'id': layerId,
                     'type': 'raster',
-                    'source': 'wms-test-source',
+                    'source': layerId,
                     'paint': {}
                 },
                 'building' // Place layer under labels, roads and buildings.
             );
             }
-    }, [map,mapType]); 
+    }, [map,mapType,year]); 
       
     useEffect(() => {
         const getCountry = async () => {

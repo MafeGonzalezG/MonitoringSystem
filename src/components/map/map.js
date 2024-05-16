@@ -17,7 +17,7 @@ import LayersLogic from './layersLogic.js';
  */
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-const MapComponent = ({country,mapType}) => {
+const MapComponent = ({country,mapType,year}) => {
 
   const [map, setMap] = useState(null);
   const initializeMap = () => {
@@ -34,7 +34,7 @@ const MapComponent = ({country,mapType}) => {
     initializeMap();
   },[]);
 
-  LayersLogic({map,country,mapType});
+  LayersLogic({map,country,mapType,year});
   return (
       <div id="map" ></div>
   );
