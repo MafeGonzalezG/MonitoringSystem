@@ -6,7 +6,7 @@ import Slidebar from './components/Slidebar/Slidebar';
 import './App.css';
 
 export default function App() {
-    const [country, setCountry] = useState('');
+    const [country, setCountry] = useState('colombia');
     const [mapType, setMapType] = useState('');
     const [year, setYear] = useState(2002);
 

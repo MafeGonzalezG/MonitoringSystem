@@ -2,7 +2,7 @@ import ApiManager from '../apis/apiCountryManager.js';
 import Layers from './layers.js';
 import { useEffect,useState} from 'react';
 import BiodiversityApiCall from '../apis/biodiversityApi.js';
-
+import apiFires from '../apis/firesApi.js';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -12,6 +12,7 @@ function checkLayer(map, layerId) {
 function moveMap( countryInfo, map){
     
     const { latlng } = countryInfo;
+    console.log(latlng);
     map.flyTo({
         center: [latlng[1], latlng[0]],
         zoom: 4,
@@ -84,6 +85,42 @@ function LayersLogic({map,country,mapType,year}){
                 'building' // Place layer under labels, roads and buildings.
             );
             }
+        else if(map && mapType==='Fires'){
+            const layerId = 'Fires';
+            checkLayer(map, layerId);
+            checkLayer(map, currentLayer);
+            setCurrentLayer(layerId);
+            apiFires().then((data) => {
+                // console.log(data);
+                map.addSource(layerId, {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': data.map((coordinates) => ({
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': coordinates
+                            }
+                        }))
+                    }
+                });
+                map.addLayer(
+                    {
+                        'id': layerId,
+                        'type': 'circle',
+                        'source': layerId,
+                        'paint': {
+                            'circle-radius': 5,
+                            'circle-stroke-width': 1,
+                            'circle-color': 'orange',
+                            'circle-stroke-color': 'red'
+                        }
+                    },
+                    'building' // Place layer under labels, roads and buildings.
+                );
+            });
+        }
     }, [map,mapType,year]); 
       
     useEffect(() => {

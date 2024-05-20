@@ -15,7 +15,7 @@ const Dropdown = ({ options, defaultText, onChange }) => {
       <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {options.map((option, index) => (
           <li key={index}>
-            <a className="dropdown-item" href="#" onClick={() => handleOptionSelect(option)}>
+            <a className="dropdown-item" role='button' href="#" onClick={() => handleOptionSelect(option)}>
               {option}
             </a>
           </li>
