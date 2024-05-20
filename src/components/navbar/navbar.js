@@ -16,11 +16,12 @@ import './navbar.css';
 function Navbar({onChange}) {
       const handlePress = (country) => {
         onChange(country);
+        console.log(country)
       };
       const [input, setInput] = useState('');
       return (
       <nav className="navbar navbar-expand-lg navbar-light bg-transparent.bg-gradient text-dark">
-      <a className="navbar-brand" href="#">Monitoring</a>
+      <a className="navbar-brand" role='button' href="#">Monitoring</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -28,13 +29,13 @@ function Navbar({onChange}) {
       <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
           <li className='nav-item'>
-            <a className='nav-link' href='#'>Home</a>
+            <a className='nav-link'role='button' href='#'>Home</a>
           </li>
           <li className='nav-item '>
-            <a className='nav-link' href='#'>Pricing</a>
+            <a className='nav-link' role='button' href='#'>Pricing</a>
           </li>
           <li className='nav-item '>
-            <a className='nav-link' href='#'>Contact</a>
+            <a className='nav-link'  role='button' href='#'>Contact</a>
           </li>
           <li className="nav-item  ">
           <form className="form-inline my-1 my-lg-0">

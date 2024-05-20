@@ -20,8 +20,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd
 const MapComponent = ({country,mapType,year}) => {
 
   const [map, setMap] = useState(null);
+  
   const initializeMap = () => {
-      const newMap = new mapboxgl.Map({
+    const newMap = new mapboxgl.Map({
         container: 'map', // container ID
         center: [-74.5, 40],
         style: 'mapbox://styles/mapbox/light-v11', // starting position [lng, lat]
