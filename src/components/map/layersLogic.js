@@ -3,6 +3,8 @@ import Layers from './layers.js';
 import { useEffect,useState} from 'react';
 import BiodiversityApiCall from '../apis/biodiversityApi.js';
 import apiFires from '../apis/firesApi.js';
+import AirQualityMap from '../apis/apiAirQuality.js';
+import mapboxgl from 'mapbox-gl';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -12,7 +14,6 @@ function checkLayer(map, layerId) {
 function moveMap( countryInfo, map){
     
     const { latlng } = countryInfo;
-    console.log(latlng);
     map.flyTo({
         center: [latlng[1], latlng[0]],
         zoom: 4,
@@ -22,9 +23,11 @@ function moveMap( countryInfo, map){
         return t;
         },
     });
+    return latlng;
 }
 function LayersLogic({map,country,mapType,year}){
     const [currentLayer,setCurrentLayer] = useState('');
+    const [latLng, setLatLng] = useState([]);
     useEffect(() => {
         if (map && mapType === 'Precipitation') {
             const layerId = 'Precipitation';
@@ -121,13 +124,36 @@ function LayersLogic({map,country,mapType,year}){
                 );
             });
         }
-    }, [map,mapType,year]); 
+        else if (map && mapType === 'Air Quality'){
+            const layerId = 'AirQuality';
+            checkLayer(map, layerId);
+            checkLayer(map, currentLayer);
+            setCurrentLayer(layerId);
+            AirQualityMap(latLng[0],latLng[1]).then((data) => {
+            console.log(data);
+            const popup = new mapboxgl.Popup({ offset: 10 }).setHTML(`<p>CO:${data.list[0].components.co}
+            <p>NO:${data.list[0].components.no}
+            <p>NO2:${data.list[0].components.no2}
+            <p>O3:${data.list[0].components.o3}
+            `);  
+            // <p>SO2:${data.list[0].components.so2}
+            // <p>PM2.5:${data.list[0].components.pm2_5}
+            // <p>PM10:${data.list[0].components.pm10}
+            // <p>NH3:${data.list[0].components.nh3}</p>
+            const marker1 = new mapboxgl.Marker()
+            .setLngLat(latLng)
+            .setPopup(popup) 
+            .addTo(map);
+            console.log(latLng);});
+        }
+    }, [map,mapType,year,latLng]); 
       
     useEffect(() => {
         const getCountry = async () => {
             const countryInfo = await ApiManager.fetchInfo(country);
             if (map && countryInfo) {
-              moveMap(countryInfo, map);
+              const latlng = await moveMap(countryInfo, map);
+              setLatLng([latlng[1],latlng[0]]);
             }
           };
         getCountry();
