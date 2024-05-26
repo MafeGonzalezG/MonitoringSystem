@@ -11,12 +11,21 @@ const API = 'https://restcountries.com/v3.1/name/';
  */
 class ApiManager {
   static async fetchInfo(country) {
-    try {
+    let retryCount = 0;
+    while (retryCount < 5) {
+      try {
       const code = await fetch(`${API}${country}`);
       const countryCode = await code.json();
       return countryCode[0];
-    } catch (error) {
-      console.log('Error occurred:', error);
+      } catch (error) {
+      if (error.message === 'Failed to fetch') {
+        retryCount++;
+        console.log('Connection timeout. Retrying...');
+      } else {
+        console.log('Error occurred:', error);
+        break;
+      }
+      }
     }
   }
 }
