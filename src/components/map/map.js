@@ -17,10 +17,11 @@ import LayersLogic from './layersLogic.js';
  */
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-const MapComponent = ({country,mapType,year}) => {
+const MapComponent = ({setMax,setMin,setStep,lnglat,setlnglat,country,mapType,year, setShowBar}) => {
 
   const [map, setMap] = useState(null);
   
+
   const initializeMap = () => {
     const newMap = new mapboxgl.Map({
         container: 'map', // container ID
@@ -34,8 +35,17 @@ const MapComponent = ({country,mapType,year}) => {
   useEffect(() => {
     initializeMap();
   },[]);
-
-  LayersLogic({map,country,mapType,year});
+  if(map && mapType === 'Deforestation'){
+    setShowBar(true);
+  }
+  if(map){map.on('click', (e) => {
+      // const lnglat = JSON.stringify(e.lngLat.wrap());
+      // console.log(lnglat);
+      setlnglat([e.lngLat.lng,e.lngLat.lat]);
+      console.log(e.lngLat.lng,e.lngLat.lat);
+    });
+  }
+  LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year, setShowBar});
   return (
       <div id="map" ></div>
   );

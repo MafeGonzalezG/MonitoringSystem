@@ -17,9 +17,9 @@ function Sidebar({onChange}) {
       Biodiversity
       <Dropdown options={['Biodiversity','Ecosystems']} defaultText="Select an option" onChange={optionChange}/>
       Risk map and Impacts
-      <Dropdown options={['Deforestation','Indicators','Air Quality','Fires','Floods','Methane']} defaultText="Select an option" onChange={optionChange}/>
-      ESG
-      <Dropdown options={['Form']} defaultText="Select an option" onChange={optionChange}/>
+      <Dropdown options={['Deforestation','Earthquakes','Air Quality','Fires','Floods','Methane','Ocean']} defaultText="Select an option" onChange={optionChange}/>
+      Thematic Maps
+      <Dropdown options={['Cuencas']} defaultText="Select an option" onChange={optionChange}/>
     </div>
   );
 }
