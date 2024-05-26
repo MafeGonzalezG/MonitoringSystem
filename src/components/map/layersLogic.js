@@ -259,7 +259,8 @@ function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setS
               setLatLng([latlng[1],latlng[0]]);
             }
           };
-        getCountry();
+        if(country){
+        getCountry();}
      }, [country]);
     }
 export default LayersLogic;
