@@ -13,21 +13,8 @@ function checkLayer(map, layerId) {
     if (map.getSource(layerId)) {
         map.removeSource(layerId);}
 }
-function moveMap( countryInfo, map){
-    
-    const { latlng } = countryInfo;
-    map.flyTo({
-        center: [latlng[1], latlng[0]],
-        zoom: 4,
-        speed: 2,
-        curve: 1,
-        easing(t) {
-        return t;
-        },
-    });
-    return latlng;
-}
-function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setShowBar}){
+
+function LayersLogic({setMax,setMin,setStep,lnglat,lnglatclick,map,country,mapType,year,setShowBar}){
     const [currentLayer,setCurrentLayer] = useState('');
     const [latLng, setLatLng] = useState([]);
     const prevYearRef = useRef();
@@ -265,15 +252,17 @@ function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setS
     }, [map,mapType,year,latLng,lnglat]); 
       
     useEffect(() => {
-        const getCountry = async () => {
-            const countryInfo = await ApiManager.fetchInfo(country);
-            if (map && countryInfo) {
-              const latlng = await moveMap(countryInfo, map);
-              setLatLng([latlng[1],latlng[0]]);
+            if (map && lnglat) {
+                map.flyTo({
+                    center: lnglat,
+                    zoom: 4,
+                    speed: 2,
+                    curve: 1,
+                    easing(t) {
+                    return t;
+                    },
+                });
             }
-          };
-        if(country){
-        getCountry();}
-     }, [country]);
+     }, [lnglat]);
     }
 export default LayersLogic;

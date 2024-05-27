@@ -3,7 +3,7 @@ import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import ColorCycleButton from './buttonChangeMap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './navbar.css';
-
+import GeocodingForm from './geoCodingForm';
 /**
  * Navigation bar component.
  *
@@ -17,11 +17,6 @@ import './navbar.css';
  * <Navbar onChange={()=>console.log('value changed');} />
  */
 function CustomNavbar({ onpressMap,onChange }) {
-  const handlePress = (country) => {
-    onChange(country);
-    console.log(country);
-  };
-  const [input, setInput] = useState('');
 
   return (
     <Navbar bg="light" expand="lg" className="bg-transparent.bg-gradient text-dark">
@@ -33,15 +28,7 @@ function CustomNavbar({ onpressMap,onChange }) {
           <Nav.Link href="#" role="button">Pricing</Nav.Link>
           <Nav.Link href="#" role="button">Contact</Nav.Link>
           <Nav.Item>
-            <Form  className="my-1 my-lg-0">
-              <FormControl
-                type="text"
-                placeholder="country"
-                className="mr-sm-2"
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {if (e.key === 'Enter') {handlePress(input);
-                  e.preventDefault(); }}}/>
-            </Form>
+            <GeocodingForm handlePress={(ltlng)=>onChange(ltlng)} />
           </Nav.Item>
         </Nav>
         <div>
