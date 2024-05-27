@@ -1,4 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
+import ColorCycleButton from './buttonChangeMap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './navbar.css';
 
 /**
@@ -13,42 +16,42 @@ import './navbar.css';
  * // Render a navbar with a search bar that logs the input value on enter press.
  * <Navbar onChange={()=>console.log('value changed');} />
  */
-function Navbar({onChange}) {
-      const handlePress = (country) => {
-        onChange(country);
-        console.log(country)
-      };
-      const [input, setInput] = useState('');
-      return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-transparent.bg-gradient text-dark">
-      <a className="navbar-brand" role='button' href="#">Monitoring</a>
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-    
-      <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-        <ul className="navbar-nav mr-auto">
-          <li className='nav-item'>
-            <a className='nav-link'role='button' href='#'>Home</a>
-          </li>
-          <li className='nav-item '>
-            <a className='nav-link' role='button' href='#'>Pricing</a>
-          </li>
-          <li className='nav-item '>
-            <a className='nav-link'  role='button' href='#'>Contact</a>
-          </li>
-          <li className="nav-item  ">
-          <form className="form-inline my-1 my-lg-0">
-            <input  className="form-control mr-sm-2" type="text" placeholder="country" onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=>{if(e.key=='Enter') handlePress(input)}} />
-          </form>
-         </li>
-        </ul>
-        <div>
-          <button type="button" className="signs btn btn-primary btn-sm m-3" id='signin'>Sign In</button>
-          <button type="button" className="signs btn btn-primary btn-sm m-3" id='signin'>Sign In</button>
-        </div>
-      </div>
-    </nav>
-      );}
+function CustomNavbar({ onpressMap,onChange }) {
+  const handlePress = (country) => {
+    onChange(country);
+    console.log(country);
+  };
+  const [input, setInput] = useState('');
 
-export default Navbar;
+  return (
+    <Navbar bg="light" expand="lg" className="bg-transparent.bg-gradient text-dark">
+      <Navbar.Brand href="#" role="button">Monitoring</Navbar.Brand>
+      <Navbar.Toggle aria-controls="navbarSupportedContent" />
+      <Navbar.Collapse id="navbarSupportedContent" className="justify-content-around">
+        <Nav className="mr-auto">
+          <Nav.Link href="#" role="button">Home</Nav.Link>
+          <Nav.Link href="#" role="button">Pricing</Nav.Link>
+          <Nav.Link href="#" role="button">Contact</Nav.Link>
+          <Nav.Item>
+            <Form  className="my-1 my-lg-0">
+              <FormControl
+                type="text"
+                placeholder="country"
+                className="mr-sm-2"
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {if (e.key === 'Enter') {handlePress(input);
+                  e.preventDefault(); }}}/>
+            </Form>
+          </Nav.Item>
+        </Nav>
+        <div>
+          <ColorCycleButton onpressMap={onpressMap} />
+          <Button variant="primary" size="sm" className="m-3" id="signin">Sign In</Button>
+          <Button variant="primary" size="sm" className="m-3" id="signin">Sign In</Button>
+        </div>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+}
+
+export default CustomNavbar;

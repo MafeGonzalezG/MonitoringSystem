@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './map.css';
 import mapboxgl from 'mapbox-gl';
 import LayersLogic from './layersLogic.js';
-
+import useDidMountEffect from '../customHooks/customHookMounted.js';
 /**
  * Map rendering component.
  *
@@ -17,7 +17,7 @@ import LayersLogic from './layersLogic.js';
  */
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-const MapComponent = ({setMax,setMin,setStep,lnglat,setlnglat,country,mapType,year, setShowBar}) => {
+const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,setlnglat,country,mapType,year, setShowBar}) => {
 
   const [map, setMap] = useState(null);
   
@@ -45,6 +45,12 @@ const MapComponent = ({setMax,setMin,setStep,lnglat,setlnglat,country,mapType,ye
       console.log(e.lngLat.lng,e.lngLat.lat);
     });
   }
+  useDidMountEffect(() => {
+    console.log('mapstyle',mapStyle);
+    if(map){
+      map.setStyle('mapbox://styles/mapbox/' + mapStyle);
+    }
+  },[mapStyle]);
   LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year, setShowBar});
   return (
       <div id="map" ></div>

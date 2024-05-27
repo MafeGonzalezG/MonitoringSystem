@@ -1,6 +1,6 @@
 import ApiManager from '../apis/apiCountryManager.js';
 import Layers from './layers.js';
-import { useEffect,useState} from 'react';
+import { useEffect,useState,useRef} from 'react';
 import BiodiversityApiCall from '../apis/biodiversityApi.js';
 import apiFires from '../apis/firesApi.js';
 import AirQualityMap from '../apis/apiAirQuality.js';
@@ -9,8 +9,9 @@ import mapboxgl, { LngLat } from 'mapbox-gl';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
-        map.removeSource(layerId);
     }
+    if (map.getSource(layerId)) {
+        map.removeSource(layerId);}
 }
 function moveMap( countryInfo, map){
     
@@ -29,6 +30,7 @@ function moveMap( countryInfo, map){
 function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setShowBar}){
     const [currentLayer,setCurrentLayer] = useState('');
     const [latLng, setLatLng] = useState([]);
+    const prevYearRef = useRef();
     useEffect(() => {
         if (map && mapType === 'Precipitation') {
             const layerId = 'Precipitation';
@@ -200,14 +202,18 @@ function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setS
 
         }else if(map && mapType==='Education'){
             const layerId = 'Education';
-            setMax(2022);
-            setMin(2011);
+            setMax(12);
+            setMin(0);
             setStep(1);
             setShowBar(true);
             checkLayer(map, layerId);
             checkLayer(map, currentLayer);
             setCurrentLayer(layerId);
-            schoolAPiCall(year).then((data) => {
+            const popup = document.getElementsByClassName('mapboxgl-popup');
+                if ( popup.length ) {
+                    popup[0].remove();
+                }
+            schoolAPiCall().then((data) => {
                 map.addSource(layerId, {
                     'type': 'geojson',
                     'data': {
@@ -220,7 +226,8 @@ function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setS
                             },
                             'properties': {
                                 'departamento': school.departamento,
-                                'tasa_matriculacion_5_16': school.tasa_matriculacion_5_16
+                                'tasa_matriculacion_5_16': school.tasa_matriculacion_5_16,
+                                'ano': school.ano
                             }
                         }))
                     }
@@ -239,16 +246,22 @@ function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setS
                     },
                     'building' // Place layer under labels, roads and buildings.
                 );
+                map.setFilter(layerId, ['==', ['string', ['get', 'ano']], String(year)]);
+                
                 map.on('click', layerId, (e) => {
+                    
                     const coordinates = e.features[0].geometry.coordinates.slice();
                     const { departamento, tasa_matriculacion_5_16} = e.features[0].properties;
-                    new mapboxgl.Popup()
+                    const popup = new mapboxgl.Popup()
                         .setLngLat(coordinates)
                         .setHTML(`<h3>${departamento}</h3><p>Tasa de matriculación: ${parseFloat(tasa_matriculacion_5_16)}</p>`)
                         .addTo(map);
-                });
+                    
+                }
+                );
             });
         }
+        prevYearRef.current = year;
     }, [map,mapType,year,latLng,lnglat]); 
       
     useEffect(() => {
@@ -259,7 +272,8 @@ function LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year,setS
               setLatLng([latlng[1],latlng[0]]);
             }
           };
-        getCountry();
+        if(country){
+        getCountry();}
      }, [country]);
     }
 export default LayersLogic;
