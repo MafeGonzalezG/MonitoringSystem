@@ -247,6 +247,38 @@ function LayersLogic({setMax,setMin,setStep,lnglat,lnglatclick,map,country,mapTy
                 }
                 );
             });
+        }else if(map && mapType==='Events'){
+            const layerId = 'Events';
+            checkLayer(map, layerId);
+            checkLayer(map, currentLayer);
+            setCurrentLayer(layerId);
+            map.addSource(layerId, {
+                'type': 'geojson',
+                'data':`https://eonet.gsfc.nasa.gov/api/v3/events/geojson?&days=20`
+            });
+            map.addLayer(
+                {
+                    'id': layerId,
+                    'type': 'circle',
+                    'source': layerId,
+                    'paint': {'circle-radius': 5,
+                    'circle-stroke-width': 1,
+                    'circle-color': 'blue',
+                    'circle-stroke-color': 'black'}
+                },
+                'building' // Place layer under labels, roads and buildings.
+            );
+            map.on('click', layerId, (e) => {
+                    
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const {title, date,magnitudeValue,magnitudeUnit} = e.features[0].properties;
+                const popup = new mapboxgl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(`<h3>${title}</h3><p>Fecha: ${date}  Magnitud:${magnitudeValue ? `${magnitudeValue}${magnitudeUnit}` : ''}</p>`)
+                    .addTo(map);
+                
+            }
+            );
         }
         prevYearRef.current = year;
     }, [map,mapType,year,latLng,lnglat]); 
