@@ -35,12 +35,12 @@ const departmentLatLon =
     'Vaupés' : {'lat': 0.8554,"lon" : -70.812},
     'Vichada' : {'lat': 4.4234,"lon" : -69.2878}
 }
-async function schoolAPiCall(year){
+async function schoolAPiCall(){
     const API = 'https://www.datos.gov.co/resource/ji8i-4anb.json';
     try {
         const response = await fetch(API);
         const data = await response.json();
-        await Promise.all(data.filter(async el => el.ano === String(year)).map(async (element) => {
+        await Promise.all(data.map(async (element) => {
             const department = element.departamento;
             const lat = departmentLatLon[department]?.lat;
             const lon = departmentLatLon[department]?.lon;
@@ -54,3 +54,4 @@ async function schoolAPiCall(year){
     }
 }
 export default schoolAPiCall;
+// .filter(async el => el.ano === String(year))
