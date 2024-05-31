@@ -6,6 +6,8 @@ import apiFires from '../apis/firesApi.js';
 import AirQualityMap from '../apis/apiAirQuality.js';
 import schoolAPiCall from '../apis/schoolApi.js';
 import mapboxgl, { LngLat } from 'mapbox-gl';
+import militaryApicall from '../apis/apiMilitaryZones.js';
+import resguardosApi from '../apis/apiResguardos.js';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -279,6 +281,84 @@ function LayersLogic({setMax,setMin,setStep,lnglat,lnglatclick,map,country,mapTy
                 
             }
             );
+        }else if(map && mapType==='Military Zones'){
+            const layerId = 'MilitaryZones';
+            checkLayer(map, layerId);
+            checkLayer(map, currentLayer);
+            setCurrentLayer(layerId);
+            militaryApicall().then((data) => {
+                map.addSource(layerId, {
+                    'type': 'geojson',
+                    'data': data
+                });
+                map.addLayer(
+                    {
+                        'id': layerId,
+                        'type': 'circle',
+                        'source': layerId,
+                        'paint': {
+                            'circle-radius': 5,
+                            'circle-stroke-width': 1,
+                            'circle-color': 'green',
+                            'circle-stroke-color': 'black'
+                        }
+                    },
+                    'building' // Place layer under labels, roads and buildings.
+                );
+            });
+            map.on('click', layerId, (e) => {
+                const properties = e.features[0].properties;
+                const popupContent = Object.entries(properties).map(([key, value]) => {
+                    if (key === 'zone') {
+                        return `<h3>Zona ${value}</h3>`;
+                    } else {
+                        return `<p style="margin: 0;">${key}: ${value}</p>`;
+                    }
+                }).join('');
+                const popup = new mapboxgl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
+        }else if( map && mapType==='Communities'){
+            const layerId = 'Communities';
+            checkLayer(map, layerId);
+            checkLayer(map, currentLayer);
+            setCurrentLayer(layerId);
+            resguardosApi().then((data) => {
+                map.addSource(layerId, {
+                    'type': 'geojson',
+                    'data': data
+                });
+                map.addLayer(
+                    {
+                        'id': layerId,
+                        'type': 'circle',
+                        'source': layerId,
+                        'paint': {
+                            'circle-radius': 5,
+                            'circle-stroke-width': 1,
+                            'circle-color': 'green',
+                            'circle-stroke-color': 'black'
+                        }
+                    },
+                    'building' // Place layer under labels, roads and buildings.
+                );
+            });
+            map.on('click', layerId, (e) => {
+                const properties = e.features[0].properties;
+                const popupContent = Object.entries(properties).map(([key, value]) => {
+                    if (key === 'nombre_del_resguardo') {
+                        return `<h3>Resguardo ${value}</h3>`;
+                    } else {
+                        return `<p style="margin: 0;">${key}: ${value}</p>`;
+                    }
+                }).join('');
+                const popup = new mapboxgl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
         }
         prevYearRef.current = year;
     }, [map,mapType,year,latLng,lnglat]); 
