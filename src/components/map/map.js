@@ -17,7 +17,7 @@ import useDidMountEffect from '../customHooks/customHookMounted.js';
  */
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,setlnglat,country,mapType,year, setShowBar}) => {
+const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,lnglatclick, setlnglat,setlnglatclick,country,mapType,year, setShowBar}) => {
 
   const [map, setMap] = useState(null);
   
@@ -41,7 +41,7 @@ const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,setlnglat,country,m
   if(map){map.on('click', (e) => {
       // const lnglat = JSON.stringify(e.lngLat.wrap());
       // console.log(lnglat);
-      setlnglat([e.lngLat.lng,e.lngLat.lat]);
+      setlnglatclick([e.lngLat.lng,e.lngLat.lat]);
       console.log(e.lngLat.lng,e.lngLat.lat);
     });
   }
@@ -51,7 +51,7 @@ const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,setlnglat,country,m
       map.setStyle('mapbox://styles/mapbox/' + mapStyle);
     }
   },[mapStyle]);
-  LayersLogic({setMax,setMin,setStep,lnglat,map,country,mapType,year, setShowBar});
+  LayersLogic({setMax,setMin,setStep,lnglat,lnglatclick,map,country,mapType,year, setShowBar});
   return (
       <div id="map" ></div>
   );

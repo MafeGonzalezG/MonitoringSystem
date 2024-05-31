@@ -47,7 +47,7 @@ function Sidebar({ onChange }) {
         <Col>
           Communities
           <CustomDropdown
-            options={['Agriculture', 'Transport', 'Mining', 'Health', 'Education', 'Fishing']}
+            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -67,7 +67,7 @@ function Sidebar({ onChange }) {
         <Col>
           Risk map and Impacts
           <CustomDropdown
-            options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Floods', 'Methane', 'Ocean']}
+            options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Floods', 'Methane', 'Events']}
             defaultText="Select an option"
             onChange={optionChange}
           />

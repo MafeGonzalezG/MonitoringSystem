@@ -12,7 +12,9 @@ export default function App() {
     const [mapType, setMapType] = useState('');
     const [year, setYear] = useState(2002);
     const [showBar, setShowBar] = React.useState(false)
+    const [lnglatclick, setLnglatclick] = useState([]);
     const [lnglat, setLnglat] = useState([]);
+
     const [max, setMax] = useState(2022);
     const [min, setMin] = useState(2002);
     const [step, setStep] = useState(1);
@@ -20,9 +22,9 @@ export default function App() {
       
       <div className="App">
         <MapComponent mapStyle={mapStyle} setMax={(max)=>setMax(max)} setMin={(min)=>setMin(min)} setStep={(step)=>setStep(step)}
-        lnglat={lnglat} setlnglat={(newcoord)=>setLnglat(newcoord)} setShowBar = {(bar)=> setShowBar(bar)} country={country} mapType={mapType} year={year}/>
+        lnglat={lnglat} lnglatclick={lnglatclick} setlnglat={(newcoord)=>setLnglat(newcoord)} setlnglatclick={(newcoord)=>setLnglatclick(newcoord)}  setShowBar = {(bar)=> setShowBar(bar)} country={country} mapType={mapType} year={year}/>
         <div className="app-body">
-          <CustomNavbar onpressMap={(map)=>setMapStyle(map)} onChange={(newCountry) => setCountry(newCountry)}/>
+          <CustomNavbar onpressMap={(map)=>setMapStyle(map)} onChange={(newdir) => setLnglat(newdir)}/>
           <Sidebar onChange={(newMapType)=> setMapType(newMapType)}/>
           { showBar ?<Slidebar max ={max} min={min} step={step} onChange={(newYear)=>setYear(newYear)}/> : null}
         </div>
