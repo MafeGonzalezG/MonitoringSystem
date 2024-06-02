@@ -50,12 +50,9 @@ const getRandomShift = () => {
         }
       }));
   
-      const geojson = {
-        type: 'FeatureCollection',
-        features: features.filter(feature => feature !== null),
-      };
-  
-      return geojson;
+
+      const returnedFeatures = features.filter(feature => feature !== null);
+      return returnedFeatures;
     } catch (error) {
       console.error('Error fetching data:', error);
       throw error;
