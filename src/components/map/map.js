@@ -51,7 +51,7 @@ const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,lnglatclick, setlng
       map.setStyle('mapbox://styles/mapbox/' + mapStyle);
     }
   },[mapStyle]);
-  LayersLogic({setMax,setMin,setStep,lnglat,lnglatclick,map,country,mapType,year, setShowBar});
+  LayersLogic({setMax,setMin,setStep,lnglat,setlnglat,lnglatclick,map,country,mapType,year, setShowBar});
   return (
       <div id="map" ></div>
   );

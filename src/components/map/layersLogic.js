@@ -5,10 +5,10 @@ import apiFires from '../apis/firesApi.js';
 import AirQualityMap from '../apis/apiAirQuality.js';
 import schoolAPiCall from '../apis/schoolApi.js';
 import mapboxgl from 'mapbox-gl';
-import militaryApicall from '../apis/apiMilitaryZones.js';
+import militaryApicall from '../apis/apiWaterQuality.js';
 import resguardosApi from '../apis/apiResguardos.js';
-import latestEarthquakes from '../apis/apiLatestEarthquakes.js';
-
+import apiWaterQuality from '../apis/apiWaterQuality.js';
+import getLocations from '../apis/hardCodedResguardos.js';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -18,7 +18,22 @@ function checkLayer(map, layerId) {
     }
     return;
 }
-
+async function fetchWmsMetadata(url) {
+    const response = await fetch(url);
+    const xml = await response.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xml, 'text/xml');
+    const title = xmlDoc.querySelectorAll('Layer > Title')[1].textContent;
+    console.log('Title:', title);
+    try{
+    const abstract = xmlDoc.querySelectorAll('Layer > Abstract')[1].textContent;
+    return { title, abstract };}
+    catch{
+        const abstract = xmlDoc.querySelectorAll('Layer > Abstract')[0].textContent;
+        return { title, abstract };
+    }
+    
+}
 function addLayer_(map, mapType, prev_layer,layerId,type='circle', source=null) {
     checkLayer(map, prev_layer);
     if(source){ 
@@ -67,7 +82,7 @@ function handleApiCall(map,prev_layer, layerId, apiCall, processData, paint = {}
 }
 
 function LayersLogic({
-    setMax, setMin, setStep, lnglat, lnglatclick, map, country, mapType, year, setShowBar
+    setMax, setMin, setStep, lnglat,setlnglat, lnglatclick, map, country, mapType, year, setShowBar
 }) {
     const [currentLayer, setCurrentLayer] = useState('');
     const [latLng, setLatLng] = useState([0, 0]);
@@ -92,6 +107,7 @@ function LayersLogic({
                 setCurrentLayer(layerId);
                 break;
             case 'Deforestation':
+                setlnglat([-73.5,10.5]);
                 setMax(2020);
                 setMin(2002);
                 setStep(1);
@@ -131,6 +147,7 @@ function LayersLogic({
                 setCurrentLayer(layerId);
                 break;
             case 'Air Quality':
+                
                 checkLayer(map, currentLayer);
                 AirQualityMap(latLng[0], latLng[1]).then((data) => {
                     const popup = new mapboxgl.Popup({ offset: 10 }).setHTML(`
@@ -144,6 +161,7 @@ function LayersLogic({
                 setCurrentLayer(layerId);
                 break;
             case 'Cuencas':
+                setlnglat([-73.5,10.5]);
                 addLayer_(map, mapType,currentLayer, layerId,'raster', {
                     'type': 'raster',
                     'tiles': [
@@ -159,6 +177,7 @@ function LayersLogic({
                 setCurrentLayer(layerId);
                 break;
             case 'Education':
+                setlnglat([-73.5,10.5]);
                 setMax(2022);
                 setMin(2011);
                 setStep(1);
@@ -208,6 +227,7 @@ function LayersLogic({
                 });
                 break;
             case 'Military Zones':
+                setlnglat([-73.5,10.5]);
                 handleApiCall(map, currentLayer,layerId, militaryApicall, data => data, {
                     'circle-radius': 5,
                     'circle-stroke-width': 1,
@@ -231,6 +251,7 @@ function LayersLogic({
                 });
                 break;
             case 'Communities':
+                setlnglat([-73.5,10.5]);
                 handleApiCall(map,currentLayer, layerId, resguardosApi, data => data, {
                     'circle-radius': 5,
                     'circle-stroke-width': 1,
@@ -253,25 +274,158 @@ function LayersLogic({
                 });
                 setCurrentLayer(layerId);
                 break;
-            case 'Latest Earthquakes':
-                handleApiCall(map,currentLayer, layerId, latestEarthquakes, data => data, {
+            case 'Fallas':
+                setlnglat([-73.5,10.5]);
+                checkLayer(map, currentLayer);
+                setCurrentLayer(layerId);
+                map.addSource(layerId, {
+                    'type': 'geojson',
+                    'data': 'https://services1.arcgis.com/Og2nrTKe5bptW02d/arcgis/rest/services/MAPAGEOLOGIA/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=geojson'
+                });
+                map.addLayer(
+                    {
+                        'id': layerId,
+                        'type': 'line',
+                        'source': layerId,
+                        'paint': {
+                            'line-color': 'red',
+                            'line-width': 2
+                        }
+                    },
+                    'building' // Place layer under labels, roads and buildings.
+                );
+                break;
+            case 'Water Quality':
+                setlnglat([-73.5,10.5]);
+                setMax(2021);
+                setMin(2018);
+                setStep(1);
+                setShowBar(true);
+                handleApiCall(map, currentLayer,layerId, apiWaterQuality, data => data, {
                     'circle-radius': 5,
                     'circle-stroke-width': 1,
-                    'circle-color': 'red',
+                    'circle-color': 'blue',
                     'circle-stroke-color': 'black'
                 });
                 map.on('click', layerId, (e) => {
                     const properties = e.features[0].properties;
                     const popupContent = Object.entries(properties).map(([key, value]) => {
-                        if (key === 'comunidad') {
-                            return `<h3>Zona ${value}</h3>`;
+                        if (key === 'departamento') {
+                            return;
                         } else {
                             return `<p style="margin: 0;">${key}: ${value}</p>`;
                         }
                     }).join('');
                     new mapboxgl.Popup()
                         .setLngLat(e.lngLat)
-                        .setHTML(popupContent)
+                        .setHTML(`<h3>Departamento ${properties.departamento}</h3>`+popupContent)
+                        .addTo(map);
+                });
+                setCurrentLayer(layerId);
+            case 'Agricultura Familiar':
+                setlnglat([-73.5,10.5]);
+                addLayer_(map, mapType, currentLayer,layerId,'raster', {
+                    'type': 'raster',
+                    'tiles': [
+                        `https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`
+                    ],
+                    'tileSize': 256
+                });
+                setCurrentLayer(layerId);
+                break;
+            case 'Amenza Hidrica Arroz':
+                setlnglat([-74.796387,10.963889]);
+                fetchWmsMetadata('http://localhost:8080/geoserver/LU/wms?request=GetCapabilities&layers=LU:amenaza_hidrico_arroz').then(metadata => {
+                    const title = metadata.title;
+                    const abstract = metadata.abstract;
+                    console.log('Title:', title);
+                    console.log('Abstract:', abstract);
+                    const popup = new mapboxgl.Popup({ closeOnClick: false })
+                    .setLngLat(lnglat)
+                    .setHTML(`<b>${title}</b><p>${abstract}</p>`)
+                    .addTo(map);
+                });
+
+                
+                addLayer_(map, mapType, currentLayer,layerId,'raster', {
+                    'type': 'raster',
+                    'tiles': [
+                        `http://localhost:8080/geoserver/LU/wms?service=WMS&version=1.1.0&request=GetMap&layers=LU:amenaza_hidrico_arroz&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`
+                    ],
+                    'tileSize': 256
+                });
+                
+                setCurrentLayer(layerId);
+                break;
+            case 'Acuiferos Cesar':
+                    setlnglat([-73.5,10.5]);
+                    fetchWmsMetadata('https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS').then(metadata => {
+                        const title = metadata.title;
+                        const abstract = metadata.abstract;
+                        console.log('Title:', title);
+                        console.log('Abstract:', abstract);
+                        const popup = new mapboxgl.Popup({ closeOnClick: false })
+                        .setLngLat([-73.5,10.5])
+                        .setHTML(`<b>${title}</b><p>${abstract}</p>`)
+                        .addTo(map);
+                    });
+                    addLayer_(map, mapType, currentLayer,layerId,'raster', {
+                        'type': 'raster',
+                        'tiles': [
+                            `https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`
+                        ],
+                        'tileSize': 256
+                    });
+                setCurrentLayer(layerId);
+                break;
+            case 'Resguardos':
+                setlnglat([-73.5,10.5]);
+                checkLayer(map, currentLayer);
+                const locations = getLocations();
+                const features = locations.map(location => ({
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [location.coordinates.longitude, location.coordinates.latitude]
+                    },
+                    'properties': {
+                        'name': location.name,
+                        'alternateName': location.alternateName,
+                        'area': location.area
+                    }
+                }));
+                const geojson = {
+                    'type': 'FeatureCollection',
+                    'features': features
+                };
+                const source = {
+                    'type': 'geojson',
+                    'data': geojson
+                };
+                map.addSource(layerId, source);
+                map.addLayer({
+                    'id': layerId,
+                    'type': 'circle',
+                    'source': layerId,
+                    'paint': {
+                        'circle-radius': 5,
+                        'circle-stroke-width': 1,
+                        'circle-color': 'green',
+                        'circle-stroke-color': 'black'
+                    }
+                });
+                map.on('click', layerId, (e) => {
+                    const properties = e.features[0].properties;
+                    const popupContent = Object.entries(properties).map(([key, value]) => {
+                        if (key === 'name') {
+                            return;
+                        } else {
+                            return `<p style="margin: 0;">${key}: ${value}</p>`;
+                        }
+                    }).join('');
+                    new mapboxgl.Popup()
+                        .setLngLat(e.lngLat)
+                        .setHTML(`<h3>Nombre ${properties.name}</h3>`+popupContent)
                         .addTo(map);
                 });
                 setCurrentLayer(layerId);
