@@ -3,8 +3,8 @@ import { Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Slidebar.css';
 
-const years_longer = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
-const years = [2002, 2007, 2012, 2014, 2016, 2018, 2020, 2021, 2022];
+// const years_longer = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+// const years = [2002, 2007, 2012, 2014, 2016, 2018, 2020, 2021, 2022];
 
 /**
  * Slidebar component using react-bootstrap.
@@ -25,13 +25,9 @@ function Slidebar({ onChange, max, min, step }) {
   const [value, setValue] = useState(0);
 
   const barMoves = (value) => {
-    if (min === 2002) {
-      onChange(years[value]);
-      setValue(years[value]);
-    } else {
-      onChange(years_longer[value]);
-      setValue(years_longer[value]);
-    }
+      onChange(value);
+      setValue(value);
+
   };
 
   return (

@@ -47,7 +47,7 @@ function Sidebar({ onChange }) {
         <Col>
           Communities
           <CustomDropdown
-            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones']}
+            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -57,7 +57,7 @@ function Sidebar({ onChange }) {
         <Col>
           Biodiversity
           <CustomDropdown
-            options={['Biodiversity', 'Ecosystems']}
+            options={['Biodiversity', 'Ecosystems','Agricultura Familiar','Amenza Hidrica Arroz','Acuiferos Cesar']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -67,7 +67,7 @@ function Sidebar({ onChange }) {
         <Col>
           Risk map and Impacts
           <CustomDropdown
-            options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Floods', 'Methane', 'Events']}
+            options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Floods', 'Methane', 'Events','Fallas']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -77,7 +77,7 @@ function Sidebar({ onChange }) {
         <Col>
           Thematic Maps
           <CustomDropdown
-            options={['Cuencas']}
+            options={['Cuencas','Water Quality']}
             defaultText="Select an option"
             onChange={optionChange}
           />

@@ -19,11 +19,7 @@ async function militaryApicall(){
                 }
             }
         }));
-        const geojson = {
-            type: 'FeatureCollection',
-            features: features
-        }
-        return geojson;
+        return features;
     } catch (error) {
         console.error('Error fetching data school:', error);
         throw error;
