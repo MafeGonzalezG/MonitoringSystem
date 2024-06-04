@@ -47,7 +47,7 @@ function Sidebar({ onChange }) {
         <Col>
           Communities
           <CustomDropdown
-            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos']}
+            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos','Informalidad']}
             defaultText="Select an option"
             onChange={optionChange}
           />
