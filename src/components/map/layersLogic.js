@@ -9,6 +9,8 @@ import militaryApicall from '../apis/apiWaterQuality.js';
 import resguardosApi from '../apis/apiResguardos.js';
 import apiWaterQuality from '../apis/apiWaterQuality.js';
 import getLocations from '../apis/hardCodedResguardos.js';
+import apiTempIdeam from '../apis/apiTempIDEAM.js';
+import { stat } from 'fs';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -155,20 +157,7 @@ function LayersLogic({
                 });
                 setCurrentLayer(layerId);
                 break;
-            case 'Air Quality':
-                
-                checkLayer(map, currentLayer);
-                AirQualityMap(latLng[0], latLng[1]).then((data) => {
-                    const popup = new mapboxgl.Popup({ offset: 10 }).setHTML(`
-                        <p>CO: ${data.list[0].components.co}</p>
-                        <p>NO: ${data.list[0].components.no}</p>
-                        <p>NO2: ${data.list[0].components.no2}</p>
-                        <p>O3: ${data.list[0].components.o3}</p>
-                    `);
-                    new mapboxgl.Marker().setLngLat(latLng).setPopup(popup).addTo(map);
-                });
-                setCurrentLayer(layerId);
-                break;
+            
             case 'Cuencas':
                 setlnglat([-73.5,10.5]);
                 addLayer_(map, mapType,currentLayer, layerId,'raster', {
@@ -470,10 +459,63 @@ function LayersLogic({
                     });
                 setCurrentLayer(layerId);
                 break;
+            case 'Temperatura Estaciones IDEAM':
+                setShowBar(true);
+                setMax(14);
+                setMin(0);
+                setStep(1);
+                const years_temp = [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012,2013,2014,2015,2016,2017,2018,2019];
+                setlnglat([-73.5,10.5]);
+                handleApiCall(map, currentLayer,layerId, apiTempIdeam, data => data.filter(station=>new Date(station.properties.fechaobservacion).getFullYear()==years_temp[year]).map(station => ({
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [station.geometry.coordinates[0], station.geometry.coordinates[1]]
+                    },
+                    'properties': station.properties
+                })), {
+                    'circle-radius': 5,
+                    'circle-stroke-width': 1,
+                    'circle-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['to-number',['get', 'valorobservado']], // Assuming temperature is the property in your data
+                      0, 'blue',
+                      10, 'green',
+                      20, 'yellow',
+                      30, 'orange',
+                      40, 'red'
+                    ],
+                    'circle-stroke-color': 'black'
+                  });
+                setCurrentLayer(layerId);
+                break;
             default:
                 break;
         }
-    }, [map, mapType, year, latLng]);
+    }, [map, mapType, year]);
+
+    useEffect(() => {
+        if (!map) return;
+        const layerId = mapType.replace(/\s/g, '').toLowerCase();
+
+        switch (mapType) {
+        case 'Air Quality':
+                
+                checkLayer(map, currentLayer);
+                AirQualityMap(latLng[0], latLng[1]).then((data) => {
+                    const popup = new mapboxgl.Popup({ offset: 10 }).setHTML(`
+                        <p>CO: ${data.list[0].components.co}</p>
+                        <p>NO: ${data.list[0].components.no}</p>
+                        <p>NO2: ${data.list[0].components.no2}</p>
+                        <p>O3: ${data.list[0].components.o3}</p>
+                    `);
+                    new mapboxgl.Marker().setLngLat(latLng).setPopup(popup).addTo(map);
+                });
+                setCurrentLayer(layerId);
+                break;
+        }
+    }, [map,mapType,latLng]);
     useEffect(() => {
         if (map && lnglat) {
             map.flyTo({

@@ -37,7 +37,7 @@ function Sidebar({ onChange }) {
         <Col>
           Climate
           <CustomDropdown
-            options={['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind']}
+            options={['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind','Temperatura Estaciones IDEAM']}
             defaultText="Select an option"
             onChange={optionChange}
           />
