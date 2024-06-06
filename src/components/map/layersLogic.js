@@ -9,6 +9,8 @@ import militaryApicall from '../apis/apiWaterQuality.js';
 import resguardosApi from '../apis/apiResguardos.js';
 import apiWaterQuality from '../apis/apiWaterQuality.js';
 import getLocations from '../apis/hardCodedResguardos.js';
+import apiTempIdeam from '../apis/apiTempIDEAM.js';
+import { stat } from 'fs';
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -23,14 +25,22 @@ async function fetchWmsMetadata(url) {
     const xml = await response.text();
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xml, 'text/xml');
-    const title = xmlDoc.querySelectorAll('Layer > Title')[1].textContent;
-    console.log('Title:', title);
-    try{
-    const abstract = xmlDoc.querySelectorAll('Layer > Abstract')[1].textContent;
-    return { title, abstract };}
-    catch{
-        const abstract = xmlDoc.querySelectorAll('Layer > Abstract')[0].textContent;
-        return { title, abstract };
+    const layerQueryable = xmlDoc.querySelector('Layer[queryable="1"]');
+
+    // Check if the layer was found
+    if (layerQueryable) {
+        // Access the title and abstract
+        const title = layerQueryable.querySelector('Title').textContent;
+        const abstract = layerQueryable.querySelector('Abstract').textContent;
+        // Access the LegendURL
+        const legendURL = layerQueryable.querySelector('Style > LegendURL > OnlineResource').getAttribute('xlink:href');
+
+        console.log('Title:', title);
+        console.log('Legend URL:', legendURL);
+        console.log('Abstract:', abstract);
+        return { title,abstract, legendURL};
+    } else {
+        console.error('Layer with queryable="1" not found');
     }
     
 }
@@ -77,6 +87,7 @@ function handleApiCall(map,prev_layer, layerId, apiCall, processData, paint = {}
     );
         
     }  
+    
     );
     return;
 }
@@ -146,20 +157,7 @@ function LayersLogic({
                 });
                 setCurrentLayer(layerId);
                 break;
-            case 'Air Quality':
-                
-                checkLayer(map, currentLayer);
-                AirQualityMap(latLng[0], latLng[1]).then((data) => {
-                    const popup = new mapboxgl.Popup({ offset: 10 }).setHTML(`
-                        <p>CO: ${data.list[0].components.co}</p>
-                        <p>NO: ${data.list[0].components.no}</p>
-                        <p>NO2: ${data.list[0].components.no2}</p>
-                        <p>O3: ${data.list[0].components.o3}</p>
-                    `);
-                    new mapboxgl.Marker().setLngLat(latLng).setPopup(popup).addTo(map);
-                });
-                setCurrentLayer(layerId);
-                break;
+            
             case 'Cuencas':
                 setlnglat([-73.5,10.5]);
                 addLayer_(map, mapType,currentLayer, layerId,'raster', {
@@ -178,11 +176,12 @@ function LayersLogic({
                 break;
             case 'Education':
                 setlnglat([-73.5,10.5]);
-                setMax(2022);
-                setMin(2011);
+                setMax(12);
+                setMin(0);
                 setStep(1);
+                const years_school = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
                 setShowBar(true);
-                handleApiCall(map, currentLayer,layerId, schoolAPiCall, data => data.map(school => ({
+                handleApiCall(map, currentLayer,layerId, schoolAPiCall, data => data.filter(school=>school.ano==years_school[year]).map(school => ({
                     'type': 'Feature',
                     'geometry': {
                         'type': 'Point',
@@ -199,9 +198,7 @@ function LayersLogic({
                     'circle-color': 'blue',
                     'circle-stroke-color': 'black'
                 });
-                setCurrentLayer(layerId);
-
-                map.setFilter(layerId, ['==', ['string', ['get', 'ano']], String(year)]);
+                
                 map.on('click', layerId, (e) => {
                     const coordinates = e.features[0].geometry.coordinates.slice();
                     const { departamento, tasa_matriculacion_5_16 } = e.features[0].properties;
@@ -210,6 +207,8 @@ function LayersLogic({
                         .setHTML(`<h3>${departamento}</h3><p>Tasa de matriculación: ${parseFloat(tasa_matriculacion_5_16)}</p>`)
                         .addTo(map);
                 });
+                setCurrentLayer(layerId);
+
                 break;
             case 'Events':
                 addLayer_(map, mapType, currentLayer,layerId,'circle', {
@@ -297,9 +296,10 @@ function LayersLogic({
                 break;
             case 'Water Quality':
                 setlnglat([-73.5,10.5]);
-                setMax(2021);
-                setMin(2018);
+                setMax(4);
+                setMin(0);
                 setStep(1);
+                const years_water = [2018, 2019, 2020, 2021];
                 setShowBar(true);
                 handleApiCall(map, currentLayer,layerId, apiWaterQuality, data => data, {
                     'circle-radius': 5,
@@ -307,6 +307,7 @@ function LayersLogic({
                     'circle-color': 'blue',
                     'circle-stroke-color': 'black'
                 });
+                map.setFilter(layerId, ['==', ['string', ['get', 'ano']], String(years_water[year])]);
                 map.on('click', layerId, (e) => {
                     const properties = e.features[0].properties;
                     const popupContent = Object.entries(properties).map(([key, value]) => {
@@ -430,10 +431,92 @@ function LayersLogic({
                 });
                 setCurrentLayer(layerId);
                 break;
+                case 'Informalidad':
+                    // setShowBar(true);
+                    // setMax(3);
+                    // setMin(0);
+                    // setStep(1);
+                    // const years = [2014, 2019, 2020];
+                    setlnglat([-73.5,10.5]);
+                    fetchWmsMetadata(`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`).then(metadata => {
+                        const title = metadata.title;
+                        const abstract = metadata.abstract;
+                        const legendURL = metadata.legendURL;
+                        console.log('legendURL:', legendURL)
+                        console.log('Title:', title);
+                        console.log('Abstract:', abstract);
+                        const popup = new mapboxgl.Popup({ closeOnClick: false })
+                        .setLngLat([-73.5,10.5])
+                        .setHTML(`<b>${title}</b><p>${abstract}</p><div><img src="${legendURL}" alt="Legend Image"><div/>`)
+                        .addTo(map);
+                    });
+                    addLayer_(map, mapType, currentLayer,layerId,'raster', {
+                        'type': 'raster',
+                        'tiles': [
+                            `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`
+                        ],
+                        'tileSize': 256
+                    });
+                setCurrentLayer(layerId);
+                break;
+            case 'Temperatura Estaciones IDEAM':
+                setShowBar(true);
+                setMax(14);
+                setMin(0);
+                setStep(1);
+                console.log('ideam')
+                const years_temp = [2019,2020];
+                setlnglat([-73.5,10.5]);
+                handleApiCall(map, currentLayer,layerId, apiTempIdeam, data => data.filter(station=>new Date(station.properties.fechaobservacion).getFullYear()==years_temp[year]).map(station => ({
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [station.geometry.coordinates[0], station.geometry.coordinates[1]]
+                    },
+                    'properties': station.properties
+                })), {
+                    'circle-radius': 5,
+                    'circle-stroke-width': 1,
+                    'circle-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['to-number',['get', 'valorobservado']], // Assuming temperature is the property in your data
+                      0, 'blue',
+                      10, 'green',
+                      20, 'yellow',
+                      30, 'orange',
+                      40, 'red'
+                    ],
+                    'circle-stroke-color': 'black'
+                  });
+                setCurrentLayer(layerId);
+                break;
             default:
                 break;
         }
-    }, [map, mapType, year, latLng]);
+    }, [map, mapType, year]);
+
+    useEffect(() => {
+        if (!map) return;
+        const layerId = mapType.replace(/\s/g, '').toLowerCase();
+
+        switch (mapType) {
+        case 'Air Quality':
+                
+                checkLayer(map, currentLayer);
+                AirQualityMap(latLng[0], latLng[1]).then((data) => {
+                    const popup = new mapboxgl.Popup({ offset: 10 }).setHTML(`
+                        <p>CO: ${data.list[0].components.co}</p>
+                        <p>NO: ${data.list[0].components.no}</p>
+                        <p>NO2: ${data.list[0].components.no2}</p>
+                        <p>O3: ${data.list[0].components.o3}</p>
+                    `);
+                    new mapboxgl.Marker().setLngLat(latLng).setPopup(popup).addTo(map);
+                });
+                setCurrentLayer(layerId);
+                break;
+        }
+    }, [map,mapType,latLng]);
     useEffect(() => {
         if (map && lnglat) {
             map.flyTo({

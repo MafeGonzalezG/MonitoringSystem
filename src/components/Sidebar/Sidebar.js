@@ -37,7 +37,7 @@ function Sidebar({ onChange }) {
         <Col>
           Climate
           <CustomDropdown
-            options={['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind']}
+            options={['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind','Temperatura Estaciones IDEAM']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -47,7 +47,7 @@ function Sidebar({ onChange }) {
         <Col>
           Communities
           <CustomDropdown
-            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos']}
+            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos','Informalidad']}
             defaultText="Select an option"
             onChange={optionChange}
           />
