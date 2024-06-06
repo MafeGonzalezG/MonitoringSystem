@@ -464,7 +464,8 @@ function LayersLogic({
                 setMax(14);
                 setMin(0);
                 setStep(1);
-                const years_temp = [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012,2013,2014,2015,2016,2017,2018,2019];
+                console.log('ideam')
+                const years_temp = [2019,2020];
                 setlnglat([-73.5,10.5]);
                 handleApiCall(map, currentLayer,layerId, apiTempIdeam, data => data.filter(station=>new Date(station.properties.fechaobservacion).getFullYear()==years_temp[year]).map(station => ({
                     'type': 'Feature',
