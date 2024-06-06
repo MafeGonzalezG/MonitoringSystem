@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/MonitoringSystem/static/css/main.26b83cdc.css",
-    "main.js": "/MonitoringSystem/static/js/main.2019f94d.js",
-    "static/js/453.ed0f8ed7.chunk.js": "/MonitoringSystem/static/js/453.ed0f8ed7.chunk.js",
-    "index.html": "/MonitoringSystem/index.html",
-    "main.26b83cdc.css.map": "/MonitoringSystem/static/css/main.26b83cdc.css.map",
-    "main.2019f94d.js.map": "/MonitoringSystem/static/js/main.2019f94d.js.map",
-    "453.ed0f8ed7.chunk.js.map": "/MonitoringSystem/static/js/453.ed0f8ed7.chunk.js.map"
+    "main.css": "/MafeGonzalezG/MonitoringSystem/static/css/main.26b83cdc.css",
+    "main.js": "/MafeGonzalezG/MonitoringSystem/static/js/main.ff454318.js",
+    "static/js/453.ed0f8ed7.chunk.js": "/MafeGonzalezG/MonitoringSystem/static/js/453.ed0f8ed7.chunk.js",
+    "index.html": "/MafeGonzalezG/MonitoringSystem/index.html",
+    "main.26b83cdc.css.map": "/MafeGonzalezG/MonitoringSystem/static/css/main.26b83cdc.css.map",
+    "main.ff454318.js.map": "/MafeGonzalezG/MonitoringSystem/static/js/main.ff454318.js.map",
+    "453.ed0f8ed7.chunk.js.map": "/MafeGonzalezG/MonitoringSystem/static/js/453.ed0f8ed7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.26b83cdc.css",
-    "static/js/main.2019f94d.js"
+    "static/js/main.ff454318.js"
   ]
 }
