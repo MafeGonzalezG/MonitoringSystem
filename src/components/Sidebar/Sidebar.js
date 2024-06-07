@@ -27,7 +27,7 @@ function Sidebar({ onChange }) {
         <Col>
           Carbon Units
           <CustomDropdown
-            options={['Especie', 'Parameter', 'Diameter', 'Evolution']}
+            options={['Especie', 'Parameter', 'Diameter', 'Evolution','Hot Spots']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -47,7 +47,7 @@ function Sidebar({ onChange }) {
         <Col>
           Communities
           <CustomDropdown
-            options={['Agriculture', 'Transport', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos','Informalidad']}
+            options={['Agriculture', 'Mining', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos','Informalidad']}
             defaultText="Select an option"
             onChange={optionChange}
           />

@@ -491,6 +491,118 @@ function LayersLogic({
                   });
                 setCurrentLayer(layerId);
                 break;
+            case 'Hot Spots':
+                setlnglat([-73.5,10.5]);
+                checkLayer(map, currentLayer);
+                const url = "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson";
+                map.addSource(layerId, {
+                    'type': 'geojson',
+                    'data': url
+                });
+                map.addLayer({
+                    'id': layerId,
+                    'type': 'fill',
+                    'source': layerId,
+                    'paint': {
+                        'fill-outline-color': 'black',
+                        'fill-color': 'blue',
+                        'fill-opacity': 0.5,
+                        
+                    }
+                });
+                map.on('click', layerId, (e) => {
+                    const properties = e.features[0].properties;
+                    const popupContent = Object.entries(properties).map(([key, value]) => {
+                        if (key === 'PATTERN') {
+                            return;
+                        } else {
+                            return `<p style="margin: 0;">${key}: ${value}</p>`;
+                        }
+                    }).join('');
+                    new mapboxgl.Popup()
+                        .setLngLat(e.lngLat)
+                        .setHTML(`<h3>Pattern ${properties.PATTERN}</h3>`+popupContent)
+                        .addTo(map);
+                });
+                setCurrentLayer(layerId);
+                break
+            case "Mining":
+                setlnglat([-73.5,10.5]);
+                checkLayer(map, currentLayer);
+                const url_mineria = "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson";
+                async function fetchAllFeatures(url) {
+                    const allFeatures = [];
+                    let offset = 0;
+                    const limit = 1000; // Number of records to fetch per request
+        
+                    while (true) {
+                        const queryUrl = `${url}&resultOffset=${offset}&resultRecordCount=${limit}`;
+                        const response = await fetch(queryUrl);
+                        const data = await response.json();
+                        allFeatures.push(...data.features);
+        
+                        if (data.features.length < limit) {
+                            // If fewer features are returned than the limit, we have fetched all records
+                            break;
+                        }
+        
+                        offset += limit;
+                    }
+        
+                    return {
+                        type: 'FeatureCollection',
+                        features: allFeatures
+                    };
+                }
+        
+        
+                fetchAllFeatures(url_mineria).then((data) => {;
+                    console.log('Total number of features:', data.features.length);
+    
+    
+                        map.addSource(layerId, {
+                            'type': 'geojson',
+                            'data': data
+                        });
+                        map.addLayer({
+                            'id': layerId,
+                            'type': 'fill',
+                            'source': layerId,
+                            'paint': {
+                                'fill-outline-color': 'black',
+                                'fill-color': 'blue',
+                                'fill-opacity': 0.5,
+                            }
+                        });
+                        map.addLayer({
+                            'id': layerId + '-line',
+                            'type': 'line',
+                            'source': layerId,
+                            'paint': {
+                                'line-color': 'black',
+                                'line-width': 2
+                            }
+                        });
+                        map.on('click', layerId, (e) => {
+                            const properties = e.features[0].properties;
+                            const popupContent = Object.entries(properties).map(([key, value]) => {
+                                if (key === 'status') {
+                                    return;
+                                } else {
+                                    return `<p style="margin: 0;">${key}: ${value}</p>`;
+                                }
+                            }).join('');
+                            new mapboxgl.Popup()
+                                .setLngLat(e.lngLat)
+                                .setHTML(`<h3>Status ${properties.status}</h3>`+popupContent)
+                                .addTo(map);
+                        });
+                        setCurrentLayer(layerId);
+                    }).catch((error) => {   
+                        console.error('Error fetching data:', error);
+                    });
+                setCurrentLayer(layerId);
+                break
             default:
                 break;
         }
@@ -515,7 +627,7 @@ function LayersLogic({
                 });
                 setCurrentLayer(layerId);
                 break;
-        }
+            }
     }, [map,mapType,latLng]);
     useEffect(() => {
         if (map && lnglat) {
