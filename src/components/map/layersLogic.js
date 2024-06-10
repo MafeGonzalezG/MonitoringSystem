@@ -603,6 +603,79 @@ function LayersLogic({
                     });
                 setCurrentLayer(layerId);
                 break
+            case 'Reservas indigenas':
+                setlnglat([-73.5,10.5]);
+                checkLayer(map, currentLayer);
+                const url_reservas = "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson"
+                async function fetchAllFeaturesReservas(url) {
+                    const allFeatures = [];
+                    let offset = 0;
+                    const limit = 1000; // Number of records to fetch per request
+        
+                    while (true) {
+                        const queryUrl = `${url}&resultOffset=${offset}&resultRecordCount=${limit}`;
+                        const response = await fetch(queryUrl);
+                        const data = await response.json();
+                        allFeatures.push(...data.features);
+        
+                        if (data.features.length < limit) {
+                            // If fewer features are returned than the limit, we have fetched all records
+                            break;
+                        }
+        
+                        offset += limit;
+                    }
+        
+                    return {
+                        type: 'FeatureCollection',
+                        features: allFeatures
+                    };
+                }
+                fetchAllFeaturesReservas(url_reservas).then((data) => {
+                    console.log('Total number of features:', data.features.length);
+                    map.addSource(layerId, {
+                        'type': 'geojson',
+                        'data': data
+                    });
+                    map.addLayer({
+                        'id': layerId,
+                        'type': 'fill',
+                        'source': layerId,
+                        'paint': {
+                            'fill-outline-color': 'black',
+                            'fill-color': 'blue',
+                            'fill-opacity': 0.5,
+                        }
+                    });
+                    map.addLayer({
+                        'id': layerId + '-line',
+                        'type': 'line',
+                        'source': layerId,
+                        'paint': {
+                            'line-color': 'black',
+                            'line-width': 2
+                        }
+                    });
+                    map.on('click', layerId, (e) => {
+                        const properties = e.features[0].properties;
+                        const popupContent = Object.entries(properties).map(([key, value]) => {
+                            if (key === 'NOMBRE') {
+                                return;
+                            } else {
+                                return `<p style="margin: 0;">${key}: ${value}</p>`;
+                            }
+                        }).join('');
+                        new mapboxgl.Popup()
+                            .setLngLat(e.lngLat)
+                            .setHTML(`<h3>Nombre ${properties.NOMBRE}</h3>`+popupContent)
+                            .addTo(map);
+                    });
+                    setCurrentLayer(layerId);
+                }).catch((error) => {
+                    console.error('Error fetching data:', error);
+                });
+                setCurrentLayer(layerId);
+                break;
             default:
                 break;
         }

@@ -25,9 +25,9 @@ function Sidebar({ onChange }) {
     <Container className="sidebar bg-transparent bg-gradient text-dark">
       <Row>
         <Col>
-          Carbon Units
+          Colombia
           <CustomDropdown
-            options={['Especie', 'Parameter', 'Diameter', 'Evolution','Hot Spots']}
+            options={['Reservas indigenas', 'Catastro', 'Diameter', 'Evolution','Hot Spots']}
             defaultText="Select an option"
             onChange={optionChange}
           />
