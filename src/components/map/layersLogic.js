@@ -10,7 +10,12 @@ import resguardosApi from '../apis/apiResguardos.js';
 import apiWaterQuality from '../apis/apiWaterQuality.js';
 import getLocations from '../apis/hardCodedResguardos.js';
 import apiTempIdeam from '../apis/apiTempIDEAM.js';
+import proj4 from 'proj4';
 import { stat } from 'fs';
+proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
+
+// EPSG:3857 is predefined in Proj4js, but defining it explicitly for clarity
+proj4.defs("EPSG:3857", "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs");
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -19,6 +24,30 @@ function checkLayer(map, layerId) {
         map.removeSource(layerId);
     }
     return;
+}
+async function fetchAllFeatures(url) {
+    const allFeatures = [];
+    let offset = 0;
+    const limit = 1000; // Number of records to fetch per request
+
+    while (true) {
+        const queryUrl = `${url}&resultOffset=${offset}&resultRecordCount=${limit}`;
+        const response = await fetch(queryUrl);
+        const data = await response.json();
+        allFeatures.push(...data.features);
+
+        if (data.features.length < limit) {
+            // If fewer features are returned than the limit, we have fetched all records
+            break;
+        }
+
+        offset += limit;
+    }
+
+    return {
+        type: 'FeatureCollection',
+        features: allFeatures
+    };
 }
 async function fetchWmsMetadata(url) {
     const response = await fetch(url);
@@ -44,23 +73,49 @@ async function fetchWmsMetadata(url) {
     }
     
 }
-function addLayer_(map, mapType, prev_layer,layerId,type='circle', source=null) {
+function addLayer_(map, mapType, prev_layer,layerId,type='circle',source=null,...imageValues) {
     checkLayer(map, prev_layer);
-    if(source){ 
-        map.addSource(layerId,source);
-        map.addLayer( {
-            'id': layerId,
-            'type': type,
-            'source': layerId,
-            'paint': {}
-        },
-        'building' // Place layer under labels, roads and buildings.
-    );
-    }
-    else{
-        map.addLayer(Layers(mapType, layerId));
+    if(type=='image'){
+        addWmsLayer(layerId,map,imageValues[0],imageValues[1],imageValues[2],imageValues[3]);
+    }else{
+        if(source){ 
+            map.addSource(layerId,source);
+            map.addLayer( {
+                'id': layerId,
+                'type': type,
+                'source': layerId,
+                'paint': {}
+            },
+            'building' // Place layer under labels, roads and buildings.
+        );
+        }
+        else{
+            map.addLayer(Layers(mapType, layerId));
+        }
     }
     return;
+}
+function addWmsLayer(currentLayer, map, wmsUrl,epsg,bbox,layer) {
+    // Create WMS request URL
+    const wmsRequestUrl = `${wmsUrl}&layers=${layer}&bbox=${bbox.join(',')}&width=256&height=256&${epsg}&styles=&format=image/png&transparent=true`;
+    console.log(wmsRequestUrl);
+    map.addSource(currentLayer, {
+        'type': 'image',
+        'url': wmsRequestUrl,
+        'coordinates': [
+            [bbox[0], bbox[3]],  // Top-left
+            [bbox[2], bbox[3]],  // Top-right
+            [bbox[2], bbox[1]],  // Bottom-right
+            [bbox[0], bbox[1]]   // Bottom-left
+        ]
+    });
+
+    map.addLayer({
+        'id': currentLayer,
+        'type': 'raster',
+        'source': currentLayer,
+        'paint': {}
+    }, 'building');
 }
 
 function handleApiCall(map,prev_layer, layerId, apiCall, processData, paint = {}, layerType = 'circle') {
@@ -98,10 +153,22 @@ function LayersLogic({
     const [currentLayer, setCurrentLayer] = useState('');
     const [latLng, setLatLng] = useState([0, 0]);
     const prevYearRef = useRef();
-    
+    const reproj_urls = {
+        'deforestation': {'url':'https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_','bbox':[-4.225780,-77.670617,4.948186,-66.847215]},
+    }
     useEffect(() => {
         if (!map) return;
-
+        const urls = {
+            'earthquakes': {'url':`https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer?request=GetMap&version=1.3.0`,'fetch_medatada':false,'type':'image','epsg':'crs=CRS:84','bbox':[-84.764004,-4.998033,-66.003125,16.998958],'layer':5},
+            'deforestation':{'url':'https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_','fetch_metadata':false,'type':'image','bbox':[-77.670617,-4.225780,-66.847215,4.948186],'epsg':'srs=EPSG:4170','layer':0},
+            'cuencas' :{'url':`http://localhost:8080/geoserver/cuencas/wms?service=WMS&version=1.1.0&request=GetMap&layers=cuencas:cuencas&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`,'fetch_medatada':false,'type':'raster','bbox':null,'epsg':null},
+            'agricultura Familiar' : {'url':`https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_medatada':false,'type':'raster','bbox':null,'epsg':null},
+            'mining': {'url': "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",'title':'status','type':'raster','bbox':null,'epsg':null},
+            'reservas indigenas':{'url':"https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",'title':'NOMBRE','type':'raster','bbox':null,'epsg':null},
+            'amenaza Hidrica Arroz':{'url': `http://localhost:8080/geoserver/LU/wms?service=WMS&version=1.1.0&request=GetMap&layers=LU:amenaza_hidrico_arroz&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`,'fetch_medatada':true,'metadata_url':'http://localhost:8080/geoserver/LU/wms?request=GetCapabilities&layers=LU:amenaza_hidrico_arroz','type':'raster','bbox':null,'epsg':null},
+            'acuiferos Cesar':{'url':`https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_metadata':true,'metadata_url':'https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS','type':'raster','bbox':null,'epsg':null},
+            'informalidad':{'url':`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_metadata':true,'metadata_url':`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`,'type':'raster','bbox':null,'epsg':null},
+        };
         const layerId = mapType.replace(/\s/g, '').toLowerCase();
 
         switch (mapType) {
@@ -119,28 +186,52 @@ function LayersLogic({
                 break;
             case 'Deforestation':
                 setlnglat([-73.5,10.5]);
-                setMax(2020);
-                setMin(2002);
+                setMax(8);
+                setMin(0);
                 setStep(1);
                 setShowBar(true);
-                addLayer_(map, mapType,currentLayer, layerId,'raster', {
-                    'type': 'raster',
-                    'tiles': [
-                        `http://localhost:8080/geoserver/forest/wms?service=WMS&version=1.1.0&request=GetMap&layers=forest:${year}&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`
-                    ],
-                    'tileSize': 256
-                });
+                const deforestationYears = [2002, 2007, 2012, 2014, 2016, 2028, 2020, 2021,2022];
+                checkLayer(map, currentLayer);
+                const wmsUrl =  urls[layerId].url+`${deforestationYears[year]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap`;
+                addWmsLayer(layerId, map, wmsUrl,urls[layerId].epsg,urls[layerId].bbox,urls[layerId].layer);
                 setCurrentLayer(layerId);
                 break;
             case 'Earthquakes':
-                addLayer_(map,mapType,currentLayer, layerId, 'raster',{
-                    'type': 'raster',
-                    'tiles': [
-                        `http://localhost:8080/geoserver/Sismos/wms?service=WMS&version=1.1.0&request=GetMap&layers=Sismos:5&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`
-                    ],
-                    'tileSize': 256
-                });
+            case 'Cuencas':
+            case 'Agricultura Familiar':
+            case 'Amenaza Hidrica Arroz':
+            case 'Acuiferos Cesar':
+            case 'Informalidad':
+                setlnglat([-73.5,10.5]);
+                if(urls[layerId].type=='raster'){
+                    addLayer_(map,mapType,currentLayer, layerId, urls[layerId].type,{
+                        'type': 'raster',
+                        'tiles': [
+                            urls[layerId].url
+                        ],
+                        'tileSize': 256
+                    });
+                    
+                }else{
+                    addLayer_(map,mapType,currentLayer,layerId,urls[layerId].type,null,urls[layerId].url,urls[layerId].epsg,urls[layerId].bbox,urls[layerId].layer)
+                }
                 setCurrentLayer(layerId);
+                // new mapboxgl.Popup({ closeOnClick: false })
+                // .setLngLat(latLng)
+                // .setHTML('<div><img src="https://mapas.igac.gov.co:443/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=0" ><div/>')
+                // .setOffset([250, -190])
+                // .addTo(map);
+                if(urls[layerId].fetch_medatada){
+                    fetchWmsMetadata(urls[layerId].metadata_url).then(metadata => {
+                        const title = metadata.title;
+                        const abstract = metadata.abstract;
+                        console.log('Title:', title);
+                        console.log('Abstract:', abstract);
+                        const popup = new mapboxgl.Popup({ closeOnClick: false })
+                        .setLngLat(lnglat)
+                        .setHTML(`<b>${title}</b><p>${abstract}</p>`)
+                        .addTo(map);
+                });}
                 break;
             case 'Fires':
                 handleApiCall(map,currentLayer ,layerId, apiFires, data => data.map(coords => ({
@@ -155,23 +246,6 @@ function LayersLogic({
                     'circle-color': 'orange',
                     'circle-stroke-color': 'red'
                 });
-                setCurrentLayer(layerId);
-                break;
-            
-            case 'Cuencas':
-                setlnglat([-73.5,10.5]);
-                addLayer_(map, mapType,currentLayer, layerId,'raster', {
-                    'type': 'raster',
-                    'tiles': [
-                        `http://localhost:8080/geoserver/cuencas/wms?service=WMS&version=1.1.0&request=GetMap&layers=cuencas:cuencas&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`
-                    ],
-                    'tileSize': 256
-                });
-                new mapboxgl.Popup({ closeOnClick: false })
-                    .setLngLat(latLng)
-                    .setHTML('<div><img src="https://mapas.igac.gov.co:443/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=0" ><div/>')
-                    .setOffset([250, -190])
-                    .addTo(map);
                 setCurrentLayer(layerId);
                 break;
             case 'Education':
@@ -323,61 +397,6 @@ function LayersLogic({
                         .addTo(map);
                 });
                 setCurrentLayer(layerId);
-            case 'Agricultura Familiar':
-                setlnglat([-73.5,10.5]);
-                addLayer_(map, mapType, currentLayer,layerId,'raster', {
-                    'type': 'raster',
-                    'tiles': [
-                        `https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`
-                    ],
-                    'tileSize': 256
-                });
-                setCurrentLayer(layerId);
-                break;
-            case 'Amenza Hidrica Arroz':
-                setlnglat([-74.796387,10.963889]);
-                fetchWmsMetadata('http://localhost:8080/geoserver/LU/wms?request=GetCapabilities&layers=LU:amenaza_hidrico_arroz').then(metadata => {
-                    const title = metadata.title;
-                    const abstract = metadata.abstract;
-                    console.log('Title:', title);
-                    console.log('Abstract:', abstract);
-                    const popup = new mapboxgl.Popup({ closeOnClick: false })
-                    .setLngLat(lnglat)
-                    .setHTML(`<b>${title}</b><p>${abstract}</p>`)
-                    .addTo(map);
-                });
-
-                
-                addLayer_(map, mapType, currentLayer,layerId,'raster', {
-                    'type': 'raster',
-                    'tiles': [
-                        `http://localhost:8080/geoserver/LU/wms?service=WMS&version=1.1.0&request=GetMap&layers=LU:amenaza_hidrico_arroz&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`
-                    ],
-                    'tileSize': 256
-                });
-                
-                setCurrentLayer(layerId);
-                break;
-            case 'Acuiferos Cesar':
-                    setlnglat([-73.5,10.5]);
-                    fetchWmsMetadata('https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS').then(metadata => {
-                        const title = metadata.title;
-                        const abstract = metadata.abstract;
-                        console.log('Title:', title);
-                        console.log('Abstract:', abstract);
-                        const popup = new mapboxgl.Popup({ closeOnClick: false })
-                        .setLngLat([-73.5,10.5])
-                        .setHTML(`<b>${title}</b><p>${abstract}</p>`)
-                        .addTo(map);
-                    });
-                    addLayer_(map, mapType, currentLayer,layerId,'raster', {
-                        'type': 'raster',
-                        'tiles': [
-                            `https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`
-                        ],
-                        'tileSize': 256
-                    });
-                setCurrentLayer(layerId);
                 break;
             case 'Resguardos':
                 setlnglat([-73.5,10.5]);
@@ -399,11 +418,11 @@ function LayersLogic({
                     'type': 'FeatureCollection',
                     'features': features
                 };
-                const source = {
+                const source_ = {
                     'type': 'geojson',
                     'data': geojson
                 };
-                map.addSource(layerId, source);
+                map.addSource(layerId, source_);
                 map.addLayer({
                     'id': layerId,
                     'type': 'circle',
@@ -431,41 +450,13 @@ function LayersLogic({
                 });
                 setCurrentLayer(layerId);
                 break;
-                case 'Informalidad':
-                    // setShowBar(true);
-                    // setMax(3);
-                    // setMin(0);
-                    // setStep(1);
-                    // const years = [2014, 2019, 2020];
-                    setlnglat([-73.5,10.5]);
-                    fetchWmsMetadata(`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`).then(metadata => {
-                        const title = metadata.title;
-                        const abstract = metadata.abstract;
-                        const legendURL = metadata.legendURL;
-                        console.log('legendURL:', legendURL)
-                        console.log('Title:', title);
-                        console.log('Abstract:', abstract);
-                        const popup = new mapboxgl.Popup({ closeOnClick: false })
-                        .setLngLat([-73.5,10.5])
-                        .setHTML(`<b>${title}</b><p>${abstract}</p><div><img src="${legendURL}" alt="Legend Image"><div/>`)
-                        .addTo(map);
-                    });
-                    addLayer_(map, mapType, currentLayer,layerId,'raster', {
-                        'type': 'raster',
-                        'tiles': [
-                            `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`
-                        ],
-                        'tileSize': 256
-                    });
-                setCurrentLayer(layerId);
-                break;
             case 'Temperatura Estaciones IDEAM':
                 setShowBar(true);
                 setMax(14);
                 setMin(0);
                 setStep(1);
                 console.log('ideam')
-                const years_temp = [2019,2020];
+                const years_temp = [2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
                 setlnglat([-73.5,10.5]);
                 handleApiCall(map, currentLayer,layerId, apiTempIdeam, data => data.filter(station=>new Date(station.properties.fechaobservacion).getFullYear()==years_temp[year]).map(station => ({
                     'type': 'Feature',
@@ -527,39 +518,11 @@ function LayersLogic({
                 setCurrentLayer(layerId);
                 break
             case "Mining":
+            case 'Reservas indigenas':
                 setlnglat([-73.5,10.5]);
                 checkLayer(map, currentLayer);
-                const url_mineria = "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson";
-                async function fetchAllFeatures(url) {
-                    const allFeatures = [];
-                    let offset = 0;
-                    const limit = 1000; // Number of records to fetch per request
-        
-                    while (true) {
-                        const queryUrl = `${url}&resultOffset=${offset}&resultRecordCount=${limit}`;
-                        const response = await fetch(queryUrl);
-                        const data = await response.json();
-                        allFeatures.push(...data.features);
-        
-                        if (data.features.length < limit) {
-                            // If fewer features are returned than the limit, we have fetched all records
-                            break;
-                        }
-        
-                        offset += limit;
-                    }
-        
-                    return {
-                        type: 'FeatureCollection',
-                        features: allFeatures
-                    };
-                }
-        
-        
-                fetchAllFeatures(url_mineria).then((data) => {;
+                fetchAllFeatures(urls[mapType]).then((data) => {;
                     console.log('Total number of features:', data.features.length);
-    
-    
                         map.addSource(layerId, {
                             'type': 'geojson',
                             'data': data
@@ -586,7 +549,7 @@ function LayersLogic({
                         map.on('click', layerId, (e) => {
                             const properties = e.features[0].properties;
                             const popupContent = Object.entries(properties).map(([key, value]) => {
-                                if (key === 'status') {
+                                if (key === urls[mapType].title) {
                                     return;
                                 } else {
                                     return `<p style="margin: 0;">${key}: ${value}</p>`;
@@ -594,7 +557,7 @@ function LayersLogic({
                             }).join('');
                             new mapboxgl.Popup()
                                 .setLngLat(e.lngLat)
-                                .setHTML(`<h3>Status ${properties.status}</h3>`+popupContent)
+                                .setHTML(`<h3>${urls[mapType].title} ${properties[urls[mapType].title]}</h3>`+popupContent)
                                 .addTo(map);
                         });
                         setCurrentLayer(layerId);
@@ -603,78 +566,165 @@ function LayersLogic({
                     });
                 setCurrentLayer(layerId);
                 break
-            case 'Reservas indigenas':
-                setlnglat([-73.5,10.5]);
-                checkLayer(map, currentLayer);
-                const url_reservas = "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson"
-                async function fetchAllFeaturesReservas(url) {
-                    const allFeatures = [];
-                    let offset = 0;
-                    const limit = 1000; // Number of records to fetch per request
-        
-                    while (true) {
-                        const queryUrl = `${url}&resultOffset=${offset}&resultRecordCount=${limit}`;
-                        const response = await fetch(queryUrl);
-                        const data = await response.json();
-                        allFeatures.push(...data.features);
-        
-                        if (data.features.length < limit) {
-                            // If fewer features are returned than the limit, we have fetched all records
-                            break;
-                        }
-        
-                        offset += limit;
-                    }
-        
-                    return {
-                        type: 'FeatureCollection',
-                        features: allFeatures
-                    };
-                }
-                fetchAllFeaturesReservas(url_reservas).then((data) => {
-                    console.log('Total number of features:', data.features.length);
-                    map.addSource(layerId, {
+            case 'Catastro':
+                    console.log('catastro')
+                    setlnglat([-73.5,10.5]);
+                    checkLayer(map, currentLayer);
+                    const layer_1 = 'U_NOMENCLATURA_VIAL'
+                    const url_1 = `https://dservices2.arcgis.com/RVvWzU3lgJISqdke/arcgis/services/CATASTRO_PUBLICO_Mayo_15_2024_gdb/WFSServer?service=wfs&request=getFeature&typeName=CATASTRO_PUBLICO_Mayo_15_2024_gdb:${layer_1}&outputFormat=geojson&srsname=EPSG:4326`;
+                    map.addSource(layerId+layer_1, {
                         'type': 'geojson',
-                        'data': data
+                        'data': url_1
                     });
                     map.addLayer({
-                        'id': layerId,
-                        'type': 'fill',
-                        'source': layerId,
+                        'id': layerId+layer_1,
+                        'source': layerId+layer_1,
+                        'type':'line',
+                        'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                                        },
                         'paint': {
-                            'fill-outline-color': 'black',
-                            'fill-color': 'blue',
-                            'fill-opacity': 0.5,
+                            'line-color': '#2EC4B6',
+                            'line-width': 4
                         }
                     });
                     map.addLayer({
-                        'id': layerId + '-line',
-                        'type': 'line',
-                        'source': layerId,
+                        'id': layerId+layer_1+'-fill',
+                        'source': layerId+layer_1,
+                        'type': 'symbol',
+                        'layout': {
+                            "text-field": "{Texto}",
+                        "text-font": [
+                            "DIN Offc Pro Medium",
+                            "Arial Unicode MS Bold"
+                        ],
+                        "text-size": 12}
+                    });
+                    const layer_2 = 'U_PERIMETRO';
+                    const url_2 = `https://dservices2.arcgis.com/RVvWzU3lgJISqdke/arcgis/services/CATASTRO_PUBLICO_Mayo_15_2024_gdb/WFSServer?service=wfs&request=getFeature&typeName=CATASTRO_PUBLICO_Mayo_15_2024_gdb:${layer_2}&outputFormat=geojson&srsname=EPSG:4326`;
+                    map.addSource(layerId+layer_2, {
+                        'type': 'geojson',
+                        'data': url_2
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_2,
+                        'source': layerId+layer_2,
+                        'type':'fill',
                         'paint': {
-                            'line-color': 'black',
+                            'fill-color': '#F1E8B8',
+                            'fill-opacity': 0.5
+                        }
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_2+'-line',
+                        'source': layerId+layer_2,
+                        'type':'line',
+                        'paint': {
+                            'line-color': '#F1E8B8',
                             'line-width': 2
                         }
                     });
-                    map.on('click', layerId, (e) => {
-                        const properties = e.features[0].properties;
-                        const popupContent = Object.entries(properties).map(([key, value]) => {
-                            if (key === 'NOMBRE') {
-                                return;
-                            } else {
-                                return `<p style="margin: 0;">${key}: ${value}</p>`;
-                            }
-                        }).join('');
-                        new mapboxgl.Popup()
-                            .setLngLat(e.lngLat)
-                            .setHTML(`<h3>Nombre ${properties.NOMBRE}</h3>`+popupContent)
-                            .addTo(map);
+                    const layer_3 = 'R_NOMENCLATURA_VIAL';
+                    const url_3 = `https://dservices2.arcgis.com/RVvWzU3lgJISqdke/arcgis/services/CATASTRO_PUBLICO_Mayo_15_2024_gdb/WFSServer?service=wfs&request=getFeature&typeName=CATASTRO_PUBLICO_Mayo_15_2024_gdb:${layer_3}&outputFormat=geojson&srsname=EPSG:4326`;
+                    map.addSource(layerId+layer_3, {
+                        'type': 'geojson',
+                        'data': url_3
                     });
-                    setCurrentLayer(layerId);
-                }).catch((error) => {
-                    console.error('Error fetching data:', error);
-                });
-                setCurrentLayer(layerId);
+                    map.addLayer({
+                        'id': layerId+layer_3,
+                        'source': layerId+layer_3,
+                        'type':'symbol',
+                        'layout': {
+                            "text-field": "{Texto}",
+                        "text-font": [
+                            "DIN Offc Pro Medium",
+                            "Arial Unicode MS Bold"
+                        ],
+                        "text-size": 12}
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_3+'-line',
+                        'source': layerId+layer_3,
+                        'type':'line',
+                        'layout': { 'line-join': 'round', 'line-cap': 'round'},
+                        'paint': {
+                            'line-color': '#2EC4B6',
+                            'line-width': 4
+                        }
+                    });
+                    const layer_4 = 'U_MANZANA';
+                    const url_4 = `https://dservices2.arcgis.com/RVvWzU3lgJISqdke/arcgis/services/CATASTRO_PUBLICO_Mayo_15_2024_gdb/WFSServer?service=wfs&request=getFeature&typeName=CATASTRO_PUBLICO_Mayo_15_2024_gdb:${layer_4}&outputFormat=geojson&srsname=EPSG:4326`;
+                    map.addSource(layerId+layer_4, {
+                        'type': 'geojson',
+                        'data': url_4
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_4,
+                        'source': layerId+layer_4,
+                        'type':'fill',
+                        'paint': {
+                            'fill-color': '#AFDEDC',
+                            'fill-opacity': 0.5
+                        }
+                    });
+                    const layer_5 = 'R_NOMENCLATURA_DOMICILIARIA';
+                    const url_5 = `https://dservices2.arcgis.com/RVvWzU3lgJISqdke/arcgis/services/CATASTRO_PUBLICO_Mayo_15_2024_gdb/WFSServer?service=wfs&request=getFeature&typeName=CATASTRO_PUBLICO_Mayo_15_2024_gdb:${layer_5}&outputFormat=geojson&srsname=EPSG:4326`;
+                    map.addSource(layerId+layer_5, {
+                        'type': 'geojson',
+                        'data': url_5
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_5,
+                        'source': layerId+layer_5,
+                        'type':'symbol',
+                        'layout': {
+                            "text-field": "{Texto}",
+                        "text-font": [
+                            "DIN Offc Pro Medium",
+                            "Arial Unicode MS Bold"
+                        ],
+                        "text-size": 12}
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_5+'-line',
+                        'source': layerId+layer_5,
+                        'type':'line',
+                        'layout': { 'line-join': 'round', 'line-cap': 'round'},
+                        'paint': {
+                            'line-color': '#2EC4B6',
+                            'line-width': 4
+                        }
+                    });
+                    const layer_6 = 'R_CONSTRUCCION_INFORMAL';
+                    const url_6 = `https://dservices2.arcgis.com/RVvWzU3lgJISqdke/arcgis/services/CATASTRO_PUBLICO_Mayo_15_2024_gdb/WFSServer?service=wfs&request=getFeature&typeName=CATASTRO_PUBLICO_Mayo_15_2024_gdb:${layer_6}&outputFormat=geojson&srsname=EPSG:4326`;
+                    map.addSource(layerId+layer_6, {
+                        'type': 'geojson',
+                        'data': url_6
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_6,
+                        'source': layerId+layer_6,
+                        'type':'fill',
+                        'paint': {
+                            'fill-color': '#F1E8B8',
+                            'fill-opacity': 0.5
+                        }
+                    });
+                    map.addLayer({
+                        'id': layerId+layer_6+'-line',
+                        'source': layerId+layer_6,
+                        'type':'symbol',
+                        'layout': {
+                            "text-field": "{Identificador}",
+                        "text-font": [
+                            "DIN Offc Pro Medium",
+                            "Arial Unicode MS Bold"
+                        ],
+                        "text-size": 12}
+                    });
+                    
+                    setCurrentLayer(layerId);    
                 break;
             default:
                 break;

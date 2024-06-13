@@ -27,7 +27,7 @@ function Sidebar({ onChange }) {
         <Col>
           Colombia
           <CustomDropdown
-            options={['Reservas indigenas', 'Catastro', 'Diameter', 'Evolution','Hot Spots']}
+            options={['Reservas indigenas', 'Catastro', 'Diameter', 'A','Hot Spots']}
             defaultText="Select an option"
             onChange={optionChange}
           />
