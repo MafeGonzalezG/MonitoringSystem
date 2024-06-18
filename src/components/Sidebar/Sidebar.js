@@ -25,9 +25,9 @@ function Sidebar({ onChange }) {
     <Container className="sidebar bg-transparent bg-gradient text-dark">
       <Row>
         <Col>
-          Colombia
+          Nature
           <CustomDropdown
-            options={['Reservas indigenas', 'Catastro', 'Diameter', 'A','Hot Spots']}
+            options={['Reservas indigenas', 'Catastro', 'Manglares','Hot Spots','Carbon Secuestro']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -47,7 +47,7 @@ function Sidebar({ onChange }) {
         <Col>
           Communities
           <CustomDropdown
-            options={['Agriculture', 'Mining', 'Communities', 'Health', 'Education', 'Military Zones','Resguardos','Informalidad']}
+            options={['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones','Resguardos','Informalidad']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -57,7 +57,7 @@ function Sidebar({ onChange }) {
         <Col>
           Biodiversity
           <CustomDropdown
-            options={['Biodiversity', 'Ecosystems','Agricultura Familiar','Amenza Hidrica Arroz','Acuiferos Cesar']}
+            options={['Agricultura Familiar','Acuiferos Cesar']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -67,7 +67,7 @@ function Sidebar({ onChange }) {
         <Col>
           Risk map and Impacts
           <CustomDropdown
-            options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Floods', 'Methane', 'Events','Fallas']}
+            options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires','Events','Fallas']}
             defaultText="Select an option"
             onChange={optionChange}
           />
@@ -75,7 +75,7 @@ function Sidebar({ onChange }) {
       </Row>
       <Row>
         <Col>
-          Thematic Maps
+          Water
           <CustomDropdown
             options={['Cuencas','Water Quality']}
             defaultText="Select an option"

@@ -10,12 +10,7 @@ import resguardosApi from '../apis/apiResguardos.js';
 import apiWaterQuality from '../apis/apiWaterQuality.js';
 import getLocations from '../apis/hardCodedResguardos.js';
 import apiTempIdeam from '../apis/apiTempIDEAM.js';
-import proj4 from 'proj4';
-import { stat } from 'fs';
-proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
 
-// EPSG:3857 is predefined in Proj4js, but defining it explicitly for clarity
-proj4.defs("EPSG:3857", "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs");
 function checkLayer(map, layerId) {
     if (map.getLayer(layerId)) {
         map.removeLayer(layerId);
@@ -50,11 +45,12 @@ async function fetchAllFeatures(url) {
     };
 }
 async function fetchWmsMetadata(url) {
+    console.log('Fetching metadata from:', url)
     const response = await fetch(url);
     const xml = await response.text();
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xml, 'text/xml');
-    const layerQueryable = xmlDoc.querySelector('Layer[queryable="1"]');
+    let layerQueryable = xmlDoc.querySelector('Layer[queryable="1"]');
 
     // Check if the layer was found
     if (layerQueryable) {
@@ -146,7 +142,25 @@ function handleApiCall(map,prev_layer, layerId, apiCall, processData, paint = {}
     );
     return;
 }
-
+function addGenericPopUp(map,layerId,MainKey){
+    map.on('mouseenter', layerId, () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('click', layerId, (e) => {
+        const properties = e.features[0].properties;
+        const popupContent = Object.entries(properties).map(([key, value]) => {
+            if (key === MainKey) {
+                return;
+            } else {
+                return `<p style="margin: 0;">${key}: ${value}</p>`;
+            }
+        }).join('');
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(`<h3>${MainKey} :  ${properties[MainKey]}</h3>`+popupContent)
+            .addTo(map);
+    });
+}
 function LayersLogic({
     setMax, setMin, setStep, lnglat,setlnglat, lnglatclick, map, country, mapType, year, setShowBar
 }) {
@@ -159,15 +173,21 @@ function LayersLogic({
     useEffect(() => {
         if (!map) return;
         const urls = {
-            'earthquakes': {'url':`https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer?request=GetMap&version=1.3.0`,'fetch_medatada':false,'type':'image','epsg':'crs=CRS:84','bbox':[-84.764004,-4.998033,-66.003125,16.998958],'layer':5},
+            'earthquakes': {'url':`https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer?request=GetMap&version=1.3.0`,'fetch_metadata':false,'type':'image','epsg':'crs=CRS:84','bbox':[-84.764004,-4.998033,-66.003125,16.998958],'layer':5},
+            'carbonsecuestro':{'url':'https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0','fetch_metadata':false,'type':'image','epsg':'crs=CRS:84','bbox':[-82.240682,-4.323733,-66.483327,16.181351],'layer':0},
             'deforestation':{'url':'https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_','fetch_metadata':false,'type':'image','bbox':[-77.670617,-4.225780,-66.847215,4.948186],'epsg':'srs=EPSG:4170','layer':0},
-            'cuencas' :{'url':`http://localhost:8080/geoserver/cuencas/wms?service=WMS&version=1.1.0&request=GetMap&layers=cuencas:cuencas&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`,'fetch_medatada':false,'type':'raster','bbox':null,'epsg':null},
-            'agricultura Familiar' : {'url':`https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_medatada':false,'type':'raster','bbox':null,'epsg':null},
-            'mining': {'url': "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",'title':'status','type':'raster','bbox':null,'epsg':null},
-            'reservas indigenas':{'url':"https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",'title':'NOMBRE','type':'raster','bbox':null,'epsg':null},
-            'amenaza Hidrica Arroz':{'url': `http://localhost:8080/geoserver/LU/wms?service=WMS&version=1.1.0&request=GetMap&layers=LU:amenaza_hidrico_arroz&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&styles=&format=image/png`,'fetch_medatada':true,'metadata_url':'http://localhost:8080/geoserver/LU/wms?request=GetCapabilities&layers=LU:amenaza_hidrico_arroz','type':'raster','bbox':null,'epsg':null},
+            'cuencas' :{'url':`https://mapas.igac.gov.co/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetMap&version=1.1.0`,'fetch_metadata':false,'type':'image','bbox':[-85.452541,-4.239657,-66.554113,16.238453],'epsg':'srs=EPSG:4326',layer:0},
+            'agricultura Familiar' : {'url':`https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_metadata':false,'type':'raster','bbox':null,'epsg':null},
+            'mining': {'url': "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",'title':'status','type':'geojson','bbox':null,'epsg':null},
+            'reservasindigenas':{'url':"https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",'title':'NOMBRE','type':'geojson','bbox':null,'epsg':null},
             'acuiferos Cesar':{'url':`https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_metadata':true,'metadata_url':'https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS','type':'raster','bbox':null,'epsg':null},
-            'informalidad':{'url':`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_metadata':true,'metadata_url':`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`,'type':'raster','bbox':null,'epsg':null},
+            'informalidad':{'url':`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&transparent=true&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,'fetch_metadata':true,'metadata_url':`https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`,'type':'raster','bbox':null,'epsg':null},
+            'hotspots': {'url': "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"},
+            'manglares':{'url': 'https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&service=WMS&styles=&version=1.3.0&format=image/png&layers=0&crs=EPSG:3857&width=256&height=256&bbox={bbox-epsg-3857}&transparent=true','type':'raster'},
+            'comunidadesnegras':{'url':'https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/COMUNIDAD_NEGRA_TITULADA/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=true&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson&token=','type':'geojson','bbox':null,'epsg':null,'title':'NOMBRE'},
+            // 'manglares' : {'url':'https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WFSServer?request=GetFeature&service=WFS&version=2.0.0&typeNames=MANGLARES_COLOMBIA:MANGLARES_DE_COLOMBIA&outputFormat=geojson&bbox=1.379301,-79.77648275,2.90278975,-78.781592','type':'geojson','fetch_metadata':false},
+            // 'manglares':{'url':'https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&version=1.1.0','fetch_metadata':true,'type':'image','epsg':'srs=EPSG:4326','bbox':[-81.766264,1.379301,-71.276959,13.533454],'layer':0,'metadata_url':'https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetCapabilities&service=WMS'},
+
         };
         const layerId = mapType.replace(/\s/g, '').toLowerCase();
 
@@ -202,8 +222,11 @@ function LayersLogic({
             case 'Amenaza Hidrica Arroz':
             case 'Acuiferos Cesar':
             case 'Informalidad':
+            case 'Manglares':
+            case 'Carbon Secuestro':
+            case 'Comunidades Negras':
                 setlnglat([-73.5,10.5]);
-                if(urls[layerId].type=='raster'){
+                if(urls[layerId].type==='raster'){
                     addLayer_(map,mapType,currentLayer, layerId, urls[layerId].type,{
                         'type': 'raster',
                         'tiles': [
@@ -212,16 +235,37 @@ function LayersLogic({
                         'tileSize': 256
                     });
                     
-                }else{
-                    addLayer_(map,mapType,currentLayer,layerId,urls[layerId].type,null,urls[layerId].url,urls[layerId].epsg,urls[layerId].bbox,urls[layerId].layer)
+                }else if(urls[layerId].type==='image'){
+                    addLayer_(map,mapType,currentLayer,layerId,urls[layerId].type,null,urls[layerId].url,urls[layerId].epsg,urls[layerId].bbox,urls[layerId].layer);
                 }
-                setCurrentLayer(layerId);
-                // new mapboxgl.Popup({ closeOnClick: false })
-                // .setLngLat(latLng)
-                // .setHTML('<div><img src="https://mapas.igac.gov.co:443/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=0" ><div/>')
-                // .setOffset([250, -190])
-                // .addTo(map);
-                if(urls[layerId].fetch_medatada){
+                
+                if(layerId==='cuencas'){
+                    new mapboxgl.Popup({ closeOnClick: false })
+                    .setLngLat([-73.5, 10.5])
+                    .setHTML('<div><img src="https://mapas.igac.gov.co:443/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=0" style="width: 100px; height: auto;"><div/>')
+                    .setOffset([190, 90])
+                    .addTo(map);
+                }
+                if(urls[layerId].type === 'geojson'){
+                    map.addSource(layerId, {
+                        'type': 'geojson',
+                        'data': urls[layerId].url
+                    });
+                    map.addLayer({
+                        'id': layerId,
+                        'type': 'fill',
+                        'source': layerId,
+                        'paint': {
+                            'fill-outline-color': 'black',
+                            'fill-color': 'blue',
+                            'fill-opacity': 0.5
+                        }
+                    });
+                    addGenericPopUp(map,layerId,urls[layerId].title);
+                }
+                console.log(urls[layerId].fetch_metadata);
+                if(urls[layerId].fetch_metadata){
+                    console.log('Fetching metadata for:', layerId);
                     fetchWmsMetadata(urls[layerId].metadata_url).then(metadata => {
                         const title = metadata.title;
                         const abstract = metadata.abstract;
@@ -232,6 +276,7 @@ function LayersLogic({
                         .setHTML(`<b>${title}</b><p>${abstract}</p>`)
                         .addTo(map);
                 });}
+                setCurrentLayer(layerId);
                 break;
             case 'Fires':
                 handleApiCall(map,currentLayer ,layerId, apiFires, data => data.map(coords => ({
@@ -255,7 +300,7 @@ function LayersLogic({
                 setStep(1);
                 const years_school = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
                 setShowBar(true);
-                handleApiCall(map, currentLayer,layerId, schoolAPiCall, data => data.filter(school=>school.ano==years_school[year]).map(school => ({
+                handleApiCall(map, currentLayer,layerId, schoolAPiCall, data => data.filter(school=>school.ano===years_school[year]).map(school => ({
                     'type': 'Feature',
                     'geometry': {
                         'type': 'Point',
@@ -370,32 +415,37 @@ function LayersLogic({
                 break;
             case 'Water Quality':
                 setlnglat([-73.5,10.5]);
-                setMax(4);
+                setMax(3);
                 setMin(0);
                 setStep(1);
                 const years_water = [2018, 2019, 2020, 2021];
                 setShowBar(true);
-                handleApiCall(map, currentLayer,layerId, apiWaterQuality, data => data, {
-                    'circle-radius': 5,
-                    'circle-stroke-width': 1,
-                    'circle-color': 'blue',
-                    'circle-stroke-color': 'black'
-                });
-                map.setFilter(layerId, ['==', ['string', ['get', 'ano']], String(years_water[year])]);
-                map.on('click', layerId, (e) => {
-                    const properties = e.features[0].properties;
-                    const popupContent = Object.entries(properties).map(([key, value]) => {
-                        if (key === 'departamento') {
-                            return;
-                        } else {
-                            return `<p style="margin: 0;">${key}: ${value}</p>`;
+                checkLayer(map, currentLayer);
+                apiWaterQuality().then((data) => {
+        
+                    const source = {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': data
                         }
-                    }).join('');
-                    new mapboxgl.Popup()
-                        .setLngLat(e.lngLat)
-                        .setHTML(`<h3>Departamento ${properties.departamento}</h3>`+popupContent)
-                        .addTo(map);
+                    };
+                    map.addSource(layerId, source);
+                    map.addLayer({
+                        'id': layerId,
+                        'type': 'circle',
+                        'source': layerId,
+                        'paint': {
+                            'circle-radius': 5,
+                            'circle-stroke-width': 1,
+                            'circle-color': 'blue',
+                            'circle-stroke-color': 'black'
+                        }
+                    });
+                    map.setFilter(layerId, ['==', ['string', ['get', 'ano']], String(years_water[year])]);
+                    
                 });
+                addGenericPopUp(map,layerId,'departamento');
                 setCurrentLayer(layerId);
                 break;
             case 'Resguardos':
@@ -434,20 +484,7 @@ function LayersLogic({
                         'circle-stroke-color': 'black'
                     }
                 });
-                map.on('click', layerId, (e) => {
-                    const properties = e.features[0].properties;
-                    const popupContent = Object.entries(properties).map(([key, value]) => {
-                        if (key === 'name') {
-                            return;
-                        } else {
-                            return `<p style="margin: 0;">${key}: ${value}</p>`;
-                        }
-                    }).join('');
-                    new mapboxgl.Popup()
-                        .setLngLat(e.lngLat)
-                        .setHTML(`<h3>Nombre ${properties.name}</h3>`+popupContent)
-                        .addTo(map);
-                });
+                addGenericPopUp(map,layerId,'name');
                 setCurrentLayer(layerId);
                 break;
             case 'Temperatura Estaciones IDEAM':
@@ -485,10 +522,9 @@ function LayersLogic({
             case 'Hot Spots':
                 setlnglat([-73.5,10.5]);
                 checkLayer(map, currentLayer);
-                const url = "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson";
                 map.addSource(layerId, {
                     'type': 'geojson',
-                    'data': url
+                    'data': urls[layerId].url
                 });
                 map.addLayer({
                     'id': layerId,
@@ -501,27 +537,14 @@ function LayersLogic({
                         
                     }
                 });
-                map.on('click', layerId, (e) => {
-                    const properties = e.features[0].properties;
-                    const popupContent = Object.entries(properties).map(([key, value]) => {
-                        if (key === 'PATTERN') {
-                            return;
-                        } else {
-                            return `<p style="margin: 0;">${key}: ${value}</p>`;
-                        }
-                    }).join('');
-                    new mapboxgl.Popup()
-                        .setLngLat(e.lngLat)
-                        .setHTML(`<h3>Pattern ${properties.PATTERN}</h3>`+popupContent)
-                        .addTo(map);
-                });
+                addGenericPopUp(map,layerId,'PATTERN');
                 setCurrentLayer(layerId);
                 break
             case "Mining":
             case 'Reservas indigenas':
                 setlnglat([-73.5,10.5]);
                 checkLayer(map, currentLayer);
-                fetchAllFeatures(urls[mapType]).then((data) => {;
+                fetchAllFeatures(urls[layerId].url).then((data) => {;
                     console.log('Total number of features:', data.features.length);
                         map.addSource(layerId, {
                             'type': 'geojson',
@@ -546,20 +569,7 @@ function LayersLogic({
                                 'line-width': 2
                             }
                         });
-                        map.on('click', layerId, (e) => {
-                            const properties = e.features[0].properties;
-                            const popupContent = Object.entries(properties).map(([key, value]) => {
-                                if (key === urls[mapType].title) {
-                                    return;
-                                } else {
-                                    return `<p style="margin: 0;">${key}: ${value}</p>`;
-                                }
-                            }).join('');
-                            new mapboxgl.Popup()
-                                .setLngLat(e.lngLat)
-                                .setHTML(`<h3>${urls[mapType].title} ${properties[urls[mapType].title]}</h3>`+popupContent)
-                                .addTo(map);
-                        });
+                        addGenericPopUp(map,layerId,urls[layerId].title);
                         setCurrentLayer(layerId);
                     }).catch((error) => {   
                         console.error('Error fetching data:', error);
