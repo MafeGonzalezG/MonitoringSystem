@@ -1,7 +1,7 @@
 const getRandomShift = () => {
     return {
-      latitudeShift: Math.random() * 0.1 - 0.001,
-      longitudeShift: Math.random() * 0.1 - 0.001,
+      latitudeShift: Math.random() * 0.05 - 0.0001,
+      longitudeShift: Math.random() * 0.05 - 0.0001,
     };
   };
   
@@ -52,7 +52,11 @@ const getRandomShift = () => {
   
 
       const returnedFeatures = features.filter(feature => feature !== null);
-      return returnedFeatures;
+      const geojson = {
+        type: 'FeatureCollection',
+        features: returnedFeatures,
+      };
+      return geojson;
     } catch (error) {
       console.error('Error fetching data:', error);
       throw error;

@@ -34,9 +34,9 @@ function Slidebar({ onChange, max, min, step }) {
     <div className="slidebar">
       <Form.Label>Timeline</Form.Label>
       <Form.Range
-        min={min}
+        min={0}
         max={max}
-        step={step}
+        step={1}
         onChange={(e) => barMoves(e.target.value)}
       />
       <div>Value: {value}</div>

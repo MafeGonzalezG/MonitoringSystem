@@ -47,7 +47,21 @@ async function schoolAPiCall(){
             element.lat = lat;
             element.lon = lon;
         }));
-        return data;
+        const features  = await Promise.all(data.map(async (element) => {
+            return {
+                type: 'Feature',
+                properties: element,
+                geometry: {
+                    type: 'Point',
+                    coordinates: [parseFloat(element.lon),parseFloat(element.lat)]
+                }
+            }
+        }
+        ));
+        const geojson = {'type': 'FeatureCollection',
+                        'features': features};
+
+        return geojson;
     } catch (error) {
         console.error('Error fetching data school:', error);
         throw error;

@@ -25,9 +25,9 @@ const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,lnglatclick, setlng
   const initializeMap = () => {
     const newMap = new mapboxgl.Map({
         container: 'map', // container ID
-        center: [-74.5, 40],
+        center: [-73.5,5.5],
         style: 'mapbox://styles/mapbox/light-v11', // starting position [lng, lat]
-        zoom: 9, // starting zoom
+        zoom: 4, // starting zoom
     });
     setMap(newMap);
   };
