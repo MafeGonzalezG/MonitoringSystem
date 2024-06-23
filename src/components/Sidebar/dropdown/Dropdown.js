@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import './Dropdown.css';
 /**
  * Dropdown component using react-bootstrap.
  *
@@ -25,12 +25,12 @@ const CustomDropdown = ({ options, defaultText, onChange }) => {
   };
 
   return (
-    <Dropdown>
-      <Dropdown.Toggle variant="secondary" size="sm" id="dropdown-basic">
+    <Dropdown className="custom-dropdown">
+      <Dropdown.Toggle className="custom-dropdown-toggle" variant="secondary" size="sm" id="dropdown-basic">
         {selectedOption ? selectedOption : defaultText}
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu className='custom-dropdown-menu'>
         {options.map((option, index) => (
           <Dropdown.Item
             key={index}

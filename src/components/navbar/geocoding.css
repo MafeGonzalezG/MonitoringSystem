@@ -1,6 +1,7 @@
 /* navbar.css */
 .geocoding-form {
     position: relative;
+    margin : 0 auto;
   }
   
   .suggestions-list {
@@ -11,7 +12,7 @@
     border: 1px solid #ccc;
     background-color: white;
     z-index: 1000;
-    max-height: 200px;
+    max-height: 25vh;
     overflow-y: auto;
     list-style: none;
     padding: 0;
@@ -26,4 +27,14 @@
   .suggestions-list li:hover {
     background-color: #f0f0f0;
   }
+.form-control{
+    font-size: 3vh;
+    width: 100%;
+    margin: 0 auto;
+  }
   
+  .geocoding-form button {
+    font-size: 3vh;
+    width: 100%;
+    margin: 0 auto;
+}

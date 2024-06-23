@@ -1,0 +1,23 @@
+.Popup {
+  width: 100%;  /* Full width */
+  min-height: 10vh;/* 75% of the viewport height */
+  max-height: 75vh;
+  overflow-y: auto;
+  background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
+  padding: 10px; /* Internal padding */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.44); /* Shadow for depth */
+  margin: 10px; /* External margin */
+  font-size: small; /* Small font size */
+  position: relative; /* Relative positioning */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.popup-title {
+  font-size: 4.5vh; /* Large font size for the title */
+  font-weight: 600; /* Semi-bold text */
+  margin-bottom: 10px; /* Space below the title */
+}
+
+.popup-content {
+  font-size: 3.5vh; /* Font size for the content */
+}

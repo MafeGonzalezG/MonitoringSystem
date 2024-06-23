@@ -1,8 +1,9 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import CustomDropdown from './dropdown/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Sidebar.css';  // Importing the CSS file for additional styling
+import Card from './Card';
+import CustomDropdown from './dropdown/Dropdown';
 
 /**
  * Sidebar component using react-bootstrap.
@@ -25,62 +26,32 @@ function Sidebar({ onChange }) {
     <Container className="sidebar bg-transparent bg-gradient text-dark">
       <Row>
         <Col>
-          Nature
-          <CustomDropdown
-            options={['Reservas indigenas', 'Catastro', 'Manglares','Hot Spots','Carbon Secuestro']}
-            defaultText="Select an option"
-            onChange={optionChange}
-          />
+          <Card title="Nature" options={['Reservas indigenas', 'Catastro', 'Manglares','Hot Spots','Carbon Secuestro']} onChange={optionChange} />
         </Col>
       </Row>
       <Row>
         <Col>
-          Climate
-          <CustomDropdown
-            options={['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind','Temperatura Estaciones IDEAM']}
-            defaultText="Select an option"
-            onChange={optionChange}
-          />
+        <Card title="Climate" options={['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind','Temperatura Estaciones IDEAM']} onChange={optionChange} />
         </Col>
       </Row>
       <Row>
         <Col>
-          Communities
-          <CustomDropdown
-            options={['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones','Resguardos','Informalidad']}
-            defaultText="Select an option"
-            onChange={optionChange}
-          />
+        <Card title="Communities" options={['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones','Resguardos','Informalidad']} onChange={optionChange} />
         </Col>
       </Row>
       <Row>
         <Col>
-          Biodiversity
-          <CustomDropdown
-            options={['Agricultura Familiar','Acuiferos Cesar']}
-            defaultText="Select an option"
-            onChange={optionChange}
-          />
+        <Card title="Biodiversity" options={['Agricultura Familiar','Acuiferos Cesar']} onChange={optionChange} />
         </Col>
       </Row>
       <Row>
         <Col>
-          Risk map and Impacts
-          <CustomDropdown
-            options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires','Events','Fallas']}
-            defaultText="Select an option"
-            onChange={optionChange}
-          />
+        <Card title="Risk map and Impacts" options={['Deforestation', 'Earthquakes', 'Air Quality', 'Fires','Events','Fallas']} onChange={optionChange} />
         </Col>
       </Row>
       <Row>
         <Col>
-          Water
-          <CustomDropdown
-            options={['Cuencas','Water Quality']}
-            defaultText="Select an option"
-            onChange={optionChange}
-          />
+        <Card title="Infrastructure" options={['Roads', 'Railways', 'Ports', 'Airports','Energy','Telecomunicaciones','Pipelines','Cables Submarinos']} onChange={optionChange} />
         </Col>
       </Row>
     </Container>

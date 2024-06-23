@@ -2,6 +2,7 @@
 .navbar-brand{
     margin-left:30px;
     margin-right:10px;
+    font-size: 5vh;
   }
   .navbar{
     background-color: #e7e6e661;
@@ -10,10 +11,16 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.44);
     /* position: relative; */
+    font-size: 3.5vh;
   }
 
   .navbar-nav > li{
     padding-left:5px;
     padding-right:5px;
+    font-size: 3.5vh;
+
+  }
+  .nav-item{
+    width:20vw;
   }
 

@@ -21,7 +21,7 @@ import './Slidebar.css';
  * // Render a slidebar with specific range and steps.
  * <Slidebar onChange={(value) => console.log(value)} max={10} min={0} step={1} />
  */
-function Slidebar({ onChange, max, min, step }) {
+function Slidebar({ onChange, max }) {
   const [value, setValue] = useState(0);
 
   const barMoves = (value) => {
@@ -31,15 +31,17 @@ function Slidebar({ onChange, max, min, step }) {
   };
 
   return (
-    <div className="slidebar">
-      <Form.Label>Timeline</Form.Label>
+    <div className="slidebar bg-light">
+      <Form >
+      <Form.Label>Value: {value}</Form.Label>
       <Form.Range
         min={0}
         max={max}
         step={1}
         onChange={(e) => barMoves(e.target.value)}
       />
-      <div>Value: {value}</div>
+      </Form>
+      {/* <div className='tag'>Value: {value}</div> */}
     </div>
   );
 }

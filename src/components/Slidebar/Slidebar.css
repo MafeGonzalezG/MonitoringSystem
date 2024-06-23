@@ -1,14 +1,88 @@
 .slidebar {
-    width:65%;  /* Width of the sidebar */
-    height:10%;
-    background-color: #e7e6e661; /* Light grey background */
-    padding: 10px; /* Padding inside the sidebar */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.44); /* Shadow for a bit of depth */
-    margin: 10px;
-    font-size: small;
-    border-radius: 10px;
-    position: absolute;
-    bottom: 10%;
-    left: 60%;
-    transform: translateX(-50%);
-  }
+  width: 100%;  /* Width of the sidebar */
+  height: 10vh; /* Height of the sidebar */
+  background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
+  padding: 10px; /* Padding inside the sidebar */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.44); /* Shadow for depth */
+  margin: 10px; /* Margin outside the sidebar */
+  font-size: 1vh; /* Font size within the sidebar */
+  border-radius: 1vh; /* Rounded corners */
+  position: relative; /* Positioning */
+}
+
+/* Style the range input */
+.slidebar input[type="range"] {
+  width: 100%; /* Full width of the container */
+  height: 2vh; /* Height of the slider */
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Remove default styling */
+  background: transparent; /* Transparent background */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+/* Style the track for WebKit browsers */
+.slidebar input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%; /* Full width of the track */
+  height: 1vh; /* Height of the track */
+  background: #ddd; /* Track color */
+  border-radius: 0.5vh; /* Rounded corners */
+}
+
+/* Style the track for Mozilla browsers */
+.slidebar input[type="range"]::-moz-range-track {
+  width: 100%; /* Full width of the track */
+  height: 1vh; /* Height of the track */
+  background: #ddd; /* Track color */
+  border-radius: 0.5vh; /* Rounded corners */
+}
+
+/* Style the track for Microsoft browsers */
+.slidebar input[type="range"]::-ms-track {
+  width: 100%; /* Full width of the track */
+  height: 1.5vh; /* Height of the track */
+  background: #ddd; /* Track color */
+  border-radius: 0.5vh; /* Rounded corners */
+  border: none; /* Remove border */
+  color: transparent; /* Hide text color */
+}
+
+/* Style the thumb for WebKit browsers */
+.slidebar input[type="range"]::-webkit-slider-thumb {
+  width: 2vh; /* Width of the thumb */
+  height: 2vh; /* Height of the thumb */
+  background: #007bff; /* Thumb color */
+  cursor: pointer; /* Pointer cursor on hover */
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Remove default styling */
+  margin-top: -0.5vh; /* Center the thumb vertically */
+}
+
+/* Style the thumb for Mozilla browsers */
+.slidebar input[type="range"]::-moz-range-thumb {
+  width: 2vh; /* Width of the thumb */
+  height: 2vh; /* Height of the thumb */
+  background: #007bff; /* Thumb color */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Style the thumb for Microsoft browsers */
+.slidebar input[type="range"]::-ms-thumb {
+  width: 2vh; /* Width of the thumb */
+  height: 2vh; /* Height of the thumb */
+  background: #007bff; /* Thumb color */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Label styles */
+.form-label {
+  font-size: 3vh; /* Font size of the form label */
+  font-weight: bold; /* Bold text */
+}
+
+/* Tag styles */
+.tag {
+  font-size: 2vh; /* Font size of the tag */
+  font-weight: bold; /* Bold text */
+  color: #000; /* Black text color */
+}

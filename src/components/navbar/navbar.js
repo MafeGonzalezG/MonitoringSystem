@@ -20,22 +20,21 @@ function CustomNavbar({ onpressMap,onChange }) {
 
   return (
     <Navbar bg="light" expand="lg" className="bg-transparent.bg-gradient text-dark">
-      <Navbar.Brand href="#" role="button">Monitoring</Navbar.Brand>
+      <Navbar.Brand href="/MonitoringSystem" role="button">Monitoring</Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarSupportedContent" />
-      <Navbar.Collapse id="navbarSupportedContent" className="justify-content-around">
+      <Navbar.Collapse id="navbarSupportedContent" className="justify-content-between">
         <Nav className="mr-auto">
-          <Nav.Link href="#" role="button">Home</Nav.Link>
-          <Nav.Link href="#" role="button">Pricing</Nav.Link>
-          <Nav.Link href="#" role="button">Contact</Nav.Link>
+          <Nav.Link href="/MonitoringSystem/About" role="button">About</Nav.Link>
+          {/* <Nav.Link href="#" role="button">Pricing</Nav.Link> */}
+          {/* <Nav.Link href="#" role="button">Contact</Nav.Link> */}
           <Nav.Item>
             <GeocodingForm handlePress={(ltlng)=>onChange(ltlng)} />
           </Nav.Item>
         </Nav>
-        <div>
+        <Nav.Item>
           <ColorCycleButton onpressMap={onpressMap} />
-          <Button variant="primary" size="sm" className="m-3" id="signin">Sign In</Button>
-          <Button variant="primary" size="sm" className="m-3" id="signin">Sign In</Button>
-        </div>
+          {/* <Button variant="primary disabled" size="sm" className="m-3" id="signin">Sign In</Button> */}
+        </Nav.Item>
       </Navbar.Collapse>
     </Navbar>
   );
