@@ -3,7 +3,7 @@ import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Dropdown.css';
 
-const CustomDropdown = ({ options, defaultText, onChange, isSelected }) => {
+const CustomDropdown = ({ options, defaultText, onChange, isSelected, disabledOptions = [] }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
@@ -27,7 +27,8 @@ const CustomDropdown = ({ options, defaultText, onChange, isSelected }) => {
         {options.map((option, index) => (
           <Dropdown.Item
             key={index}
-            onClick={() => handleOptionSelect(option)}
+            onClick={() => !disabledOptions.includes(option) && handleOptionSelect(option)}
+            disabled={disabledOptions.includes(option)}
           >
             {option}
           </Dropdown.Item>

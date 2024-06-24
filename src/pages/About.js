@@ -2,13 +2,12 @@ import CustomNavbar from '../components/navbar/navbar';
 import React, { useState } from 'react';
 import "./About.css";
 export default function About(){
-    const [lnglat, setLnglat] = useState([]);
-    const [mapStyle, setMapStyle] = useState('light-v11');
+
 
     return (
         <div className="App">
             <div className="app-body">
-                <CustomNavbar onpressMap={(map)=>setMapStyle(map)} onChange={(newdir) => setLnglat(newdir)}/>
+                <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null}/>
                     <div className="card-body m-2">
                         <h1>About</h1>
                         <p>

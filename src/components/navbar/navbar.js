@@ -28,7 +28,7 @@ function CustomNavbar({ onpressMap, onChange }) {
       <Navbar.Collapse id="navbarSupportedContent">
         <Nav className="ml-auto">
           <Nav.Link href="/MonitoringSystem/About" role="button">About</Nav.Link>
-          <Nav.Link href="#" role="button">Contact</Nav.Link>
+          <Nav.Link href="/MonitoringSystem/Contact" role="button">Contact</Nav.Link>
           <CustomDropdown options={show_names} defaultText="Map style" onChange={(option) => onpressMap(real_names[show_names.indexOf(option)])} />
           <Nav.Item>
             <GeocodingForm handlePress={(ltlng) => onChange(ltlng)} />

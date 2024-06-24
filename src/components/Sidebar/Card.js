@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CustomDropdown from './dropdown/Dropdown';
 import './Card.css';
-function Card({ title, options, onChange,isSelected }) {
+function Card({ title, options, onChange,isSelected,disabledOptions }) {
   const optionChange = (option) => {
     onChange(option);
   };
@@ -15,6 +15,7 @@ function Card({ title, options, onChange,isSelected }) {
           defaultText="Select an option"
           onChange={optionChange}
           isSelected={isSelected} 
+          disabledOptions={disabledOptions}
         />
       </div>
     </div>

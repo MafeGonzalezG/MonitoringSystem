@@ -16,9 +16,9 @@ const Sidebar = ({ onChange,mapStyle }) => {
   };
 
   const dropdownData = [
-    { title: "Nature", options: ['Reservas indigenas', 'Catastro', 'Manglares', 'Hot Spots', 'Carbon Secuestro'] },
+    { title: "Nature", options: ['Reservas indigenas', 'Catastro', 'Manglares', 'Hot Spots', 'Carbon Secuestro'],disabledOptions:['Reservas indigenas','Catastro'] },
     { title: "Climate", options: ['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind', 'Temperatura Estaciones IDEAM'] },
-    { title: "Communities", options: ['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones', 'Resguardos', 'Informalidad'] },
+    { title: "Communities", options: ['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones', 'Resguardos', 'Informalidad'],disabledOptions:['Comunidades Negras']},
     { title: "Biodiversity", options: ['Agricultura Familiar', 'Acuiferos Cesar'] },
     { title: "Risk map and Impacts", options: ['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Events', 'Fallas'] },
     { title: "Infrastructure", options: ['Roads', 'Railways', 'Ports', 'Airports', 'Energy', 'Telecomunicaciones', 'Pipelines', 'Cables Submarinos'] }
@@ -34,6 +34,7 @@ const Sidebar = ({ onChange,mapStyle }) => {
               options={dropdown.options}
               onChange={(option) => handleDropdownChange(option, index)}
               isSelected={selectedDropdown === index}
+              disabledOptions={dropdown.disabledOptions}
             />
           </Col>
         </Row>

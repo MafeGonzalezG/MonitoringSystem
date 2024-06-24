@@ -9,6 +9,15 @@ import apiTempIdeam from "../apis/apiTempIDEAM.js";
 import schoolAPiCall from "../apis/schoolApi.js";
 
 import { useEffect, useState, useRef } from "react";
+function sourceCallback(sourceName, map) {
+  // assuming 'map' is defined globally, or you can use 'this'
+  console.log("sourceName", sourceName);
+  console.log("map get source", map.getSource(sourceName));
+  console.log("map is source loaded", map.isSourceLoaded(sourceName));
+  if (map.getSource(sourceName) && map.isSourceLoaded(sourceName)) {
+    console.log("source loaded!");
+  }
+}
 
 function checkLayer(map, layerIds) {
   for (let i = 0; i < layerIds.length; i++) {
@@ -54,8 +63,10 @@ function LayersLogic({
   setShowBar,
   setPopUpview,
   setPopUpSettings,
+  setSourceisLoading
 }) {
   const [currentLayers, setCurrentLayers] = useState([]);
+  const [currentSource, setCurrentSource] = useState(null);
   const [latLng, setLatLng] = useState([0, 0]);
   const preprocessing_geojsons = {
     Fires: { func: apiFires },
@@ -69,10 +80,12 @@ function LayersLogic({
   useEffect(() => {
     if (!map) return;
     if (!Layers(mapType)) return;
+    setSourceisLoading(true);
     const layerdic = Layers(mapType);
     checkLayer(map, currentLayers);
     const baseSoure = {
       type: layerdic.sourcetype,
+      id: layerdic.id,
     };
     let compSource = {};
     switch (layerdic.sourcetype) {
@@ -154,12 +167,14 @@ function LayersLogic({
       });
     }
     if (layerdic.legend && layerdic.legendType === "xmlsource") {
-      setPopUpview(true); 
+      setPopUpview(true);
       setPopUpSettings({
         type: "xmlsource",
         title: layerdic.legendTitle,
         legendSource: layerdic.legendSource,
-      });}
+      });
+    }
+    setCurrentSource(layerdic.id);
   }, [mapType]);
   useEffect(() => {
     if (!map) return;
@@ -190,6 +205,25 @@ function LayersLogic({
       });
     }
   }, [lnglat]);
+
+  useEffect(() => {
+    if (map && currentSource) {
+      const onSourceLoaded = () => {
+        if (map.isSourceLoaded(currentSource)) {
+          setSourceisLoading(false);
+          console.log("source loaded");
+          map.off('sourcedata', onSourceLoaded); // Clean up the event listener
+        }
+      };
+
+      map.on('sourcedata', onSourceLoaded);
+
+      // Clean up the event listener on component unmount
+      return () => {
+        map.off('sourcedata', onSourceLoaded);
+      };
+    }
+  }, [map, currentSource]);
   return null;
 }
 
