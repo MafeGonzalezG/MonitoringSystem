@@ -14,7 +14,7 @@ function Popup({ onChange, popUpSettings}) {
             <button type="button" className="btn-close" aria-label="Close" onClick={handleClick}></button>
             <h1 className='popup-title'>{popUpSettings.title}</h1>
             {/* <p className='popup-content'>Some information goes here...</p> */}
-            {popUpSettings.legendType==='gradient'?<Gradient colors={popUpSettings.legendColors} labels={popUpSettings.legendPositions}/>:<XmlParser url={popUpSettings.legendSource}/>}
+            {popUpSettings.type==='gradient'?<Gradient colors={popUpSettings.legendColors} labels={popUpSettings.legendPositions}/>:<XmlParser url={popUpSettings.legendSource}/>}
         </div>
     );
   }

@@ -3,11 +3,11 @@
     height: 75vh; /* Set height to 75% of the viewport height */
     background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
     padding: 10px; /* Internal padding */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.44); /* Shadow for depth */
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;/* Shadow for depth */
     margin: 10px; /* External margin */
     font-size: small; /* Small font size */
     position: relative; /* Relative positioning */
-    border-radius: 0.5vw; /* Rounded corners */
+    border-radius: 5px; /* Rounded corners */
     display: flex; /* Flexbox layout */
     flex-direction: column; /* Vertical alignment */
     justify-content: space-evenly; /* Even spacing between items */

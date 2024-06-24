@@ -27,7 +27,7 @@ export default function Mapview() {
         <div className="container-fluid h-100 w-100">
           <div className="row no-gutters h-100 w-100 d-flex align-items-end justify-content-between">
             <div className="col-4 justify-content-center">
-              <Sidebar onChange={(newMapType) => setMapType(newMapType)} />
+              <Sidebar onChange={(newMapType) => setMapType(newMapType)} mapStyle={mapStyle} />
             </div>
             <div className="col-4 d-flex justify-content-center">
               {showBar ? <Slidebar max={max}  onChange={(newYear) => setYear(newYear)} /> : null}
