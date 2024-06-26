@@ -71,7 +71,6 @@ async function getLocations() {
     const features = locations.map((element) => {
         return {
             'type': 'Feature',
-            'properties': element,
             'geometry': {
                 'type': 'Point',
                 'coordinates': [element.coordinates.longitude, element.coordinates.latitude]

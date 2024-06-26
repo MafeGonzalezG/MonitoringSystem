@@ -4,7 +4,7 @@
   background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
   padding: 10px; /* Padding inside the sidebar */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.44); /* Shadow for depth */
-  margin: 10px; /* Margin outside the sidebar */
+  margin-top: 10px; /* Margin outside the sidebar */
   font-size: 1vh; /* Font size within the sidebar */
   border-radius: 1vh; /* Rounded corners */
   position: relative; /* Positioning */
@@ -85,4 +85,35 @@
   font-size: 2vh; /* Font size of the tag */
   font-weight: bold; /* Bold text */
   color: #000; /* Black text color */
+}
+.scale-container {
+  display: flex;
+  justify-content:space-between;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.tick {
+  font-size: 1.5vmin;
+  color: #555;
+  text-align:start;
+  flex: 1;
+  transition: font-size 0.3s, font-weight 0.3s; /* Smooth transition for better visual effect */
+  transform: rotate(-90deg); /* Rotate the tick marks */
+}
+
+.tick.selected {
+  font-size: 2vmin;
+  font-weight: bold;
+  color: #000;
+}
+.tick:not(.selected)::after{
+  content: '';
+  position: absolute;
+  bottom: 40%; /* Adjust position as needed */
+  left: -1vh;
+  width: 1px;
+  height: 1vh;
+  background-color: #000; /* Line color */
+  transform: rotate(90deg);
 }

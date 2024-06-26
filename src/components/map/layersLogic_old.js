@@ -169,25 +169,11 @@ function LayersLogic({
     useEffect(() => {
         if (!map) return;
         const urls = {
-            'deforestation':{'url':'https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_','fetch_metadata':false,'type':'image','bbox':[-77.670617,-4.225780,-66.847215,4.948186],'epsg':'srs=EPSG:4170','layer':0},
             'mining': {'url': "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",'title':'status','type':'geojson','bbox':null,'epsg':null},
             'reservasindigenas':{'url':"https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",'title':'NOMBRE','type':'geojson','bbox':null,'epsg':null},
-            'hotspots': {'url': "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"},
-            // 'manglares' : {'url':'https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WFSServer?request=GetFeature&service=WFS&version=2.0.0&typeNames=MANGLARES_COLOMBIA:MANGLARES_DE_COLOMBIA&outputFormat=geojson&bbox=1.379301,-79.77648275,2.90278975,-78.781592','type':'geojson','fetch_metadata':false},
-            // 'manglares':{'url':'https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&version=1.1.0','fetch_metadata':true,'type':'image','epsg':'srs=EPSG:4326','bbox':[-81.766264,1.379301,-71.276959,13.533454],'layer':0,'metadata_url':'https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetCapabilities&service=WMS'},
 
         };
         switch (mapType) {
-            case 'Deforestation':
-                setMax(8);
-                setMin(0);
-                setStep(1);
-                setShowBar(true);
-                const deforestationYears = [2002, 2007, 2012, 2014, 2016, 2028, 2020, 2021,2022];
-                checkLayer(map, currentLayer);
-                const wmsUrl =  urls[layerId].url+`${deforestationYears[year]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap`;
-                addWmsLayer(layerId, map, wmsUrl,urls[layerId].epsg,urls[layerId].bbox,urls[layerId].layer);
-                setCurrentLayer(layerId);
             case "Mining":
             case 'Reservas indigenas':
                 setlnglat([-73.5,10.5]);

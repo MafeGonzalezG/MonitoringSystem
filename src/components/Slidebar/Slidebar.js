@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Slidebar.css';
 
@@ -21,27 +21,37 @@ import './Slidebar.css';
  * // Render a slidebar with specific range and steps.
  * <Slidebar onChange={(value) => console.log(value)} max={10} min={0} step={1} />
  */
-function Slidebar({ onChange, max }) {
+function Slidebar({ onChange, yearList }) {
   const [value, setValue] = useState(0);
 
   const barMoves = (value) => {
-      onChange(value);
-      setValue(value);
-
+    onChange(value);
+    setValue(Number(value)); // Ensure value is treated as a number
   };
+
+  const max = yearList.length - 1;
 
   return (
     <div className="slidebar bg-light">
-      <Form >
-      <Form.Label>Value: {value}</Form.Label>
-      <Form.Range
-        min={0}
-        max={max}
-        step={1}
-        onChange={(e) => barMoves(e.target.value)}
-      />
+      <div className="scale-container">
+          {yearList.map((year, index) => (
+            <div
+              key={index}
+              className={`tick ${index === value ? 'selected' : ''}`}
+            >
+              {year}
+            </div>
+          ))}
+        </div>
+      <Form>
+        <Form.Range
+          min={0}
+          max={max}
+          step={1}
+          value={value}
+          onChange={(e) => barMoves(e.target.value)}
+        />
       </Form>
-      {/* <div className='tag'>Value: {value}</div> */}
     </div>
   );
 }

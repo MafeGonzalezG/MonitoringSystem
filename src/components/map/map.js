@@ -17,7 +17,7 @@ import useDidMountEffect from '../customHooks/customHookMounted.js';
  */
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-const MapComponent = ({mapStyle,setMax,lnglat,setlnglatclick,mapType,year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading}) => {
+const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading}) => {
 
   const [map, setMap] = useState(null);
   
@@ -48,7 +48,7 @@ const MapComponent = ({mapStyle,setMax,lnglat,setlnglatclick,mapType,year, setSh
       map.setStyle('mapbox://styles/mapbox/' + mapStyle);
     }
   },[mapStyle]);
-  LayersLogic({setMax, lnglat, map,mapType, year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading});
+  LayersLogic({setYearList, lnglat, map,mapType, year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading});
   return (
       <div id="map" ></div>
   );

@@ -9,16 +9,32 @@ import apiTempIdeam from "../apis/apiTempIDEAM.js";
 import schoolAPiCall from "../apis/schoolApi.js";
 
 import { useEffect, useState, useRef } from "react";
-function sourceCallback(sourceName, map) {
-  // assuming 'map' is defined globally, or you can use 'this'
-  console.log("sourceName", sourceName);
-  console.log("map get source", map.getSource(sourceName));
-  console.log("map is source loaded", map.isSourceLoaded(sourceName));
-  if (map.getSource(sourceName) && map.isSourceLoaded(sourceName)) {
-    console.log("source loaded!");
-  }
-}
+import { type } from "@testing-library/user-event/dist/type/index.js";
 
+async function fetchAllFeatures(url) {
+  const allFeatures = [];
+  let offset = 0;
+  const limit = 1000; // Number of records to fetch per request
+
+  while (true) {
+      const queryUrl = `${url}&resultOffset=${offset}&resultRecordCount=${limit}`;
+      const response = await fetch(queryUrl);
+      const data = await response.json();
+      allFeatures.push(...data.features);
+
+      if (data.features.length < limit) {
+          // If fewer features are returned than the limit, we have fetched all records
+          break;
+      }
+
+      offset += limit;
+  }
+
+  return {
+      type: 'FeatureCollection',
+      features: allFeatures
+  };
+}
 function checkLayer(map, layerIds) {
   for (let i = 0; i < layerIds.length; i++) {
     if (map.getLayer(layerIds[i])) {
@@ -55,7 +71,7 @@ function addGenericPopUp(map, layerId, MainKey) {
   });
 }
 function LayersLogic({
-  setMax,
+  setYearList,
   lnglat,
   map,
   mapType,
@@ -68,6 +84,7 @@ function LayersLogic({
   const [currentLayers, setCurrentLayers] = useState([]);
   const [currentSource, setCurrentSource] = useState(null);
   const [latLng, setLatLng] = useState([0, 0]);
+  const [switcher, setSwitcher] = useState(false);
   const preprocessing_geojsons = {
     Fires: { func: apiFires },
     "Military Zones": { func: militaryApicall },
@@ -80,13 +97,19 @@ function LayersLogic({
   useEffect(() => {
     if (!map) return;
     if (!Layers(mapType)) return;
+    console.log("mapType", mapType);
     setSourceisLoading(true);
     const layerdic = Layers(mapType);
     checkLayer(map, currentLayers);
     const baseSoure = {
       type: layerdic.sourcetype,
-      id: layerdic.id,
     };
+    if (layerdic.temporal) {
+      setShowBar(true);
+      setYearList(layerdic.year_list);
+    } else {
+      setShowBar(false);
+    }
     let compSource = {};
     switch (layerdic.sourcetype) {
       case "raster":
@@ -95,8 +118,9 @@ function LayersLogic({
           tileSize: 256,
         };
         break;
+      
       case "geojson":
-        if (layerdic.preprocessing) {
+        if (layerdic.preprocessing && !layerdic.large) {
           preprocessing_geojsons[mapType].func().then((data) => {
             compSource = {
               data: data,
@@ -112,25 +136,40 @@ function LayersLogic({
               "building"
             );
             setCurrentLayers([layerdic.id]);
+
           });
-        } else {
+        }else {
           compSource = {
             data: layerdic.url,
           };
+
         }
-        if (layerdic.temporal) {
-          setShowBar(true);
-          setMax(layerdic.max);
+        if (layerdic.large && layerdic.preprocessing){
+          fetchAllFeatures(layerdic.url).then((data) => {
+            map.addSource(layerdic.id, { ...baseSoure, ...compSource });
+            map.addLayer(
+              {
+                id: layerdic.id,
+                type: layerdic.layertype,
+                source: layerdic.id,
+                paint: { ...layerdic.paint },
+              },
+              "building"
+            );
+            setCurrentLayers([layerdic.id]);
+            addGenericPopUp(map, layerdic.id, layerdic.title);
+          });
         }
         addGenericPopUp(map, layerdic.id, layerdic.title);
         break;
       case "image":
         const bbox = layerdic.bbox;
-        const wmsRequestUrl = `${layerdic.url}&layers=${
-          layerdic.layer
-        }&bbox=${bbox.join(",")}&width=256&height=256&${
-          layerdic.epsg
-        }&styles=&format=image/png&transparent=true`;
+        if(year)
+          {var wmsRequestUrl = `${layerdic.url}${layerdic.temporal ? `${layerdic.year_list[year]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap` : ''}&layers=${layerdic.layer}&bbox=${bbox.join(",")}&width=256&height=256&${layerdic.epsg}&styles=&format=image/png&transparent=true`;
+          }
+        else{
+        var wmsRequestUrl = `${layerdic.url}${layerdic.temporal ? `${layerdic.year_list[0]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap` : ''}&layers=${layerdic.layer}&bbox=${bbox.join(",")}&width=256&height=256&${layerdic.epsg}&styles=&format=image/png&transparent=true`;
+        }
         compSource = {
           url: wmsRequestUrl,
           coordinates: [
@@ -175,21 +214,29 @@ function LayersLogic({
       });
     }
     setCurrentSource(layerdic.id);
-  }, [mapType]);
+  }, [mapType,switcher]);
+
   useEffect(() => {
     if (!map) return;
     if (!Layers(mapType)) return;
     const layerdic = Layers(mapType);
     if (!layerdic.temporal) return;
+    console.log('year',year)
     const year_list = layerdic.year_list;
-    map.setFilter(currentLayers[0], [
-      "==",
-      ["string", ["get", layerdic.year_name]],
-      String(year_list[year]),
-    ]);
-    //remove popups
-    map.fire("closeAllPopups");
-    addGenericPopUp(map, layerdic.id, layerdic.title);
+    if(layerdic.sourcetype === 'geojson'){
+      console.log('geojson');
+      map.setFilter(currentLayers[0], [
+        "==",
+        ["string", ["get", layerdic.year_name]],
+        String(year_list[year]),
+      ]);
+      //remove popups
+      map.fire("closeAllPopups");
+      addGenericPopUp(map, layerdic.id, layerdic.title);
+    }
+    if(layerdic.sourcetype === 'image'){
+       setSwitcher(!switcher);
+    }
   }, [year]);
 
   useEffect(() => {

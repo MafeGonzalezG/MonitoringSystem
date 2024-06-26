@@ -203,7 +203,6 @@ function Layers(mapType) {
       preprocessing: true,
       title: "departamento",
       temporal: true,
-      max: 3,
       year_list: [2018, 2019, 2020, 2021],
       year_name: "ano",
     },
@@ -222,7 +221,6 @@ function Layers(mapType) {
       preprocessing: true,
       title: "nombre",
       temporal: true,
-      max: 15,
       year_list: [
         2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016,
         2017, 2018, 2019,2020
@@ -294,11 +292,42 @@ function Layers(mapType) {
       preprocessing: true,
       title: "departamento",
       temporal: true,
-      max: 12,
       year_list: [
         2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
       ],
       year_name: "ano",
+    },
+    Deforestation:
+    {
+      id: "deforestation",
+      sourcetype: "image",
+      layertype: "raster",
+      temporal: true,
+      url: "https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_",
+      year_list : [2002, 2007, 2012, 2014, 2016, 2028, 2020, 2021,2022],
+      bbox: [-77.670617,-4.225780,-66.847215,4.948186],
+      epsg: 'srs=EPSG:4170',
+      layer: 0,
+    },
+    Mining:{
+      id: "mining",
+      sourcetype: "geojson",
+      layertype: "fill",
+      preprocessing: true,
+      title: "status",
+      temporal: false,
+      url: "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",
+      large :true,
+    },
+    "Reservas Indigenas":{
+      id: "reservas_indigenas",
+      sourcetype: "geojson",
+      layertype: "fill",
+      preprocessing: true,
+      title: "NOMBRE",
+      temporal: false,
+      url: "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",
+      large :true,
     },
   };
   return layers[mapType];

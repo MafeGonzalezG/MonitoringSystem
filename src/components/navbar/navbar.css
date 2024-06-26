@@ -2,29 +2,39 @@
   height: 10vh;
   border-radius: 3px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  font-size: 3.5vh;
+  font-size: 3vh;
   max-width: 60vw;
 }
 
 .navbar-brand {
-  margin-left: 30px;
-  margin-right: 10px;
-  font-size: 5vh;
+  font-size: 3vh;
+  display: flex;
+  align-items: center;
 }
-
+.navbar-brand img {
+  /* margin-right: 10px; */
+  margin-left: 10px;
+}
+.navbar-brand span {
+  font-size: 3vh;
+  font-weight: bold;
+}
 .navbar-nav {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 .navbar .custom-dropdown {
   margin: 0 10px; /* Adjust the margin to match the spacing of other items */
-  font-size: 3.5vh;
+  font-size: 3vh;
   max-width: 10vw;
 }
 
 .nav-item {
   padding: 0 10px;
-  font-size: 3.5vh;
+  font-size: 3vh;
+  margin-left: 15px;
 }
