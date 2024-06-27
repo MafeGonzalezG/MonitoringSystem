@@ -1,18 +1,18 @@
 .custom-dropdown {
-   font-size: 3vh;
+   font-size: clamp(7px, 3vh,70px);
     width: 100%;
     margin: 0 auto;
   }
   
   .custom-dropdown-toggle {
     width: 100%;
-   font-size: 3vh;
+   font-size: clamp(7px, 3vh,70px);
 
     display: flex;
     justify-content: space-between;
   }
   
   .custom-dropdown-menu {
-   font-size: 3vh;
+   font-size: clamp(7px, 3vh,70px);
     width: 100%;
   }

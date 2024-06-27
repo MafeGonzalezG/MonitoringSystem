@@ -47,8 +47,8 @@ function CustomNavbar({ onpressMap, onChange }) {
   return (
     <Navbar bg="light" expand="lg" className="bg-light bg-gradient text-dark">
       <Navbar.Brand href="/MonitoringSystem" className="d-flex align-items-center">
-        <img src={logoPlanet} alt="" height="65" className="d-inline-block align-middle" />
-        <img src={greenLife} alt="" height="65" className="d-inline-block align-middle" />
+        <img src={logoPlanet} alt="" height="65vh" className="d-inline-block align-middle" />
+        <img src={greenLife} alt="" height="65vh" className="d-inline-block align-middle" />
         <span className="ms-2">Monitoring system</span>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarSupportedContent" />

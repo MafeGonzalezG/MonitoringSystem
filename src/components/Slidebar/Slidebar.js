@@ -33,6 +33,7 @@ function Slidebar({ onChange, yearList }) {
 
   return (
     <div className="slidebar bg-light">
+      <Form>
       <div className="scale-container">
           {yearList.map((year, index) => (
             <div
@@ -43,7 +44,6 @@ function Slidebar({ onChange, yearList }) {
             </div>
           ))}
         </div>
-      <Form>
         <Form.Range
           min={0}
           max={max}

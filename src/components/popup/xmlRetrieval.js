@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const XmlParser = ({ url }) => {
+const XmlParser = ({ url,metadataObj}) => {
     const [metadata, setMetadata] = useState(null);
     const [error, setError] = useState(null);
 
@@ -17,19 +17,23 @@ const XmlParser = ({ url }) => {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
 
-                // Example of checking for a specific element existence
-                const resTitleElement = xmlDoc.querySelector('resTitle');
-                if (!resTitleElement) {
-                    throw new Error('Element "resTitle" not found in XML');
+                // // Example of checking for a specific element existence
+                // const resTitleElement = xmlDoc.querySelector('resTitle');
+                // if (!resTitleElement) {
+                //     throw new Error('Element "resTitle" not found in XML');
+                // }
+                const metadata = {};
+                for(let key in metadataObj){
+                    metadata[key] = xmlDoc.querySelector(metadataObj[key])?.textContent || '';
                 }
 
                 // Extract metadata (adjust paths based on your XML structure)
-                const metadata = {
-                    title: resTitleElement.textContent,
-                    abstract: xmlDoc.querySelector('idAbs')?.textContent || '',
-                    language: xmlDoc.querySelector('languageCode')?.getAttribute('value') || '',
-                    // Add more fields as needed
-                };
+                // const metadata = {
+                //     title: resTitleElement.textContent,
+                //     abstract: xmlDoc.querySelector('idAbs')?.textContent || '',
+                //     language: xmlDoc.querySelector('languageCode')?.getAttribute('value') || '',
+                //     // Add more fields as needed
+                // };
 
                 setMetadata(metadata);
             } catch (error) {
@@ -50,7 +54,11 @@ const XmlParser = ({ url }) => {
     }
 
     return (
-        <div dangerouslySetInnerHTML={{ __html: metadata.abstract }} />
+        <div>
+        {Object.keys(metadata).map((key) => (
+            <div key={key} dangerouslySetInnerHTML={{ __html: metadata[key] }}></div>
+        ))}
+        </div>
     );
 };
 

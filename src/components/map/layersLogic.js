@@ -99,6 +99,7 @@ function LayersLogic({
     if (!Layers(mapType)) return;
     console.log("mapType", mapType);
     setSourceisLoading(true);
+    setPopUpview(false);
     const layerdic = Layers(mapType);
     checkLayer(map, currentLayers);
     const baseSoure = {
@@ -211,8 +212,17 @@ function LayersLogic({
         type: "xmlsource",
         title: layerdic.legendTitle,
         legendSource: layerdic.legendSource,
+        legendSourceMetadata: layerdic.legendSourceMetadata,
       });
     }
+    if (layerdic.legend && layerdic.legendType === "jsonsource") {
+      setPopUpview(true);
+      setPopUpSettings({
+        type: "jsonsource",
+        title: layerdic.legendTitle,
+        legendSource: layerdic.legendSource,
+        legendSourceMetadata: layerdic.legendSourceMetadata,
+      });}
     setCurrentSource(layerdic.id);
   }, [mapType,switcher]);
 
@@ -270,7 +280,7 @@ function LayersLogic({
         map.off('sourcedata', onSourceLoaded);
       };
     }
-  }, [map, currentSource]);
+  }, [map, currentSource,switcher]);
   return null;
 }
 

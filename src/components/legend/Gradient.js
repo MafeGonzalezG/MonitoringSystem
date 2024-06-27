@@ -16,7 +16,7 @@ const GradientBar = ({ colors, labels }) => {
   };
 
   const labelStyle = {
-    fontSize:'2vh'  };
+    fontSize:'clamp(7px, 1vh,50px)'  };
 
   const colorStops = colors.map((color, index) => {
     const position = `${(index / (colors.length - 1)) * 100}%`;

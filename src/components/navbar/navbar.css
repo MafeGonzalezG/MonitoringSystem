@@ -2,22 +2,24 @@
   height: 10vh;
   border-radius: 3px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  font-size: 3vh;
-  max-width: 60vw;
+  font-size:  clamp(10px, 3vh, 80px);
+  max-width: 65vw;
 }
 
 .navbar-brand {
-  font-size: 3vh;
+  font-size: clamp(10px, 3vh, 80px);
   display: flex;
   align-items: center;
 }
 .navbar-brand img {
   /* margin-right: 10px; */
   margin-left: 10px;
+  min-height: 30px;
+  height: 10vh;
 }
 .navbar-brand span {
-  font-size: 3vh;
-  font-weight: bold;
+  font-size:  clamp(10px, 3vh, 80px);
+  /* font-weight: bold; */
 }
 .navbar-nav {
   display: flex;
@@ -29,12 +31,16 @@
 }
 .navbar .custom-dropdown {
   margin: 0 10px; /* Adjust the margin to match the spacing of other items */
-  font-size: 3vh;
+  font-size:  clamp(10px, 3vh, 80px);
   max-width: 10vw;
 }
 
 .nav-item {
   padding: 0 10px;
-  font-size: 3vh;
+  font-size:  clamp(10px, 3vh, 80px);
   margin-left: 15px;
+}
+
+.nav-item .geocoding-form {
+  width: 15vw;
 }

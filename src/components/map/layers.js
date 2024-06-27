@@ -119,6 +119,12 @@ function Layers(mapType) {
       epsg: "crs=CRS:84",
       bbox: [-84.764004, -4.998033, -66.003125, 16.998958],
       layer: 5,
+      legend : true,
+      legendType: "jsonsource",
+      legendSource: "https://srvags.sgc.gov.co/arcgis/rest/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/legend?f=pjson",
+      legendTitle: "Earthquakes",
+      legendSourceMetadata: {
+        'item':10,}
     },
     Cuencas: {
       id: "cuencas",
@@ -142,6 +148,13 @@ function Layers(mapType) {
         "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS",
       layertype: "raster",
       sourcetype: "raster",
+      legend: true,
+      legendType: "jsonsource",
+      legendSource:
+        "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/legend?f=pjson",
+      legendTitle: "Acuiferos Cesar",
+      legendSourceMetadata: {
+        'item':0,}
     },
     Informalidad: {
       id: "informalidad",
@@ -149,12 +162,28 @@ function Layers(mapType) {
       metadata_url: `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`,
       sourcetype: "raster",
       layertype: "raster",
+      legend: true,
+      legendType: "jsonsource",
+      legendSource:
+        "https://geoservicios.upra.gov.co/arcgis/rest/services/formalizacion_propiedad/estimacion_informalidad/MapServer/legend?f=pjson",
+      legendTitle: "Informalidad",
+      legendSourceMetadata: {
+        'item':0,}
     },
     Manglares: {
       id: "manglares",
       url: "https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&service=WMS&styles=&version=1.3.0&format=image/png&layers=0&crs=EPSG:3857&width=256&height=256&bbox={bbox-epsg-3857}&transparent=true",
       layertype: "raster",
       sourcetype: "raster",
+      legend: true,
+      legendType: "xmlsource",
+      legendTitle: "Manglares",
+      legendSource:
+        "https://gis.invemar.org.co/arcgis/rest/services/SIGMA/MANGLARES_COLOMBIA/MapServer/info/metadata",
+      legendSourceMetadata: {
+        'abstract':'idAbs',
+        'Proposito':'idPurp',
+        'credito':'idCredit',}
     },
     "Carbon Secuestro": {
       id: "carbon_secuestro",
@@ -164,6 +193,12 @@ function Layers(mapType) {
       epsg: "crs=CRS:84",
       bbox: [-82.240682, -4.323733, -66.483327, 16.181351],
       layer: 0,
+      legend: true,
+      legendSource: "https://mapas.igac.gov.co/server/rest/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/legend?f=pjson",
+      legendType: "jsonsource",
+      legendTitle: "Carbon Secuestro",
+      legendSourceMetadata: {
+        'item':0,}
     },
     "Comunidades Negras": {
       id: "comunidades_negras",
@@ -263,6 +298,13 @@ function Layers(mapType) {
         "line-color": "red",
         "line-width": 2,
       },
+      legend: true,
+      legendSource:"https://www.arcgis.com/sharing/rest/content/items/c05c6dbf27f645eb883bae3a9cd0d08f/info/metadata/metadata.xml",
+      legendType: "xmlsource",
+      legendTitle: "Fallas",
+      legendSourceMetadata: {
+        'abstract':'idAbs',
+        'restrictions':'resConst >Consts > useLimit'}
     },
     Communities: {
       id: "communities",
@@ -284,6 +326,9 @@ function Layers(mapType) {
       legendTitle: "Hot Spots",
       legendType: "xmlsource",
       legendSource: "https://services2.arcgis.com/g8WusZB13b9OegfU/ArcGIS/rest/services/Emerging_Hot_Spots_2023/FeatureServer/info/metadata",
+      legendSourceMetadata: {
+        'abstract':'idAbs',
+        'restrictions':'resConst >Consts > useLimit',}
     },
     Education: {
       id: "education",
