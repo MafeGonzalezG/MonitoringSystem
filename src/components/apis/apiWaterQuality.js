@@ -13,7 +13,9 @@ async function apiWaterQuality(){
                 }
             }
         }));
-        return features;
+        const geojson = {'type': 'FeatureCollection',
+                        'features': features};
+        return geojson;
     } catch (error) {
         console.error('Error fetching data school:', error);
         throw error;

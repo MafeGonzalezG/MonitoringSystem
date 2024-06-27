@@ -1,23 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Dropdown.css';
 
-/**
- * Dropdown component using react-bootstrap.
- *
- * @component
- * @param {Object} props - The component accepts options, defaultText, and onChange props.
- * @param {Array} props.options - The dropdown options.
- * @param {string} props.defaultText - The default text to display.
- * @param {function} props.onChange - The change event handler.
- * @returns {JSX.Element} The rendered Dropdown component.
- *
- * @example
- * // Render a dropdown with options and a default text.
- * <Dropdown options={['Option 1', 'Option 2']} defaultText="Select an option" onChange={(option) => console.log(option)} />
- */
-const CustomDropdown = ({ options, defaultText, onChange }) => {
+const CustomDropdown = ({ options, defaultText, onChange, isSelected, disabledOptions = [] }) => {
   const [selectedOption, setSelectedOption] = useState(null);
+
+  useEffect(() => {
+    if (!isSelected) {
+      setSelectedOption(null);
+    }
+  }, [isSelected]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -25,16 +18,17 @@ const CustomDropdown = ({ options, defaultText, onChange }) => {
   };
 
   return (
-    <Dropdown>
-      <Dropdown.Toggle variant="secondary" size="sm" id="dropdown-basic">
+    <Dropdown className="custom-dropdown">
+      <Dropdown.Toggle className="custom-dropdown-toggle" variant="secondary" size="sm" id="dropdown-basic">
         {selectedOption ? selectedOption : defaultText}
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu className='custom-dropdown-menu'>
         {options.map((option, index) => (
           <Dropdown.Item
             key={index}
-            onClick={() => handleOptionSelect(option)}
+            onClick={() => !disabledOptions.includes(option) && handleOptionSelect(option)}
+            disabled={disabledOptions.includes(option)}
           >
             {option}
           </Dropdown.Item>

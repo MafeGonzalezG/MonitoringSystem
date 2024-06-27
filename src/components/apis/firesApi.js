@@ -11,11 +11,6 @@ async function getFires(satellite){
     }
 }
 
-function selectCoords(element) {
-    let list = element.split(',');
-    var coordinates = [parseFloat(list[1]),parseFloat(list[0])]
-    return coordinates
-}
 
 async function apiFires() {
     try {
@@ -23,8 +18,34 @@ async function apiFires() {
         const data = await getFires(satellite);
         var fires = data.split("\n");
         fires.shift();
-        const total_coordinates = await Promise.all(fires.map(selectCoords));
-        return total_coordinates;
+        const total_coordinates = await Promise.all(fires.map(async (element) => {
+            const [latitude,longitude,brightness,scan,track,acq_date,acq_time,satellite,instrument,confidence,version,bright_t31,frp,daynight] = element.split(',');
+            const feature = {'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [parseFloat(longitude), parseFloat(latitude)],
+                        
+                    },
+                'properties': {
+                            'brightness': brightness,
+                            'scan': scan,
+                            'track': track,
+                            'satellite': satellite,
+                            'instrument': instrument,
+                            'confidence': confidence,
+                            'version': version,
+                            'bright_t31': bright_t31,
+                            'frp': frp,
+                            'daynight': daynight,
+                            'acq_date': acq_date,
+                            'acq_time': acq_time
+                        }};
+            return feature;
+        }));
+        const geojson = {'type': 'FeatureCollection',
+                        'features': total_coordinates};
+        console.log(geojson);
+        return geojson;
     } catch (error) {
         console.error('Error:', error.message);
         throw error;

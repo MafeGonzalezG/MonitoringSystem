@@ -1,4 +1,6 @@
-const locations = [
+
+async function getLocations() {
+    const locations = [
     {
       name: "Almidón La Ceiba",
       alternateName: "Almidón La Ceiba",
@@ -66,7 +68,22 @@ const locations = [
       coordinates: { latitude: 2.827577, longitude: -67.770658 }
     }
   ];
-function getLocations() {
-    return locations;
+    const features = locations.map((element) => {
+        return {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [element.coordinates.longitude, element.coordinates.latitude]
+            },
+            'properties': {
+                        'name': element.name,
+                        'alternateName': element.alternateName,
+                        'area': element.area
+                    }
+        }
+    });
+    const locations_ = {'type': 'FeatureCollection',
+                    'features': features};
+    return locations_;
 }
 export default getLocations;  

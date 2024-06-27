@@ -1,0 +1,13 @@
+.modal-content-transparent {
+    background-color: transparent ;/* Adjust the alpha (last value) for transparency */
+    border: none; /* Remove any border */
+    box-shadow: none; /* Remove any box-shadow */
+  }
+  
+  .modal-dialog {
+    margin: 0 auto; /* Center the modal */
+  }
+  .spinner-lg {
+    width: 3rem; /* Adjust width and height as needed */
+    height: 3rem;
+  }

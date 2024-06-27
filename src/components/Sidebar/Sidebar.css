@@ -1,11 +1,21 @@
 .sidebar {
-    width: 25%;  /* Width of the sidebar */
-    height: 70vh; /* Full height */
-    background-color: #e7e6e661; /* Light grey background */
-    padding: 20px; /* Padding inside the sidebar */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.44); /* Shadow for a bit of depth */
-    margin: 10px;
-    font-size: small;
-    position:relative;
-    border-radius: 10px;
-  }
+    width: 100%;  /* Full width */
+    height: 75vh; /* Set height to 75% of the viewport height */
+    background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
+    padding: 10px; /* Internal padding */
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;/* Shadow for depth */
+    margin: 10px; /* External margin */
+    font-size: small; /* Small font size */
+    position: relative; /* Relative positioning */
+    border-radius: 5px; /* Rounded corners */
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Vertical alignment */
+    justify-content: space-evenly; /* Even spacing between items */
+    overflow-y: auto; /* Enable vertical scrolling */
+    -ms-overflow-style: none; /* Hide scrollbar in IE 10+ */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Safari and Chrome */
+}

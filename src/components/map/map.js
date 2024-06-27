@@ -17,7 +17,7 @@ import useDidMountEffect from '../customHooks/customHookMounted.js';
  */
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,lnglatclick, setlnglat,setlnglatclick,country,mapType,year, setShowBar}) => {
+const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading}) => {
 
   const [map, setMap] = useState(null);
   
@@ -25,9 +25,9 @@ const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,lnglatclick, setlng
   const initializeMap = () => {
     const newMap = new mapboxgl.Map({
         container: 'map', // container ID
-        center: [-74.5, 40],
-        style: 'mapbox://styles/mapbox/light-v11', // starting position [lng, lat]
-        zoom: 9, // starting zoom
+        center: [-73.5,5.5],
+        style: 'mapbox://styles/mapbox/outdoors-v12', // starting position [lng, lat]
+        zoom: 4, // starting zoom
     });
     setMap(newMap);
   };
@@ -35,9 +35,6 @@ const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,lnglatclick, setlng
   useEffect(() => {
     initializeMap();
   },[]);
-  if(map && mapType === 'Deforestation'){
-    setShowBar(true);
-  }
   if(map){map.on('click', (e) => {
       // const lnglat = JSON.stringify(e.lngLat.wrap());
       // console.log(lnglat);
@@ -51,7 +48,7 @@ const MapComponent = ({mapStyle,setMax,setMin,setStep,lnglat,lnglatclick, setlng
       map.setStyle('mapbox://styles/mapbox/' + mapStyle);
     }
   },[mapStyle]);
-  LayersLogic({setMax,setMin,setStep,lnglat,setlnglat,lnglatclick,map,country,mapType,year, setShowBar});
+  LayersLogic({setYearList, lnglat, map,mapType, year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading});
   return (
       <div id="map" ></div>
   );
