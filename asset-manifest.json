@@ -1,15 +1,17 @@
 {
   "files": {
-    "main.css": "/MonitoringSystem/static/css/main.5a09c02d.css",
-    "main.js": "/MonitoringSystem/static/js/main.fa3872fc.js",
+    "main.css": "/MonitoringSystem/static/css/main.2793aa44.css",
+    "main.js": "/MonitoringSystem/static/js/main.0c95b56f.js",
     "static/js/453.eb8aea86.chunk.js": "/MonitoringSystem/static/js/453.eb8aea86.chunk.js",
+    "static/media/greenlife.png": "/MonitoringSystem/static/media/greenlife.45e262ca5b6a35a1e87d.png",
+    "static/media/logo_planet.png": "/MonitoringSystem/static/media/logo_planet.1956133198842ca6f4e5.png",
     "index.html": "/MonitoringSystem/index.html",
-    "main.5a09c02d.css.map": "/MonitoringSystem/static/css/main.5a09c02d.css.map",
-    "main.fa3872fc.js.map": "/MonitoringSystem/static/js/main.fa3872fc.js.map",
+    "main.2793aa44.css.map": "/MonitoringSystem/static/css/main.2793aa44.css.map",
+    "main.0c95b56f.js.map": "/MonitoringSystem/static/js/main.0c95b56f.js.map",
     "453.eb8aea86.chunk.js.map": "/MonitoringSystem/static/js/453.eb8aea86.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5a09c02d.css",
-    "static/js/main.fa3872fc.js"
+    "static/css/main.2793aa44.css",
+    "static/js/main.0c95b56f.js"
   ]
 }
