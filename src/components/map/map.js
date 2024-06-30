@@ -66,6 +66,7 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
       // console.log(lnglat);
       setlnglatclick([e.lngLat.lng,e.lngLat.lat]);
       console.log(e.lngLat.lng,e.lngLat.lat);
+
     });
   }
   useDidMountEffect(() => {

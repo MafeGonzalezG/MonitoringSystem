@@ -1,3 +1,16 @@
+import mapboxgl from "mapbox-gl";
+async function elevation(lng,lat){
+    const query = await fetch(
+        `https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/${lng},${lat}.json?layers=contour&limit=50&access_token=${mapboxgl.accessToken}`,
+        { method: 'GET' }
+      );
+      if (query.status !== 200) return;
+      const data = await query.json();
+      const allFeatures = data.features;
+      const elevations = allFeatures.map((feature) => feature.properties.ele);
+      const highestElevation = Math.max(...elevations);
+      return highestElevation;
+}
 class LatLngControl {
     onAdd(map) {
         this._map = map;
@@ -18,11 +31,12 @@ class LatLngControl {
         this._map.off('mousemove', this._updateLatLng);
         this._map = undefined;
     }
-    _updateLatLng(e) {
+    async _updateLatLng(e) {
         const lngLat = e.lngLat;
-        // const elevation = this._map.queryTerrainElevation(lngLat);
+        const elevation_current = await elevation(lngLat.lng,lngLat.lat);
         this._container.innerHTML = `Longitude: ${lngLat.lng.toFixed(4)}<br>
-        Latitude: ${lngLat.lat.toFixed(4)}`;
+        Latitude: ${lngLat.lat.toFixed(4)} <br> Elevation: ${elevation_current} m`;
     }
+    
 }
 export default LatLngControl;
