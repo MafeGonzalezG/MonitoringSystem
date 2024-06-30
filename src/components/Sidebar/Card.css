@@ -1,11 +1,11 @@
 .card{
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 3px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 3vh;
-    padding: 3vh;
+    margin-bottom: 2vh;
+    padding: 0.3vh;
     transition: all 0.3s;
-    min-height: 20vh;
+    min-height: 10vh;
 }
 .card-title{
     font-size: clamp(10px, 3vh, 80px);

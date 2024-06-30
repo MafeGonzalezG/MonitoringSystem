@@ -126,6 +126,7 @@ function LayersLogic({
             compSource = {
               data: data,
             };
+            const beforeLayer = map.getLayer("building") ? "building" : undefined;
             map.addSource(layerdic.id, { ...baseSoure, ...compSource });
             map.addLayer(
               {
@@ -134,7 +135,7 @@ function LayersLogic({
                 source: layerdic.id,
                 paint: { ...layerdic.paint },
               },
-              "building"
+              beforeLayer
             );
             setCurrentLayers([layerdic.id]);
 
@@ -148,6 +149,7 @@ function LayersLogic({
         if (layerdic.large && layerdic.preprocessing){
           fetchAllFeatures(layerdic.url).then((data) => {
             map.addSource(layerdic.id, { ...baseSoure, ...compSource });
+            const beforeLayer = map.getLayer("building") ? "building" : undefined;
             map.addLayer(
               {
                 id: layerdic.id,
@@ -155,7 +157,7 @@ function LayersLogic({
                 source: layerdic.id,
                 paint: { ...layerdic.paint },
               },
-              "building"
+              beforeLayer
             );
             setCurrentLayers([layerdic.id]);
             addGenericPopUp(map, layerdic.id, layerdic.title);
@@ -183,9 +185,11 @@ function LayersLogic({
         break;
       default:
         break;
+      
     }
     if (!layerdic.preprocessing) {
       map.addSource(layerdic.id, { ...baseSoure, ...compSource });
+      const beforeLayer = map.getLayer("building") ? "building" : undefined;
       map.addLayer(
         {
           id: layerdic.id,
@@ -193,7 +197,7 @@ function LayersLogic({
           source: layerdic.id,
           paint: { ...layerdic.paint },
         },
-        "building"
+        beforeLayer
       );
       setCurrentLayers([layerdic.id]);
     }
@@ -224,6 +228,16 @@ function LayersLogic({
         legendSourceMetadata: layerdic.legendSourceMetadata,
       });}
     setCurrentSource(layerdic.id);
+    map.on('error', function(e) {
+      console.error('Error in map:', e.error);
+      setSourceisLoading(false);
+      setPopUpview(true);
+      setPopUpSettings({
+        type: "directInput",
+        title: "There was an error loading the layer",
+        content: "Error loading the layer",
+      });
+    });
   }, [mapType,switcher]);
 
   useEffect(() => {
@@ -281,6 +295,7 @@ function LayersLogic({
       };
     }
   }, [map, currentSource,switcher]);
+  
   return null;
 }
 

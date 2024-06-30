@@ -21,7 +21,6 @@ const Sidebar = ({ onChange,mapStyle }) => {
     { title: "Communities", options: ['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones', 'Resguardos', 'Informalidad','Reservas Indigenas'],disabledOptions:['Comunidades Negras','Reservas Indigenas']},
     { title: "Biodiversity", options: ['Agricultura Familiar', 'Acuiferos Cesar'] },
     { title: "Risk map and Impacts", options: ['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Events', 'Fallas'] },
-    { title: "Infrastructure", options: ['Roads', 'Railways', 'Ports', 'Airports', 'Energy', 'Telecomunicaciones', 'Pipelines', 'Cables Submarinos'] }
   ];
 
   return (
