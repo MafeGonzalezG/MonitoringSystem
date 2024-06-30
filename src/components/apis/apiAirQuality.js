@@ -5,6 +5,7 @@ async function AirQualityMap(lat,lon) {
     try {
         const response = await fetch(api);
         const data = await response.json();
+        // console.log(data);
         return data;
     } catch (error) {
         console.error('Error fetching air quality data:', error);

@@ -11,7 +11,6 @@ export default function Mapview() {
   const [mapType, setMapType] = useState();
   const [year, setYear] = useState(0);
   const [showBar, setShowBar] = React.useState(false);
-  const [lnglatclick, setLnglatclick] = useState([]);
   const [lnglat, setLnglat] = useState([]);
   const [sourceisLoading, setSourceisLoading] = useState(false);
   const [yearList, setYearList] = useState([]);
@@ -20,8 +19,7 @@ export default function Mapview() {
 
   return (
     <div className="App">
-      <MapComponent mapStyle={mapStyle} setYearList={(yearlist)=>setYearList(yearlist)} lnglat={lnglat} setlnglatclick={(newcoord)=>setLnglatclick(newcoord)}
-        setShowBar = {(bar)=> setShowBar(bar)}  mapType={mapType} year={year} setPopUpview={(view)=>setPopUpview(view)} setPopUpSettings={(settings)=>setPopUpSettings(settings)} 
+      <MapComponent mapStyle={mapStyle} setYearList={(yearlist)=>setYearList(yearlist)} lnglat={lnglat} setShowBar = {(bar)=> setShowBar(bar)}  mapType={mapType} year={year} setPopUpview={(view)=>setPopUpview(view)} setPopUpSettings={(settings)=>setPopUpSettings(settings)} 
         setSourceisLoading={(isloading)=>setSourceisLoading(isloading)} /> 
       <SpinnerModal show={sourceisLoading} />
       <div className="app-body">

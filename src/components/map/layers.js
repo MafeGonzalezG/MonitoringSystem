@@ -374,6 +374,13 @@ function Layers(mapType) {
       url: "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",
       large :true,
     },
+    'Air Quality': {
+      id: 'airquality',
+      sourcetype: 'event-driven',
+      layertype: 'circle',
+      preprocessing:'true'
+    }
+    
   };
   return layers[mapType];
 }

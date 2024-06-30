@@ -7,6 +7,8 @@ import getLocations from "../apis/hardCodedResguardos.js";
 import resguardosApi from "../apis/apiResguardos.js";
 import apiTempIdeam from "../apis/apiTempIDEAM.js";
 import schoolAPiCall from "../apis/schoolApi.js";
+import AirQualityMap from '../apis/apiAirQuality.js';
+
 
 import { useEffect, useState, useRef } from "react";
 import { type } from "@testing-library/user-event/dist/type/index.js";
@@ -83,8 +85,8 @@ function LayersLogic({
 }) {
   const [currentLayers, setCurrentLayers] = useState([]);
   const [currentSource, setCurrentSource] = useState(null);
-  const [latLng, setLatLng] = useState([0, 0]);
   const [switcher, setSwitcher] = useState(false);
+  const [clickLocation, setClickLocation] = useState([]);
   const preprocessing_geojsons = {
     Fires: { func: apiFires },
     "Military Zones": { func: militaryApicall },
@@ -93,7 +95,13 @@ function LayersLogic({
     "Temperatura Estaciones IDEAM": { func: apiTempIdeam },
     Communities: { func: resguardosApi },
     Education: { func: schoolAPiCall },
+    "Air Quality":{func:AirQualityMap}
   };
+  if(map){
+    map.on('click',(e)=>{
+      setClickLocation([e.lngLat.lng,e.lngLat.lat]);
+    });
+  }
   useEffect(() => {
     if (!map) return;
     if (!Layers(mapType)) return;
@@ -183,6 +191,17 @@ function LayersLogic({
           ],
         };
         break;
+      case 'event-driven':
+        setSourceisLoading(false);
+        setPopUpview(true);
+        setPopUpSettings(
+          {
+            type:'directInput',
+            title:'Air quality indicator',
+            content:'Click anywhere on the map to see air quality indicators'
+          }
+        )
+        break
       default:
         break;
       
@@ -227,6 +246,7 @@ function LayersLogic({
         legendSource: layerdic.legendSource,
         legendSourceMetadata: layerdic.legendSourceMetadata,
       });}
+    if (layerdic.sourcetype!== 'event-driven'){
     setCurrentSource(layerdic.id);
     map.on('error', function(e) {
       console.error('Error in map:', e.error);
@@ -238,6 +258,7 @@ function LayersLogic({
         content: "Error loading the layer",
       });
     });
+  }
   }, [mapType,switcher]);
 
   useEffect(() => {
@@ -296,6 +317,28 @@ function LayersLogic({
     }
   }, [map, currentSource,switcher]);
   
+  useEffect(()=>{
+    if (!map) return;
+    if (!Layers(mapType)) return;
+    const layerdic = Layers(mapType);
+    if(layerdic.sourcetype ==='event-driven'){
+      preprocessing_geojsons[mapType].func(clickLocation[1],clickLocation[0]).then((data)=>{
+        const popupContent = Object.entries(data.list[0].components)
+      .map(([key, value]) => {
+          return `<p style="margin: 0;"><strong>${key}</strong>: ${value}</p>`;
+      })
+      .join("");
+        setPopUpSettings(
+          {
+            tittle:layerdic.title,
+            type: 'directInput',
+            content: popupContent
+      })
+    })
+    }
+
+  },[clickLocation]
+  )
   return null;
 }
 
