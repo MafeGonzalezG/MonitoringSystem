@@ -5,7 +5,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import LayersLogic from './layersLogic.js';
 import useDidMountEffect from '../customHooks/customHookMounted.js';  
-
+import LatLngControl from './customControl.js';
 /**
  * Map rendering component.
  *
@@ -32,6 +32,7 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
     });
     newMap.addControl(new mapboxgl.NavigationControl(),'top-right');
     newMap.addControl(new mapboxgl.FullscreenControl(),'top-right');
+    newMap.addControl(new LatLngControl(),'bottom-right');
     const draw = new MapboxDraw({
       displayControlsDefault: false,
       controls: {
@@ -40,6 +41,7 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
       }
       });
     newMap.addControl(draw,'top-right');
+    newMap.addControl(new mapboxgl.ScaleControl(),'bottom-right');
     newMap.on('draw.create', updateArea);
     newMap.on('draw.delete', updateArea);
     newMap.on('draw.update', updateArea);
