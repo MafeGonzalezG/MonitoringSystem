@@ -10,7 +10,7 @@ const JsonParserLegend = ({ urljson,metadataObj }) => {
 
     const [legend, setLegend] = useState([]);
     getJson(urljson).then((data) => {
-      console.log(data.layers)
+      // console.log(data.layers)
       for(let layer of data.layers){
         if (layer.layerId === metadataObj.item){
           setLegend(layer.legend);

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './map.css';
 import mapboxgl from 'mapbox-gl';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import LayersLogic from './layersLogic.js';
-import useDidMountEffect from '../customHooks/customHookMounted.js';
+import useDidMountEffect from '../customHooks/customHookMounted.js';  
+
 /**
  * Map rendering component.
  *
@@ -20,8 +23,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd
 const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading}) => {
 
   const [map, setMap] = useState(null);
-  
-
   const initializeMap = () => {
     const newMap = new mapboxgl.Map({
         container: 'map', // container ID
@@ -29,7 +30,30 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
         style: 'mapbox://styles/mapbox/outdoors-v12', // starting position [lng, lat]
         zoom: 4, // starting zoom
     });
+    newMap.addControl(new mapboxgl.NavigationControl(),'top-right');
+    newMap.addControl(new mapboxgl.FullscreenControl(),'top-right');
+    const draw = new MapboxDraw({
+      displayControlsDefault: false,
+      controls: {
+          polygon: true,
+          trash: true
+      }
+      });
+    newMap.addControl(draw,'top-right');
+    newMap.on('draw.create', updateArea);
+    newMap.on('draw.delete', updateArea);
+    newMap.on('draw.update', updateArea);
     setMap(newMap);
+    function updateArea(e) {
+      const data = draw.getAll();
+      if (data.features.length > 0) {
+        // Do something with the drawn polygon data
+        console.log('Polygon data:', data);
+      } else {
+        // No polygons are drawn
+        console.log('No polygons');
+      }
+    }
   };
  
   useEffect(() => {
