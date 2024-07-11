@@ -19,7 +19,7 @@ const Sidebar = ({ onChange,mapStyle }) => {
     { title: "Nature", options: ['Catastro', 'Manglares', 'Hot Spots', 'Carbon Secuestro'],disabledOptions:['Catastro'] },
     { title: "Climate", options: ['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind', 'Temperatura Estaciones IDEAM'] },
     { title: "Communities", options: ['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones', 'Resguardos', 'Informalidad','Reservas Indigenas'],disabledOptions:['Comunidades Negras','Reservas Indigenas']},
-    { title: "Biodiversity", options: ['Agricultura Familiar', 'Acuiferos Cesar'] },
+    { title: "Biodiversity", options: ['Agricultura Familiar', 'Acuiferos Cesar','Test'] },
     { title: "Risk map and Impacts", options: ['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Events', 'Fallas'] },
   ];
 

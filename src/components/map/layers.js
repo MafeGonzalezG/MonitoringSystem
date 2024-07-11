@@ -379,8 +379,43 @@ function Layers(mapType) {
       sourcetype: 'event-driven',
       layertype: 'circle',
       preprocessing:'true'
-    }
-    
+    },
+    'Test':{
+      'id':'test',
+      'sourcetype':'geojson',
+      'layertype':'circle',
+      'preprocessing':false,
+      'title':'nombreestacion',
+      'temporal':true,
+      'url':'http://localhost:8080/geoserver/Temperatura/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Temperatura%3Atemperature&maxFeatures=100&outputFormat=application%2Fjson',
+      'year_list':[2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'year_name':'year',
+      paint: {
+        "circle-radius": 7,
+        "circle-stroke-width": 1,
+        "circle-color": [
+          "interpolate",
+          ["linear"],
+          ["to-number", ["get", "valorobservado"]], // Assuming temperature is the property in your data
+          0,
+          "blue",
+          10,
+          "green",
+          20,
+          "yellow",
+          30,
+          "orange",
+          40,
+          "red",
+        ],
+        "circle-stroke-color":'transparent'
+      },
+      legend: true,
+      legendType: "gradient",
+      legendTitle: "Temperature (°C)",
+      legendPositions: [0, 10, 20, 30, 40],
+      legendColors: ["blue", "green", "yellow", "orange", "red"],
+    }    
   };
   return layers[mapType];
 }
