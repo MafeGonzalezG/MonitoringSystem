@@ -17,7 +17,7 @@ function Popup({ onChange, popUpSettings}) {
             {/* <p className='popup-content'>Some information goes here...</p> */}
             {popUpSettings.type==='gradient'?<Gradient colors={popUpSettings.legendColors} labels={popUpSettings.legendPositions}/>:
             popUpSettings.type==='jsonsource'?<JsonParserLegend urljson={popUpSettings.legendSource} metadataObj={popUpSettings.legendSourceMetadata}/>:
-            popUpSettings.type ==='directInput'?<p>{popUpSettings.content}</p>
+            popUpSettings.type ==='directInput'?<div dangerouslySetInnerHTML={{ __html: popUpSettings.content }}></div>
             :<XmlParser url={popUpSettings.legendSource} metadataObj={popUpSettings.legendSourceMetadata}/>}
         </div>
     );

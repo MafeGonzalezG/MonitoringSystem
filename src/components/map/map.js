@@ -61,13 +61,16 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
   useEffect(() => {
     initializeMap();
   },[]);
-  if(map){map.on('click', (e) => {
-      // const lnglat = JSON.stringify(e.lngLat.wrap());
-      // console.log(lnglat);
-      setlnglatclick([e.lngLat.lng,e.lngLat.lat]);
-      console.log(e.lngLat.lng,e.lngLat.lat);
-    });
-  }
+  // if(map){map.on('click', (e) => {
+  //     // const lnglat = JSON.stringify(e.lngLat.wrap());
+  //     // console.log(lnglat);
+  //     // setlnglatclick([e.lngLat.lng,e.lngLat.lat]);
+      
+  //     console.log(elevation);
+  //     console.log(e.lngLat.lng,e.lngLat.lat);
+
+  //   });
+  // }
   useDidMountEffect(() => {
     console.log('mapstyle',mapStyle);
     if(map){
