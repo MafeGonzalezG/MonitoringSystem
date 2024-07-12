@@ -37,6 +37,13 @@ async function fetchAllFeatures(url) {
       features: allFeatures
   };
 }
+function prettyFormat(value) {
+  if (typeof value === "string") {
+    const newValue = value.replace(/_/g, " ");
+    return newValue.charAt(0).toUpperCase() + newValue.slice(1);
+  }
+  return value;
+}
 function checkLayer(map, layerIds) {
   for (let i = 0; i < layerIds.length; i++) {
     if (map.getLayer(layerIds[i])) {
@@ -54,18 +61,23 @@ function addGenericPopUp(map, layerId, MainKey) {
   });
   map.on("click", layerId, (e) => {
     const properties = e.features[0].properties;
+    const baseCard = `<div className="card bg-transparent" style="width: 100%; margin:0; border:0;overflow-y:auto; max-height:60vh;">
+  <div class="card-body bg-transparent">
+   `;
     const popupContent = Object.entries(properties)
       .map(([key, value]) => {
         if (key === MainKey) {
           return;
         } else {
-          return `<p style="margin: 0;">${key}: ${value}</p>`;
+          return `
+    <p class="card-text">${prettyFormat(key)} :\n ${prettyFormat(value)}</p>`;
         }
       })
       .join("");
     const popup = new mapboxgl.Popup()
       .setLngLat(e.lngLat)
-      .setHTML(`<h3>${MainKey} :  ${properties[MainKey]}</h3>` + popupContent)
+      .setHTML(baseCard+`<h3 className="card-title">${prettyFormat(MainKey)} : \n ${prettyFormat(properties[MainKey])}</h3>` + popupContent +`</div>
+</div>`)
       .addTo(map);
     map.on("closeAllPopups", () => {
       popup.remove();
