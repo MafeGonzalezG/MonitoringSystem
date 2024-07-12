@@ -10,6 +10,7 @@ import schoolAPiCall from "../apis/schoolApi.js";
 import AirQualityMap from '../apis/apiAirQuality.js';
 
 
+
 import { useEffect, useState, useRef } from "react";
 import { type } from "@testing-library/user-event/dist/type/index.js";
 
@@ -40,7 +41,7 @@ async function fetchAllFeatures(url) {
 function prettyFormat(value) {
   if (typeof value === "string") {
     const newValue = value.replace(/_/g, " ");
-    return newValue.charAt(0).toUpperCase() + newValue.slice(1);
+    return newValue.charAt(0).toUpperCase() + newValue.slice(1).toLowerCase();
   }
   return value;
 }
@@ -61,23 +62,27 @@ function addGenericPopUp(map, layerId, MainKey) {
   });
   map.on("click", layerId, (e) => {
     const properties = e.features[0].properties;
-    const baseCard = `<div className="card bg-transparent" style="width: 100%; margin:0; border:0;overflow-y:auto; max-height:60vh;">
-  <div class="card-body bg-transparent">
+    const baseCard = `
+    <table>
+  <thead>
+    <tr>
+      <th>Metadato</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+  <tbody>      
    `;
     const popupContent = Object.entries(properties)
       .map(([key, value]) => {
-        if (key === MainKey) {
-          return;
-        } else {
-          return `
-    <p class="card-text">${prettyFormat(key)} :\n ${prettyFormat(value)}</p>`;
-        }
+          return `<tr>
+     <th scope="row">${prettyFormat(key)}</th>
+     <td>  ${prettyFormat(value)}</td> </tr>`;
       })
       .join("");
-    const popup = new mapboxgl.Popup()
+    const popup = new mapboxgl.Popup({"maxWidth":"50vw"})
       .setLngLat(e.lngLat)
-      .setHTML(baseCard+`<h3 className="card-title">${prettyFormat(MainKey)} : \n ${prettyFormat(properties[MainKey])}</h3>` + popupContent +`</div>
-</div>`)
+      .setHTML(baseCard+`<h5>${prettyFormat(layerId)} Metadata</h5>` + popupContent +`</tbody>
+</table>`)
       .addTo(map);
     map.on("closeAllPopups", () => {
       popup.remove();
