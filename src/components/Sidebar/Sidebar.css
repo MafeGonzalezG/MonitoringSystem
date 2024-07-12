@@ -1,19 +1,39 @@
-.sidebar {
+.main-side-container {
     width: 100%;  /* Full width */
-    height: 75vh; /* Set height to 75% of the viewport height */
-    background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
-    padding: 10px; /* Internal padding */
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;/* Shadow for depth */
+    max-height: 75vh; /* Set maximum height to 75% of the viewport height */
+    padding: 0; /* Remove internal padding */
     margin: 10px; /* External margin */
     font-size: small; /* Small font size */
     position: relative; /* Relative positioning */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: block;
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.sidebar {
+    width: 100%;  /* Full width */
+    background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
+    padding: 10px; /* Internal padding */
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; /* Shadow for depth */
+    margin: 0; /* External margin */
+    font-size: small; /* Small font size */
     border-radius: 5px; /* Rounded corners */
     display: flex; /* Flexbox layout */
     flex-direction: column; /* Vertical alignment */
     justify-content: space-evenly; /* Even spacing between items */
-    overflow-y: auto; /* Enable vertical scrolling */
-    -ms-overflow-style: none; /* Hide scrollbar in IE 10+ */
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.sidebar-toggle-button {
+    position: sticky; /* Sticky positioning */
+    top: 0px; /* Position from the top */
+    right: 0; /* Position from the right */
+    cursor: pointer; /* Cursor pointer */
+    background-color: rgba(231, 230, 230, 0.38); /* Light grey background with transparency */
+    border: transparent;
+    border-radius: 50px;
+    padding: 5px; /* Internal padding */
+    z-index: 2; /* Ensure it is above other elements */
 }
 
 .sidebar::-webkit-scrollbar {
