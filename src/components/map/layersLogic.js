@@ -8,12 +8,100 @@ import resguardosApi from "../apis/apiResguardos.js";
 import apiTempIdeam from "../apis/apiTempIDEAM.js";
 import schoolAPiCall from "../apis/schoolApi.js";
 import AirQualityMap from '../apis/apiAirQuality.js';
+import shp from 'shpjs'; 
 
 
-
-import { useEffect, useState, useRef } from "react";
-import { type } from "@testing-library/user-event/dist/type/index.js";
-
+import { useEffect, useState} from "react";
+function geojsonLayer(map,data,inputFileName){
+  if(data.features[0].geometry.type === 'Point'){
+    map.addLayer({
+      id:inputFileName,
+      type: 'circle',
+      source:inputFileName,
+      paint: {
+        'circle-radius': 5,
+        'circle-color': '#f00'
+      }
+    });
+  }else if(data.features[0].geometry.type === 'Polygon'){
+    map.addLayer({
+      id:inputFileName,
+      type: 'fill',
+      source:inputFileName,
+      paint: {
+        'fill-color': '#088',
+        'fill-opacity': 0.8
+      }
+    });}else if(data.features[0].geometry.type === 'LineString'){
+      map.addLayer({
+        id:inputFileName,
+        type: 'line',
+        source:inputFileName,
+        paint: {
+          'line-color': '#f00',
+          'line-width': 2
+        }
+      });} else if(data.features[0].geometry.type === 'MultiPolygon'){
+        map.addLayer({
+          id:inputFileName,
+          type: 'fill',
+          source:inputFileName,
+          paint: {
+            'fill-color': '#088',
+            'fill-opacity': 0.8
+          }
+        });
+      } else if(data.features[0].geometry.type === 'MultiLineString'){
+        map.addLayer({
+          id:inputFileName,
+          type: 'line',
+          source:inputFileName,
+          paint: {
+            'line-color': '#f00',
+            'line-width': 2
+          }
+        });
+      } else if(data.features[0].geometry.type === 'MultiPoint'){
+        map.addLayer({
+          id:inputFileName,
+          type: 'circle',
+          source:inputFileName,
+          paint: {
+            'circle-radius': 5,
+            'circle-color': '#f00'
+          }
+        });} else if(data.features[0].geometry.type === 'GeometryCollection'){
+          map.addLayer({
+            id:inputFileName,
+            type: 'fill',
+            source:inputFileName,
+            paint: {
+              'fill-color': '#088',
+              'fill-opacity': 0.8
+            }
+          });
+        } else if (data.features[0].geometry.type === 'FeatureCollection'){
+          map.addLayer({
+            id:inputFileName,
+            type: 'fill',
+            source:inputFileName,
+            paint: {
+              'fill-color': '#088',
+              'fill-opacity': 0.8
+            }
+          });
+        } else if (data.features[0].geometry.type === 'Feature'){
+          map.addLayer({
+            id:inputFileName,
+            type: 'fill',
+            source:inputFileName,
+            paint: {
+              'fill-color': '#088',
+              'fill-opacity': 0.8
+            }
+          });
+        }
+}
 async function fetchAllFeatures(url) {
   const allFeatures = [];
   let offset = 0;
@@ -37,6 +125,35 @@ async function fetchAllFeatures(url) {
       type: 'FeatureCollection',
       features: allFeatures
   };
+}
+function flyToLayerBounds(layerId,map) {
+  var source = map.getSource(layerId);
+        if (source.type === 'geojson') {
+            var data = source._data; // Access the GeoJSON data
+            var bounds = new mapboxgl.LngLatBounds();
+
+            data.features.forEach(function(feature) {
+                var coordinates = feature.geometry.coordinates;
+                if (feature.geometry.type === 'Polygon') {
+                    coordinates = coordinates[0].flat(1); // Use the outer ring for Polygon
+
+                } else if (feature.geometry.type === 'MultiPolygon') {
+                    coordinates = coordinates.flat(1); // Flatten the first level for MultiPolygon
+                }else if ( feature.geometry.type === 'Point'){
+                  coordinates = [feature.geometry.coordinates];
+                }
+
+                coordinates.forEach(function(coord) {
+                    bounds.extend(coord);
+                });
+            });
+
+            map.flyTo({
+                center: bounds.getCenter(),
+                zoom: map.getZoom(),
+                essential: true // this animation is considered essential with respect to prefers-reduced-motion
+            });
+        }
 }
 function prettyFormat(value) {
   if (typeof value === "string") {
@@ -98,7 +215,8 @@ function LayersLogic({
   setShowBar,
   setPopUpview,
   setPopUpSettings,
-  setSourceisLoading
+  setSourceisLoading,
+  inputFile
 }) {
   const [currentLayers, setCurrentLayers] = useState([]);
   const [currentSource, setCurrentSource] = useState(null);
@@ -192,11 +310,12 @@ function LayersLogic({
         break;
       case "image":
         const bbox = layerdic.bbox;
+        var wmsRequestUrl='';
         if(year)
-          {var wmsRequestUrl = `${layerdic.url}${layerdic.temporal ? `${layerdic.year_list[year]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap` : ''}&layers=${layerdic.layer}&bbox=${bbox.join(",")}&width=256&height=256&${layerdic.epsg}&styles=&format=image/png&transparent=true`;
+          {wmsRequestUrl = `${layerdic.url}${layerdic.temporal ? `${layerdic.year_list[year]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap` : ''}&layers=${layerdic.layer}&bbox=${bbox.join(",")}&width=256&height=256&${layerdic.epsg}&styles=&format=image/png&transparent=true`;
           }
         else{
-        var wmsRequestUrl = `${layerdic.url}${layerdic.temporal ? `${layerdic.year_list[0]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap` : ''}&layers=${layerdic.layer}&bbox=${bbox.join(",")}&width=256&height=256&${layerdic.epsg}&styles=&format=image/png&transparent=true`;
+         wmsRequestUrl = `${layerdic.url}${layerdic.temporal ? `${layerdic.year_list[0]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap` : ''}&layers=${layerdic.layer}&bbox=${bbox.join(",")}&width=256&height=256&${layerdic.epsg}&styles=&format=image/png&transparent=true`;
         }
         compSource = {
           url: wmsRequestUrl,
@@ -209,7 +328,7 @@ function LayersLogic({
         };
         break;
       case 'event-driven':
-        setSourceisLoading(false);
+       setSourceisLoading(false);
         setPopUpview(true);
         setPopUpSettings(
           {
@@ -267,7 +386,7 @@ function LayersLogic({
     setCurrentSource(layerdic.id);
     map.on('error', function(e) {
       console.error('Error in map:', e.error);
-      setSourceisLoading(false);
+     setSourceisLoading(false);
       setPopUpview(true);
       setPopUpSettings({
         type: "directInput",
@@ -277,7 +396,101 @@ function LayersLogic({
     });
   }
   }, [mapType,switcher]);
-
+  useEffect(() => {
+    if(inputFile){
+      console.log(inputFile);
+      setSourceisLoading(true);
+      if(inputFile.name.split('.').pop()==='geojson'){
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const data = JSON.parse(e.target.result);
+          console.log(data);
+          if(map){
+            
+            if(map.getLayer(inputFile.name)){
+              map.removeLayer(inputFile.name);
+            }
+            if(map.getSource(inputFile.name)){
+              map.removeSource(inputFile.name);
+            }
+            map.addSource(inputFile.name, {
+              type: 'geojson',
+              data: data
+            });
+            geojsonLayer(map,data,inputFile.name);
+            setCurrentSource(inputFile.name);
+          }
+        };
+        reader.readAsText(inputFile);
+      }else if(inputFile.name.split('.').pop()==='zip'){
+        console.log('shp');
+        async function readShp(file) {
+          try {
+              const arrayBuffer = await file.arrayBuffer();
+              const geojson = await shp(arrayBuffer);
+              console.log(geojson);
+              return geojson;
+          } catch (error) {
+              console.error('Error reading file:', error);
+              setSourceisLoading(false);
+              setPopUpview(true);
+              setPopUpSettings({
+                type: "directInput",
+                title: "Error reading file",
+                content: "Error reading file",
+              });
+          }}
+        readShp(inputFile).then((data)=>{
+          if (!Array.isArray(data)){
+          if(map){
+            if(map.getLayer(data.fileName)){
+              map.removeLayer(data.fileName);
+            }
+            if(map.getSource(data.fileName)){
+              map.removeSource(data.fileName);
+            }
+            map.addSource(data.fileName, {
+              type: 'geojson',
+              data: data
+            });
+            geojsonLayer(map,data,data.fileName);
+            setCurrentSource(data.fileName);
+          }}else{
+            console.log(Array.isArray(data));
+            data.forEach((element)=>{
+              console.log(element.fileName);
+              console.log(element);
+              if(map){
+                if(map.getLayer(element.fileName)){
+                  map.removeLayer(element.fileName);
+                }
+                if(map.getSource(element.fileName)){
+                  map.removeSource(element.fileName);
+                }
+                map.addSource(element.fileName, {
+                  type: 'geojson',
+                  data: element
+                });
+                geojsonLayer(map,element,element.fileName);
+                setSourceisLoading(false);
+              }
+            });
+          }
+        });
+      }
+      else{
+        console.error('Error reading file no geojson');
+        setSourceisLoading(false);
+        setPopUpview(true);
+        setPopUpSettings({
+          type: "directInput",
+          title: "Error reading file",
+          content: "Expected .geojson file",
+        });
+      }
+    }
+     
+  },[inputFile,map,setSourceisLoading]);
   useEffect(() => {
     if (!map) return;
     if (!Layers(mapType)) return;
@@ -320,6 +533,7 @@ function LayersLogic({
       const onSourceLoaded = () => {
         if (map.isSourceLoaded(currentSource)) {
           setSourceisLoading(false);
+          flyToLayerBounds(currentSource,map);
           console.log("source loaded");
           map.off('sourcedata', onSourceLoaded); // Clean up the event listener
         }
@@ -332,7 +546,7 @@ function LayersLogic({
         map.off('sourcedata', onSourceLoaded);
       };
     }
-  }, [map, currentSource,switcher]);
+  }, [map, currentSource,switcher,setSourceisLoading]);
   
   useEffect(()=>{
     if (!map) return;
@@ -356,6 +570,7 @@ function LayersLogic({
 
   },[clickLocation]
   )
+  
   return null;
 }
 

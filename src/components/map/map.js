@@ -20,7 +20,7 @@ import LatLngControl from './customControl.js';
  */
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg';
 
-const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading}) => {
+const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading,inputFile}) => {
 
   const [map, setMap] = useState(null);
   const initializeMap = () => {
@@ -57,7 +57,7 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
       }
     }
   };
- 
+  
   useEffect(() => {
     initializeMap();
   },[]);
@@ -77,7 +77,7 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
       map.setStyle('mapbox://styles/mapbox/' + mapStyle);
     }
   },[mapStyle]);
-  LayersLogic({setYearList, lnglat, map,mapType, year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading});
+  LayersLogic({setYearList, lnglat, map,mapType, year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading,inputFile});
   return (
       <div id="map" ></div>
   );

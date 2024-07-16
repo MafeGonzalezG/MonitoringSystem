@@ -1,13 +1,12 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import ColorCycleButton from './buttonChangeMap';
 import CustomDropdown from '../Sidebar/dropdown/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './navbar.css';
 import GeocodingForm from './geoCodingForm';
 import logoPlanet from '../../assets/images/logo_planet.png';
 import greenLife from '../../assets/images/greenlife.png';
-
+import InputFile from '../input/InputData';
 /**
  * Navigation bar component.
  *
@@ -20,7 +19,7 @@ import greenLife from '../../assets/images/greenlife.png';
  * // Render a navbar with a search bar that logs the input value on enter press.
  * <Navbar onChange={()=>console.log('value changed');} />
  */
-function CustomNavbar({ onpressMap, onChange }) {
+function CustomNavbar({ onpressMap, onChange, SetinputFile }) {
   const real_names = [
     'outdoors-v12',
     'light-v11',
@@ -56,14 +55,17 @@ function CustomNavbar({ onpressMap, onChange }) {
         <Nav className="ml-auto d-flex align-items-center">
           <Nav.Link href="/MonitoringSystem/About" role="button">About</Nav.Link>
           <Nav.Link href="/MonitoringSystem/Contact" role="button">Contact</Nav.Link>
-          <Nav.Item>
-            <GeocodingForm handlePress={(ltlng) => onChange(ltlng)} />
-          </Nav.Item>
           <CustomDropdown
             options={show_names}
             defaultText="Map style"
             onChange={(option) => onpressMap(real_names[show_names.indexOf(option)])}
           />
+           <Nav.Item>
+            <GeocodingForm handlePress={(ltlng) => onChange(ltlng)} />
+          </Nav.Item>
+          <Nav.Item>
+          <InputFile SetinputFile={SetinputFile}/>
+          </Nav.Item>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
