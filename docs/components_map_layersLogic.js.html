@@ -1,4 +1,32 @@
-import Layers from "./layers.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/map/layersLogic.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/map/layersLogic.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Layers from "./layers.js";
 import apiFires from "../apis/firesApi.js";
 import apiWaterQuality from "../apis/apiWaterQuality.js";
 import getLocations from "../apis/hardCodedResguardos.js";
@@ -85,7 +113,7 @@ function LayersLogic({
         break;
 
       case "geojson":
-        if (layerdic.preprocessing && !layerdic.large) {
+        if (layerdic.preprocessing &amp;&amp; !layerdic.large) {
           preprocessing_geojsons[mapType].func().then((data) => {
             compSource = {
               data: data,
@@ -110,7 +138,7 @@ function LayersLogic({
             data: layerdic.url,
           };
         }
-        if (layerdic.large && layerdic.preprocessing) {
+        if (layerdic.large &amp;&amp; layerdic.preprocessing) {
           fetchAllFeatures(layerdic.url).then((data) => {
             map.addSource(layerdic.id, { ...baseSoure, ...compSource });
             const beforeLayer = map.getLayer("building")
@@ -137,23 +165,23 @@ function LayersLogic({
         if (year) {
           wmsRequestUrl = `${layerdic.url}${
             layerdic.temporal
-              ? `${layerdic.year_list[year]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap`
+              ? `${layerdic.year_list[year]}/MapServer/WMSServer?service=WMS&amp;version=1.1.0&amp;request=GetMap`
               : ""
-          }&layers=${layerdic.layer}&bbox=${bbox.join(
+          }&amp;layers=${layerdic.layer}&amp;bbox=${bbox.join(
             ","
-          )}&width=256&height=256&${
+          )}&amp;width=256&amp;height=256&amp;${
             layerdic.epsg
-          }&styles=&format=image/png&transparent=true`;
+          }&amp;styles=&amp;format=image/png&amp;transparent=true`;
         } else {
           wmsRequestUrl = `${layerdic.url}${
             layerdic.temporal
-              ? `${layerdic.year_list[0]}/MapServer/WMSServer?service=WMS&version=1.1.0&request=GetMap`
+              ? `${layerdic.year_list[0]}/MapServer/WMSServer?service=WMS&amp;version=1.1.0&amp;request=GetMap`
               : ""
-          }&layers=${layerdic.layer}&bbox=${bbox.join(
+          }&amp;layers=${layerdic.layer}&amp;bbox=${bbox.join(
             ","
-          )}&width=256&height=256&${
+          )}&amp;width=256&amp;height=256&amp;${
             layerdic.epsg
-          }&styles=&format=image/png&transparent=true`;
+          }&amp;styles=&amp;format=image/png&amp;transparent=true`;
         }
         compSource = {
           url: wmsRequestUrl,
@@ -192,7 +220,7 @@ function LayersLogic({
       );
       setCurrentLayers([layerdic.id]);
     }
-    if (layerdic.legend && layerdic.legendType === "gradient") {
+    if (layerdic.legend &amp;&amp; layerdic.legendType === "gradient") {
       setPopUpview(true);
       setPopUpSettings({
         type: "gradient",
@@ -201,7 +229,7 @@ function LayersLogic({
         legendColors: layerdic.legendColors,
       });
     }
-    if (layerdic.legend && layerdic.legendType === "xmlsource") {
+    if (layerdic.legend &amp;&amp; layerdic.legendType === "xmlsource") {
       setPopUpview(true);
       setPopUpSettings({
         type: "xmlsource",
@@ -210,7 +238,7 @@ function LayersLogic({
         legendSourceMetadata: layerdic.legendSourceMetadata,
       });
     }
-    if (layerdic.legend && layerdic.legendType === "jsonsource") {
+    if (layerdic.legend &amp;&amp; layerdic.legendType === "jsonsource") {
       setPopUpview(true);
       setPopUpSettings({
         type: "jsonsource",
@@ -257,7 +285,7 @@ function LayersLogic({
   }, [year]);
 
   useEffect(() => {
-    if (map && lnglat) {
+    if (map &amp;&amp; lnglat) {
       map.flyTo({
         center: lnglat,
         zoom: 5,
@@ -271,7 +299,7 @@ function LayersLogic({
   }, [lnglat]);
 
   useEffect(() => {
-    if (map && currentSource) {
+    if (map &amp;&amp; currentSource) {
       const onSourceLoaded = () => {
         if (map.isSourceLoaded(currentSource)) {
           setSourceisLoading(false);
@@ -301,7 +329,7 @@ function LayersLogic({
         .then((data) => {
           const popupContent = Object.entries(data.list[0].components)
             .map(([key, value]) => {
-              return `<p style="margin: 0;"><strong>${key}</strong>: ${value}</p>`;
+              return `&lt;p style="margin: 0;">&lt;strong>${key}&lt;/strong>: ${value}&lt;/p>`;
             })
             .join("");
           setPopUpSettings({
@@ -316,3 +344,26 @@ function LayersLogic({
 }
 
 export default LayersLogic;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -3,7 +3,12 @@ import React, { useState } from 'react';
 import CustomNavbar from '../components/navbar/navbar';
 
 import './ContactForm.css';
-
+/**
+ * 
+ * This is the contact form page of the app.
+ * @component
+ * @returns {JSX.Element} The rendered ContactForm component.
+ */
 const ContactForm = () => {
     const [formData, setFormData] = useState({
       name: '',
@@ -29,7 +34,7 @@ const ContactForm = () => {
     return (
         <div className="App">
         <div className="app-body">
-    <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null}/>
+    <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null} SetinputFile={(input)=>null}/>
       <div className="container mt-2">
         <h2>Contact Us</h2>
         <form onSubmit={handleSubmit}>

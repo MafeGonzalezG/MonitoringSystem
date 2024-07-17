@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: pages/LoadingModal.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,45 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: pages/LoadingModal.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { Modal, Spinner } from 'react-bootstrap'; // Import Modal and Spinner from react-bootstrap
+import './LoadingModal.css'; // Import the stylesheet LoadingModal.css
+/**
+ * A modal that displays a spinner.
+ * @component
+ * @param {object} props - The component props.
+ * @param {boolean} props.show - A boolean that determines whether the modal is displayed.
+ * @returns {JSX.Element} - The SpinnerModal component
+ */	
+const SpinnerModal = ({ show }) => {
+  return (
+    &lt;Modal
+      show={show}
+      centered
+      backdrop="static"
+      keyboard={false}
+      contentClassName="modal-content-transparent"
+    >
+      &lt;Modal.Body className="text-center">
+      &lt;Spinner animation="border" variant="light" className="spinner-lg" />
+      &lt;/Modal.Body>
+    &lt;/Modal>
+  );
+};
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+export default SpinnerModal;
+</code></pre>
+        </article>
+    </section>
 
 
 

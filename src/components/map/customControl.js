@@ -1,4 +1,13 @@
 import mapboxgl from "mapbox-gl";
+/**
+ * This function retrieves the elevation of a point.
+ * @param {number} lng - The longitude of the point.
+ * @param {number} lat - The latitude of the point.
+ * @returns {number} - The elevation of the point.
+ * @example
+ * const elevation_current = await elevation(lng,lat);
+ * console.log(elevation_current);
+ */
 async function elevation(lng,lat){
     const query = await fetch(
         `https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/${lng},${lat}.json?layers=contour&limit=50&access_token=${mapboxgl.accessToken}`,
@@ -11,6 +20,20 @@ async function elevation(lng,lat){
       const highestElevation = Math.max(...elevations);
       return highestElevation;
 }
+/**
+ * This class creates a custom control that shows the latitude and longitude of the mouse pointer.
+ * @class
+ * @param {Object} map - The map object.
+ * @returns {Object} - The custom control that shows the latitude and longitude of the mouse pointer.
+ * @example
+ * const latLngControl = new LatLngControl();
+ * map.addControl(latLngControl);
+ * @example
+ * map.on('load', () => {
+ * const latLngControl = new LatLngControl();
+ * map.addControl(latLngControl);
+ * }
+ */
 class LatLngControl {
     onAdd(map) {
         this._map = map;

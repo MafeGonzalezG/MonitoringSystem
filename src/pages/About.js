@@ -1,13 +1,19 @@
 import CustomNavbar from '../components/navbar/navbar';
 import React, { useState } from 'react';
 import "./About.css";
+/**
+ * 
+ * This is the about page of the app.
+ * @component
+ * @returns {JSX.Element} The rendered About component.
+ */
 export default function About(){
 
 
     return (
         <div className="App">
             <div className="app-body">
-                <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null}/>
+                <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null} SetinputFile={(input)=>null}/>
                     <div className="card-body m-2">
                         <h1>About</h1>
                         <p>

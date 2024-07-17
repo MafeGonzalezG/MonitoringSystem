@@ -3,13 +3,18 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Mapview from './pages/Mapview';
 import About from './pages/About';
 import Contact from './pages/Contact';
+/**
+ * The routing component.
+ * @component
+ * @returns {JSX.Element} The rendered Routing component.
+ */
 export const Routing = () => {
     return (
         <Router>
             <Routes>
                 <Route path="/MonitoringSystem" element={<Mapview />} />
-                <Route path="MonitoringSystem/About" element={<About />} />
-                <Route path="MonitoringSystem/Contact" element={<Contact />} />
+                <Route path="/MonitoringSystem/About" element={<About />} />
+                <Route path="/MonitoringSystem/Contact" element={<Contact />} />
             </Routes>
         </Router>
     );

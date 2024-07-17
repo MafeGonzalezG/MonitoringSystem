@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: components/Sidebar/Card.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,60 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: components/Sidebar/Card.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import 'bootstrap/dist/css/bootstrap.min.css';
+import CustomDropdown from './dropdown/Dropdown';
+import './Card.css';
+/**
+ * A card component that displays a title and a dropdown.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.title - The title of the card.
+ * @param {Array} props.options - The list of options to be displayed in the dropdown.
+ * @param {Function} props.onChange - The function that handles the change event.
+ * @param {boolean} props.isSelected - A boolean that determines whether an option is selected.
+ * @param {Array} props.disabledOptions - The list of options to be disabled.
+ * @returns {JSX.Element} - The Card component
+ * @example
+ * &lt;Card
+ * title='Card title'
+ * options={['Option 1', 'Option 2', 'Option 3']}
+ * onChange={(option) => console.log(option)}
+ * isSelected={false}
+ * disabledOptions={['Option 2']}
+ * />
+ */
+function Card({ title, options, onChange,isSelected,disabledOptions }) {
+  const optionChange = (option) => {
+    onChange(option);
+  };
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+  return (
+    &lt;div className='card mb-3 bg-light'>
+      &lt;div className='card-body'>
+        &lt;h5 className='card-title'>{title}&lt;/h5>
+        &lt;CustomDropdown
+          options={options}
+          defaultText="Select an option"
+          onChange={optionChange}
+          isSelected={isSelected} 
+          disabledOptions={disabledOptions}
+        />
+      &lt;/div>
+    &lt;/div>
+  );
+}
+export default Card;</code></pre>
+        </article>
+    </section>
 
 
 

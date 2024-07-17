@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: components/Slidebar/Slidebar.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,71 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: components/Slidebar/Slidebar.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
+import { Form} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Slidebar.css';
 
+/**
+ * Slidebar component using react-bootstrap.
+ *
+ * @component
+ * @param {Object} props - The component accepts onChange, max, min, and step props.
+ * @param {Function} props.onChange - The function that handles the change event.
+ * @param {Array} yearList - The list of years to be displayed on the slidebar.
+ * @returns {JSX.Element} The rendered Slidebar component.
+ *
+ * @example
+ * // Render a slidebar with specific range and steps.
+ * &lt;Slidebar onChange={(value) => console.log(value)} yearList={[2000,2003,2006,2009] />
+ */
+function Slidebar({ onChange, yearList }) {
+  const [value, setValue] = useState(0);
 
-    <h3> </h3>
+  const barMoves = (value) => {
+    onChange(value);
+    setValue(Number(value)); // Ensure value is treated as a number
+  };
 
+  const max = yearList.length - 1;
 
+  return (
+    &lt;div className="slidebar bg-light">
+      &lt;Form>
+      &lt;div className="scale-container">
+          {yearList.map((year, index) => (
+            &lt;div
+              key={index}
+              className={`tick ${index === value ? 'selected' : ''}`}
+            >
+              {year}
+            &lt;/div>
+          ))}
+        &lt;/div>
+        &lt;Form.Range
+          min={0}
+          max={max}
+          step={1}
+          value={value}
+          onChange={(e) => barMoves(e.target.value)}
+        />
+      &lt;/Form>
+    &lt;/div>
+  );
+}
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
+export default Slidebar;</code></pre>
+        </article>
+    </section>
 
 
 

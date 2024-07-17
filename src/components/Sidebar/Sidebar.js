@@ -3,6 +3,14 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Sidebar.css';  // Importing the CSS file for additional styling
 import Card from './Card';
+/**
+ * Sidebar component using react-bootstrap.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.onChange - The function that handles the change event.
+ * @param {string} props.mapStyle - The current map style.
+ * @returns {JSX.Element} The rendered Sidebar component.
+ */
 
 const Sidebar = ({ onChange, mapStyle }) => {
   const [selectedDropdown, setSelectedDropdown] = useState(null);
@@ -18,13 +26,12 @@ const Sidebar = ({ onChange, mapStyle }) => {
   };
 
   const dropdownData = [
-    { title: "Nature", options: ['Catastro', 'Manglares', 'Hot Spots', 'Carbon Secuestro'], disabledOptions: ['Catastro'] },
-    { title: "Climate", options: ['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind', 'Temperatura Estaciones IDEAM'] },
-    { title: "Communities", options: ['Comunidades Negras', 'Mining', 'Communities', 'Education', 'Military Zones', 'Resguardos', 'Informalidad', 'Reservas Indigenas'], disabledOptions: ['Comunidades Negras', 'Reservas Indigenas'] },
-    { title: "Biodiversity", options: ['Agricultura Familiar', 'Acuiferos Cesar', 'Test'] },
-    { title: "Risk map and Impacts", options: ['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Events', 'Fallas'] },
+    { title: "Nature", options: ['Cadastre', 'Mangroves', 'Hot Spots', 'Carbon Sequestration'], disabledOptions: ['Cadastre'] },
+    { title: "Climate", options: ['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind', 'IDEAM Station Temperatures'] },
+    { title: "Communities", options: ['Black Communities', 'Mining', 'Communities', 'Education', 'Military Zones', 'Reserves', 'Informality', 'Indigenous Reserves'], disabledOptions: ['Black Communities', 'Indigenous Reserves'] },
+    { title: "Biodiversity", options: ['Family Agriculture', 'Cesar Aquifers', 'Test'] },
+    { title: "Risk Map and Impacts", options: ['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Events', 'Faults'] },
   ];
-
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };

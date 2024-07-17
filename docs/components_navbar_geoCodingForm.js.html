@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/navbar/geoCodingForm.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/navbar/geoCodingForm.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import { Form, FormControl } from 'react-bootstrap';
+import './geocoding.css'
+/**
+ * A form that fetches and displays geocoding suggestions.
+ * @component
+ * @param {object} props - The component props.
+ * @param {Function} props.handlePress - A function that handles the selected suggestion.
+ * @returns {JSX.Element} - The component
+ * @example
+ * &lt;GeocodingForm handlePress={handlePress} />
+ * 
+ * @example
+ * function handlePress(coordinates) {
+ *  console.log('Selected coordinates:', coordinates);
+ * }
+ *  
+ *  &lt;GeocodingForm handlePress={handlePress} />
+ *  
+ */
+const GeocodingForm = ({ handlePress }) => {
+  const [input, setInput] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [fetchSuggestions, setFetchSuggestions] = useState(true);
+  useEffect(() => {
+    if (input&amp;&amp; fetchSuggestions) {
+      const fetchSuggestions = async () => {
+        try {
+          const response = await fetch(`https://api.mapbox.com/search/geocode/v6/forward?q=${input}&amp;proximity=ip&amp;access_token=pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd3NvcTAifQ.Ger587FmqVP5qcFPz7mwqg`);
+          const data = await response.json();
+          setSuggestions(data.features || []); // Adjust this based on your API response structure
+        } catch (error) {
+          console.error('Error fetching suggestions:', error);
+        }
+      };
+
+      fetchSuggestions();
+    } else {
+      setSuggestions([]);
+    }
+  }, [input,fetchSuggestions]);
+  const handleSuggestionClick = (suggestion) => {
+    setFetchSuggestions(false);
+    setInput(suggestion.properties.name_preferred);  // Update the input value
+    setSuggestions([]);    // Clear the suggestions list
+    handlePress(suggestion.geometry.coordinates);  // Call handlePress with the clicked suggestion
+  };
+  const handleChange = (e) => {
+    setInput(e.target.value);
+    setFetchSuggestions(true);  // Enable fetching suggestions
+  };
+  return (
+    &lt;div className="geocoding-form">
+      &lt;Form className="my-1 my-lg-0">
+        &lt;FormControl
+          type="text"
+          placeholder="country"
+          className="mr-sm-2"
+          value={input}
+          onChange={handleChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              //when pressing enter select the first suggestion
+              if (suggestions.length > 0) {
+                handleSuggestionClick(suggestions[0]);
+              } else {
+                handleSuggestionClick({ properties: { name_preferred: input }, geometry: { coordinates: [0,0] } });
+              }
+              e.preventDefault();
+            }
+          }}
+        />
+      &lt;/Form>
+      {suggestions.length > 0 &amp;&amp; (
+        &lt;ul className="suggestions-list">
+          {suggestions.map((suggestion, index) => (
+            &lt;li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+              {suggestion.properties.full_address}
+            &lt;/li>
+          ))}
+        &lt;/ul>
+      )}
+    &lt;/div>
+  );
+};
+
+export default GeocodingForm;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

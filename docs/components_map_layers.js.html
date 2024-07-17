@@ -1,4 +1,32 @@
-import OpenWeatherMap from "../apis/openWeather";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/map/layers.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/map/layers.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import OpenWeatherMap from "../apis/openWeather";
 /**
  * @function Layers
  * @description This function returns the layer object for the map
@@ -124,7 +152,7 @@ function Layers(mapType) {
       id: "earthquakes",
       layertype: "raster",
       sourcetype: "image",
-      url: `https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer?request=GetMap&version=1.3.0`,
+      url: `https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer?request=GetMap&amp;version=1.3.0`,
       epsg: "crs=CRS:84",
       bbox: [-84.764004, -4.998033, -66.003125, 16.998958],
       layer: 5,
@@ -139,7 +167,7 @@ function Layers(mapType) {
       id: "cuencas",
       layertype: "raster",
       sourcetype: "image",
-      url: `https://mapas.igac.gov.co/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetMap&version=1.1.0`,
+      url: `https://mapas.igac.gov.co/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetMap&amp;version=1.1.0`,
       bbox: [-85.452541, -4.239657, -66.554113, 16.238453],
       epsg: "srs=EPSG:4326",
       layer: 0,
@@ -148,13 +176,13 @@ function Layers(mapType) {
       id: "family_agriculture",
       sourcetype: "raster",
       layertype: "raster",
-      url: `https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857&transparent=true`,
+      url: `https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&amp;service=WMS&amp;bbox={bbox-epsg-3857}&amp;styles=&amp;format=image/png&amp;width=265&amp;height=256&amp;layers=0&amp;version=1.1.0&amp;srs=EPSG:3857&amp;transparent=true`,
     },
     "Cesar Aquifers": {
       id: "cesar_aquifers",
-      url: `https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857&transparent=true`,
+      url: `https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&amp;service=WMS&amp;bbox={bbox-epsg-3857}&amp;styles=&amp;format=image/png&amp;width=265&amp;height=256&amp;layers=0&amp;version=1.1.0&amp;srs=EPSG:3857&amp;transparent=true`,
       metadata_url:
-        "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS",
+        "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&amp;service=WMS",
       layertype: "raster",
       sourcetype: "raster",
       legend: true,
@@ -167,8 +195,8 @@ function Layers(mapType) {
     },
     Informality: {
       id: "informality",
-      url: `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&transparent=true&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,
-      metadata_url: `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`,
+      url: `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&amp;service=WMS&amp;bbox={bbox-epsg-3857}&amp;styles=&amp;format=image/png&amp;transparent=true&amp;width=265&amp;height=256&amp;layers=0&amp;version=1.1.0&amp;srs=EPSG:3857`,
+      metadata_url: `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&amp;service=WMS`,
       sourcetype: "raster",
       layertype: "raster",
       legend: true,
@@ -181,7 +209,7 @@ function Layers(mapType) {
     },
     Mangroves: {
       id: "Mangroves",
-      url: "https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&service=WMS&styles=&version=1.3.0&format=image/png&layers=0&crs=EPSG:3857&width=256&height=256&bbox={bbox-epsg-3857}&transparent=true",
+      url: "https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&amp;service=WMS&amp;styles=&amp;version=1.3.0&amp;format=image/png&amp;layers=0&amp;crs=EPSG:3857&amp;width=256&amp;height=256&amp;bbox={bbox-epsg-3857}&amp;transparent=true",
       layertype: "raster",
       sourcetype: "raster",
       legend: true,
@@ -196,7 +224,7 @@ function Layers(mapType) {
     },
     "Carbon Sequestration": {
       id: "carbon_sequestration",
-      url: "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0",
+      url: "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&amp;version=1.3.0",
       sourcetype: "image",
       layertype: "raster",
       epsg: "crs=CRS:84",
@@ -211,7 +239,7 @@ function Layers(mapType) {
     },
     "Black Communities": {
       id: "black_communities",
-      url: "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/COMUNIDAD_NEGRA_TITULADA/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=true&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson&token=",
+      url: "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/COMUNIDAD_NEGRA_TITULADA/FeatureServer/0/query?where=1%3D1&amp;objectIds=&amp;time=&amp;geometry=&amp;geometryType=esriGeometryPolygon&amp;inSR=&amp;spatialRel=esriSpatialRelIntersects&amp;resultType=none&amp;distance=0.0&amp;units=esriSRUnit_Meter&amp;relationParam=&amp;returnGeodetic=false&amp;outFields=&amp;returnGeometry=true&amp;returnCentroid=false&amp;returnEnvelope=false&amp;featureEncoding=esriDefault&amp;multipatchOption=xyFootprint&amp;maxAllowableOffset=&amp;geometryPrecision=&amp;outSR=4326&amp;defaultSR=&amp;datumTransformation=&amp;applyVCSProjection=false&amp;returnIdsOnly=false&amp;returnUniqueIdsOnly=false&amp;returnCountOnly=false&amp;returnExtentOnly=false&amp;returnQueryGeometry=false&amp;returnDistinctValues=false&amp;cacheHint=false&amp;orderByFields=&amp;groupByFieldsForStatistics=&amp;outStatistics=&amp;having=&amp;resultOffset=&amp;resultRecordCount=&amp;returnZ=false&amp;returnM=false&amp;returnExceededLimitFeatures=true&amp;quantizationParameters=&amp;sqlFormat=none&amp;f=pgeojson&amp;token=",
       sourcetype: "geojson",
       preprocessing: false,
       layertype: "fill",
@@ -229,7 +257,7 @@ function Layers(mapType) {
       layertype: "circle",
       sourcetype: "geojson",
       preprocessing: false,
-      url: "https://eonet.gsfc.nasa.gov/api/v3/events/geojson?&days=20",
+      url: "https://eonet.gsfc.nasa.gov/api/v3/events/geojson?&amp;days=20",
       title: "title",
     },
     "Military Zones": {
@@ -302,7 +330,7 @@ function Layers(mapType) {
       sourcetype: "geojson",
       layertype: "line",
       preprocessing: false,
-      url: "https://services1.arcgis.com/Og2nrTKe5bptW02d/arcgis/rest/services/MAPAGEOLOGIA/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=geojson",
+      url: "https://services1.arcgis.com/Og2nrTKe5bptW02d/arcgis/rest/services/MAPAGEOLOGIA/FeatureServer/1/query?where=1%3D1&amp;outFields=*&amp;outSR=4326&amp;f=geojson",
       title: "nombre",
       paint: {
         "line-color": "red",
@@ -331,7 +359,7 @@ function Layers(mapType) {
       preprocessing: false,
       title: "PATTERN",
       temporal: false,
-      url: "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson",
+      url: "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&amp;where=1%3D1&amp;f=geojson",
       legend: true,
       legendTitle: "Hot Spots",
       legendType: "xmlsource",
@@ -371,7 +399,7 @@ function Layers(mapType) {
       preprocessing: true,
       title: "status",
       temporal: false,
-      url: "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",
+      url: "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&amp;where=1%3D1&amp;f=geojson",
       large :true,
     },
     "Indigenous Reserves":{
@@ -381,7 +409,7 @@ function Layers(mapType) {
       preprocessing: true,
       title: "NOMBRE",
       temporal: false,
-      url: "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",
+      url: "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&amp;outFields=*&amp;f=geojson",
       large :true,
     },
     'Air Quality': {
@@ -397,7 +425,7 @@ function Layers(mapType) {
       'preprocessing':false,
       'title':'nombreestacion',
       'temporal':true,
-      'url':'http://localhost:8080/geoserver/Temperatura/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Temperatura%3Atemperature&maxFeatures=100&outputFormat=application%2Fjson',
+      'url':'http://localhost:8080/geoserver/Temperatura/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=Temperatura%3Atemperature&amp;maxFeatures=100&amp;outputFormat=application%2Fjson',
       'year_list':[2016,2017,2018,2019,2020,2021,2022,2023,2024],
       'year_name':'year',
       paint: {
@@ -430,3 +458,26 @@ function Layers(mapType) {
   return layers[mapType];
 }
 export default Layers;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
