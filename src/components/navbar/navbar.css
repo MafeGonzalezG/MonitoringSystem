@@ -2,12 +2,13 @@
   height: 10vh;
   border-radius: 3px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  font-size:  clamp(10px, 3vh, 80px);
-  max-width: 65vw;
+  font-size:  clamp(10px, 2.5vh, 80px);
+  max-width: 90vw;
+  margin: auto;
 }
 
 .navbar-brand {
-  font-size: clamp(10px, 3vh, 80px);
+  font-size: clamp(10px, 2.5vh, 80px);
   display: flex;
   align-items: center;
 }
@@ -18,7 +19,7 @@
   height: 10vh;
 }
 .navbar-brand span {
-  font-size:  clamp(10px, 3vh, 80px);
+  font-size:  clamp(10px, 2.5vh, 80px);
   /* font-weight: bold; */
 }
 .navbar-nav {
@@ -31,13 +32,13 @@
 }
 .navbar .custom-dropdown {
   margin: 0 10px; /* Adjust the margin to match the spacing of other items */
-  font-size:  clamp(10px, 3vh, 80px);
+  font-size:  clamp(10px, 2.5vh, 80px);
   max-width: 10vw;
 }
 
 .nav-item {
   padding: 0 10px;
-  font-size:  clamp(10px, 3vh, 80px);
+  font-size:  clamp(10px, 2.5vh, 80px);
   margin-left: 15px;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useCallback } from 'react';
 import CustomNavbar from '../components/navbar/navbar';
 import MapComponent from '../components/map/map';
 import Sidebar from '../components/Sidebar/Sidebar';
@@ -16,21 +16,22 @@ export default function Mapview() {
   const [yearList, setYearList] = useState([]);
   const [popUpview, setPopUpview] = useState(false);
   const [popUpSettings, setPopUpSettings] = useState({});
+  const [inputFile, SetinputFile] = useState(null);
 
   return (
     <div className="App">
-      <MapComponent mapStyle={mapStyle} setYearList={(yearlist)=>setYearList(yearlist)} lnglat={lnglat} setShowBar = {(bar)=> setShowBar(bar)}  mapType={mapType} year={year} setPopUpview={(view)=>setPopUpview(view)} setPopUpSettings={(settings)=>setPopUpSettings(settings)} 
-        setSourceisLoading={(isloading)=>setSourceisLoading(isloading)} /> 
+      <MapComponent mapStyle={mapStyle} setYearList={setYearList} lnglat={lnglat} setShowBar = {setShowBar}  mapType={mapType} year={year} setPopUpview={setPopUpview} setPopUpSettings={setPopUpSettings} 
+        setSourceisLoading={setSourceisLoading} inputFile={inputFile} /> 
       <SpinnerModal show={sourceisLoading} />
       <div className="app-body">
-        <CustomNavbar onpressMap={(map) => setMapStyle(map)} onChange={(newdir) => setLnglat(newdir)} />
+        <CustomNavbar onpressMap={setMapStyle} onChange={setLnglat} SetinputFile={SetinputFile}/>
         <div className="container-fluid h-100 w-100">
-          <div className="row no-gutters h-100 w-100 d-flex align-items-end justify-content-between">
+          <div className="row no-gutters h-100 w-100 d-flex align-items-end justify-content-center">
             <div className="col-3 justify-content-center">
-              <Sidebar onChange={(newMapType) => setMapType(newMapType)} mapStyle={mapStyle} />
+              <Sidebar onChange={setMapType} mapStyle={mapStyle} />
             </div>
             <div className="col-4 d-flex justify-content-center">
-              {showBar ? <Slidebar yearList={yearList}  onChange={(newYear) => setYear(newYear)} /> : null}
+              {showBar ? <Slidebar yearList={yearList}  onChange={setYear} /> : null}
             </div>
             <div className="col-4 justify-content-center">
               {popUpview ? <Popup onChange={setPopUpview} popUpSettings={popUpSettings}/> : null}

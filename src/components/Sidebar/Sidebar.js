@@ -32,7 +32,7 @@ const Sidebar = ({ onChange, mapStyle }) => {
   return (
     <div className='main-side-container'>
       <Button variant="secondary" onClick={toggleSidebar} className="sidebar-toggle-button bg-transparent mb-0 p-0">
-        {isSidebarVisible ? <i class="bi bi-list h3"></i> :<i class="bi bi-list h3"></i>}
+        {isSidebarVisible ? <i className="bi bi-list h3"></i> :<i className="bi bi-list h3"></i>}
       </Button>
       {isSidebarVisible && (
         <Container className="sidebar bg-transparent bg-gradient text-dark">
