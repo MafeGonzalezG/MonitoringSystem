@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: components/popup/popup.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,52 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: components/popup/popup.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../legend/Gradient.css';
+import './popup.css';
+import Gradient from '../legend/Gradient';
+import XmlParser from './xmlRetrieval';
+import JsonParserLegend from './jsonRetrieval';
+/**
+ * A popup component that displays information when triggered.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.onChange - The function that handles the change event.
+ * @param {Object} props.popUpSettings - The settings for the popup.
+ * @returns {JSX.Element} - The Popup component
+ */
 
+function Popup({ onChange, popUpSettings}) {  
+    const handleClick = () => {
+        onChange(false);
+    };
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    return (
+        &lt;div className="Popup bg-light">
+            &lt;button type="button" className="btn-close" aria-label="Close" onClick={handleClick}>&lt;/button>
+            &lt;h1 className='popup-title'>{popUpSettings.title}&lt;/h1>
+            {/* &lt;p className='popup-content'>Some information goes here...&lt;/p> */}
+            {popUpSettings.type==='gradient'?&lt;Gradient colors={popUpSettings.legendColors} labels={popUpSettings.legendPositions}/>:
+            popUpSettings.type==='jsonsource'?&lt;JsonParserLegend urljson={popUpSettings.legendSource} metadataObj={popUpSettings.legendSourceMetadata}/>:
+            popUpSettings.type ==='directInput'?&lt;div dangerouslySetInnerHTML={{ __html: popUpSettings.content }}>&lt;/div>
+            :&lt;XmlParser url={popUpSettings.legendSource} metadataObj={popUpSettings.legendSourceMetadata}/>}
+        &lt;/div>
+    );
+  }
+  
+  export default Popup;</code></pre>
+        </article>
+    </section>
 
 
 

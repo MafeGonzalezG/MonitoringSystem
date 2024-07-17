@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Contact.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Contact.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// src/ContactForm.js
+import React, { useState } from 'react';
+import CustomNavbar from '../components/navbar/navbar';
+
+import './ContactForm.css';
+/**
+ * 
+ * This is the contact form page of the app.
+ * @component
+ * @returns {JSX.Element} The rendered ContactForm component.
+ */
+const ContactForm = () => {
+    const [formData, setFormData] = useState({
+      name: '',
+      email: '',
+      message: '',
+    });
+  
+    const [submittedData, setSubmittedData] = useState(null);
+  
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setSubmittedData(formData);
+    };
+  
+    return (
+        &lt;div className="App">
+        &lt;div className="app-body">
+    &lt;CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null} SetinputFile={(input)=>null}/>
+      &lt;div className="container mt-2">
+        &lt;h2>Contact Us&lt;/h2>
+        &lt;form onSubmit={handleSubmit}>
+          &lt;div className="form-group">
+            &lt;label htmlFor="name">Name&lt;/label>
+            &lt;input
+              type="text"
+              className="form-control"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          &lt;/div>
+          &lt;div className="form-group">
+            &lt;label htmlFor="email">Email&lt;/label>
+            &lt;input
+              type="email"
+              className="form-control"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          &lt;/div>
+          &lt;div className="form-group">
+            &lt;label htmlFor="message">Message&lt;/label>
+            &lt;textarea
+              className="form-control"
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            />
+          &lt;/div>
+          &lt;button type="submit" className="btn btn-primary mt-3">Submit&lt;/button>
+        &lt;/form>
+  
+        {submittedData &amp;&amp; (
+          &lt;div className="mt-5">
+            &lt;h2>Submitted Information&lt;/h2>
+            &lt;p>&lt;strong>Name:&lt;/strong> {submittedData.name}&lt;/p>
+            &lt;p>&lt;strong>Email:&lt;/strong> {submittedData.email}&lt;/p>
+            &lt;p>&lt;strong>Message:&lt;/strong> {submittedData.message}&lt;/p>
+          &lt;/div>
+        )}
+      &lt;/div>
+        &lt;/div>
+        &lt;/div>
+
+    );
+  };
+  
+  export default ContactForm;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

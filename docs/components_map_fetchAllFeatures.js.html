@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: components/map/fetchAllFeatures.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,51 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: components/map/fetchAllFeatures.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Fetch all features from a URL that supports pagination
+ * @param {string} url - The URL to fetch features from.
+ * @returns {Promise} - A promise that resolves to a GeoJSON FeatureCollection.
+ * @example
+ * fetchAllFeatures("https://api.url.com/features");
+ * @example
+ * fetchAllFeatures("https://api.url.com/features?query=something");
+ */
+async function fetchAllFeatures(url) {
+    const allFeatures = [];
+    let offset = 0;
+    const limit = 1000; // Number of records to fetch per request
+  
+    while (true) {
+      const queryUrl = `${url}&amp;resultOffset=${offset}&amp;resultRecordCount=${limit}`;
+      const response = await fetch(queryUrl);
+      const data = await response.json();
+      allFeatures.push(...data.features);
+  
+      if (data.features.length &lt; limit) {
+        // If fewer features are returned than the limit, we have fetched all records
+        break;
+      }
+  
+      offset += limit;
+    }
+  
+    return {
+      type: "FeatureCollection",
+      features: allFeatures,
+    };
+  }
+export default fetchAllFeatures;</code></pre>
+        </article>
+    </section>
 
 
 

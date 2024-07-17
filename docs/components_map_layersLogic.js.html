@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/map/layersLogic.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/map/layersLogic.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Layers from "./layers.js";
+import apiFires from "../apis/firesApi.js";
+import apiWaterQuality from "../apis/apiWaterQuality.js";
+import getLocations from "../apis/hardCodedResguardos.js";
+import resguardosApi from "../apis/apiResguardos.js";
+import apiTempIdeam from "../apis/apiTempIDEAM.js";
+import schoolAPiCall from "../apis/schoolApi.js";
+import AirQualityMap from "../apis/apiAirQuality.js";
+import flyToLayerBounds from "./flyToLayerBounds.js";
+import addGenericPopUp from "./addGenericPopUp.js";
+import { useEffect, useState } from "react";
+import checkLayer from "./checkLayer.js";
+import fetchAllFeatures from "./fetchAllFeatures.js";
+/**
+ * This function is the logic for the layers in the map. It adds the layers to the map, and sets the source loading state, the popup view state, and the popup settings.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.setYearList - The year list, this prop is managed from the main component.
+ * @param {Array} props.lnglat - The longitude and latitude, this prop is managed from the main component.
+ * @param {Object} props.map - The map object.
+ * @param {string} props.mapType - The map type, this prop is managed from the main component.
+ * @param {number} props.year - The year, this prop is managed from the main component.
+ * @param {string} props.currentSource - The current source, this prop is managed from the map component.
+ * @param {Function} props.setShowBar - The show bar state, this prop is managed from the main component.
+ * @param {Function} props.setPopUpview - The popup view state, this prop is managed from the main component.
+ * @param {Function} props.setPopUpSettings - The popup settings, this prop is managed from the main component.
+ * @param {Function} props.setSourceisLoading - The source loading state, this prop is managed from the main component.
+ * @param {Function} props.setCurrentSource - The current source, this prop is managed from the map component.
+ * @returns {null} - The function does not return anything, it adds the layers to the map.
+ */
+function LayersLogic({
+  setYearList,
+  lnglat,
+  map,
+  mapType,
+  year,
+  currentSource,
+  setShowBar,
+  setPopUpview,
+  setPopUpSettings,
+  setSourceisLoading,
+  setCurrentSource
+}) {
+  const [currentLayers, setCurrentLayers] = useState([]);
+  const [switcher, setSwitcher] = useState(false);
+  const [clickLocation, setClickLocation] = useState([]);
+  const preprocessing_geojsons = {
+    Fires: { func: apiFires },
+    "Water Quality": { func: apiWaterQuality },
+    Reserves: { func: getLocations },
+    "IDEAM Station Temperatures": { func: apiTempIdeam },
+    Communities: { func: resguardosApi },
+    Education: { func: schoolAPiCall },
+    "Air Quality": { func: AirQualityMap },
+  };
+  if (map) {
+    map.on("click", (e) => {
+      setClickLocation([e.lngLat.lng, e.lngLat.lat]);
+    });
+  }
+  useEffect(() => {
+    if (!map) return;
+    if (!Layers(mapType)) return;
+    console.log("mapType", mapType);
+    setSourceisLoading(true);
+    setPopUpview(false);
+    const layerdic = Layers(mapType);
+    checkLayer(map, currentLayers);
+    const baseSoure = {
+      type: layerdic.sourcetype,
+    };
+    if (layerdic.temporal) {
+      setShowBar(true);
+      setYearList(layerdic.year_list);
+    } else {
+      setShowBar(false);
+    }
+    let compSource = {};
+    switch (layerdic.sourcetype) {
+      case "raster":
+        compSource = {
+          tiles: [layerdic.url],
+          tileSize: 256,
+        };
+        break;
+
+      case "geojson":
+        if (layerdic.preprocessing &amp;&amp; !layerdic.large) {
+          preprocessing_geojsons[mapType].func().then((data) => {
+            compSource = {
+              data: data,
+            };
+            const beforeLayer = map.getLayer("building")
+              ? "building"
+              : undefined;
+            map.addSource(layerdic.id, { ...baseSoure, ...compSource });
+            map.addLayer(
+              {
+                id: layerdic.id,
+                type: layerdic.layertype,
+                source: layerdic.id,
+                paint: { ...layerdic.paint },
+              },
+              beforeLayer
+            );
+            setCurrentLayers([layerdic.id]);
+          });
+        } else {
+          compSource = {
+            data: layerdic.url,
+          };
+        }
+        if (layerdic.large &amp;&amp; layerdic.preprocessing) {
+          fetchAllFeatures(layerdic.url).then((data) => {
+            map.addSource(layerdic.id, { ...baseSoure, ...compSource });
+            const beforeLayer = map.getLayer("building")
+              ? "building"
+              : undefined;
+            map.addLayer(
+              {
+                id: layerdic.id,
+                type: layerdic.layertype,
+                source: layerdic.id,
+                paint: { ...layerdic.paint },
+              },
+              beforeLayer
+            );
+            setCurrentLayers([layerdic.id]);
+            addGenericPopUp(map, layerdic.id, layerdic.title);
+          });
+        }
+        addGenericPopUp(map, layerdic.id, layerdic.title);
+        break;
+      case "image":
+        const bbox = layerdic.bbox;
+        var wmsRequestUrl = "";
+        if (year) {
+          wmsRequestUrl = `${layerdic.url}${
+            layerdic.temporal
+              ? `${layerdic.year_list[year]}/MapServer/WMSServer?service=WMS&amp;version=1.1.0&amp;request=GetMap`
+              : ""
+          }&amp;layers=${layerdic.layer}&amp;bbox=${bbox.join(
+            ","
+          )}&amp;width=256&amp;height=256&amp;${
+            layerdic.epsg
+          }&amp;styles=&amp;format=image/png&amp;transparent=true`;
+        } else {
+          wmsRequestUrl = `${layerdic.url}${
+            layerdic.temporal
+              ? `${layerdic.year_list[0]}/MapServer/WMSServer?service=WMS&amp;version=1.1.0&amp;request=GetMap`
+              : ""
+          }&amp;layers=${layerdic.layer}&amp;bbox=${bbox.join(
+            ","
+          )}&amp;width=256&amp;height=256&amp;${
+            layerdic.epsg
+          }&amp;styles=&amp;format=image/png&amp;transparent=true`;
+        }
+        compSource = {
+          url: wmsRequestUrl,
+          coordinates: [
+            [bbox[0], bbox[3]], // Top-left
+            [bbox[2], bbox[3]], // Top-right
+            [bbox[2], bbox[1]], // Bottom-right
+            [bbox[0], bbox[1]], // Bottom-left
+          ],
+        };
+        break;
+      case "event-driven":
+        setSourceisLoading(false);
+        setPopUpview(true);
+        setPopUpSettings({
+          type: "directInput",
+          title: "Air quality indicator",
+          content: "Click anywhere on the map to see air quality indicators",
+        });
+        break;
+      default:
+        break;
+    }
+
+    if (!layerdic.preprocessing) {
+      map.addSource(layerdic.id, { ...baseSoure, ...compSource });
+      const beforeLayer = map.getLayer("building") ? "building" : undefined;
+      map.addLayer(
+        {
+          id: layerdic.id,
+          type: layerdic.layertype,
+          source: layerdic.id,
+          paint: { ...layerdic.paint },
+        },
+        beforeLayer
+      );
+      setCurrentLayers([layerdic.id]);
+    }
+    if (layerdic.legend &amp;&amp; layerdic.legendType === "gradient") {
+      setPopUpview(true);
+      setPopUpSettings({
+        type: "gradient",
+        title: layerdic.legendTitle,
+        legendPositions: layerdic.legendPositions,
+        legendColors: layerdic.legendColors,
+      });
+    }
+    if (layerdic.legend &amp;&amp; layerdic.legendType === "xmlsource") {
+      setPopUpview(true);
+      setPopUpSettings({
+        type: "xmlsource",
+        title: layerdic.legendTitle,
+        legendSource: layerdic.legendSource,
+        legendSourceMetadata: layerdic.legendSourceMetadata,
+      });
+    }
+    if (layerdic.legend &amp;&amp; layerdic.legendType === "jsonsource") {
+      setPopUpview(true);
+      setPopUpSettings({
+        type: "jsonsource",
+        title: layerdic.legendTitle,
+        legendSource: layerdic.legendSource,
+        legendSourceMetadata: layerdic.legendSourceMetadata,
+      });
+    }
+    if (layerdic.sourcetype !== "event-driven") {
+      setCurrentSource(layerdic.id);
+      map.on("error", function (e) {
+        console.error("Error in map:", e.error);
+        setSourceisLoading(false);
+        setPopUpview(true);
+        setPopUpSettings({
+          type: "directInput",
+          title: "There was an error loading the layer",
+          content: "Error loading the layer",
+        });
+      });
+    }
+  }, [mapType, switcher]);
+  useEffect(() => {
+    if (!map) return;
+    if (!Layers(mapType)) return;
+    const layerdic = Layers(mapType);
+    if (!layerdic.temporal) return;
+    console.log("year", year);
+    const year_list = layerdic.year_list;
+    if (layerdic.sourcetype === "geojson") {
+      console.log("geojson");
+      map.setFilter(currentLayers[0], [
+        "==",
+        ["string", ["get", layerdic.year_name]],
+        String(year_list[year]),
+      ]);
+      //remove popups
+      map.fire("closeAllPopups");
+      addGenericPopUp(map, layerdic.id, layerdic.title);
+    }
+    if (layerdic.sourcetype === "image") {
+      setSwitcher(!switcher);
+    }
+  }, [year]);
+
+  useEffect(() => {
+    if (map &amp;&amp; lnglat) {
+      map.flyTo({
+        center: lnglat,
+        zoom: 5,
+        speed: 2,
+        curve: 1,
+        easing(t) {
+          return t;
+        },
+      });
+    }
+  }, [lnglat]);
+
+  useEffect(() => {
+    if (map &amp;&amp; currentSource) {
+      const onSourceLoaded = () => {
+        if (map.isSourceLoaded(currentSource)) {
+          setSourceisLoading(false);
+          flyToLayerBounds(currentSource, map);
+          // Correct flytolayers bounds for multiple polygons the async is not working
+          console.log("source loaded");
+          map.off("sourcedata", onSourceLoaded); // Clean up the event listener
+        }
+      };
+
+      map.on("sourcedata", onSourceLoaded);
+
+      // Clean up the event listener on component unmount
+      return () => {
+        map.off("sourcedata", onSourceLoaded);
+      };
+    }
+  }, [map, currentSource, switcher, setSourceisLoading]);
+
+  useEffect(() => {
+    if (!map) return;
+    if (!Layers(mapType)) return;
+    const layerdic = Layers(mapType);
+    if (layerdic.sourcetype === "event-driven") {
+      preprocessing_geojsons[mapType]
+        .func(clickLocation[1], clickLocation[0])
+        .then((data) => {
+          const popupContent = Object.entries(data.list[0].components)
+            .map(([key, value]) => {
+              return `&lt;p style="margin: 0;">&lt;strong>${key}&lt;/strong>: ${value}&lt;/p>`;
+            })
+            .join("");
+          setPopUpSettings({
+            tittle: layerdic.title,
+            type: "directInput",
+            content: popupContent,
+          });
+        });
+    }
+  }, [clickLocation]);
+  return null;
+}
+
+export default LayersLogic;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: Routes.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,38 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: Routes.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Mapview from './pages/Mapview';
+import About from './pages/About';
+import Contact from './pages/Contact';
+/**
+ * The routing component.
+ * @component
+ * @returns {JSX.Element} The rendered Routing component.
+ */
+export const Routing = () => {
+    return (
+        &lt;Router>
+            &lt;Routes>
+                &lt;Route path="/MonitoringSystem" element={&lt;Mapview />} />
+                &lt;Route path="/MonitoringSystem/About" element={&lt;About />} />
+                &lt;Route path="/MonitoringSystem/Contact" element={&lt;Contact />} />
+            &lt;/Routes>
+        &lt;/Router>
+    );
+}</code></pre>
+        </article>
+    </section>
 
 
 

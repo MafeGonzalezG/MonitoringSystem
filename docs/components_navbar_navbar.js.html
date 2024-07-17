@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/navbar/navbar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/navbar/navbar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { Navbar, Nav } from 'react-bootstrap';
+import CustomDropdown from '../Sidebar/dropdown/Dropdown';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './navbar.css';
+import GeocodingForm from './geoCodingForm';
+import logoPlanet from '../../assets/images/logo_planet.png';
+import InputFile from '../input/InputData';
+/**
+ * Navigation bar component.
+ *
+ * @component
+ * @param {Object} props - The component accepts onChange props.
+ * @param {function} props.onChange - The change+enter press event handler.
+ * @param {function} props.onpressMap - The map style change event handler.
+ * @param {function} props.SetinputFile - The input file event handler.
+ * @returns {JSX.Element} The rendered Navbar component.
+ *
+ * @example
+ * // Render a navbar with a search bar that logs the input value on enter press.
+ * &lt;Navbar onChange={()=>console.log('value changed');} onpressMap={()=>console.log('map style changed');} SetinputFile={()=>console.log('input file added');}/>
+ */
+function CustomNavbar({ onpressMap, onChange, SetinputFile }) {
+  const real_names = [
+    'outdoors-v12',
+    'light-v11',
+    'satellite-v9',
+    'navigation-night-v1',
+    'standard',
+    'streets-v12',
+    'dark-v11',
+    'satellite-streets-v12',
+    'navigation-day-v1',
+  ];
+  const show_names = [
+    'Outdoors',
+    'Light',
+    'Satellite',
+    'Navigation night',
+    'Standard',
+    'Streets',
+    'Dark',
+    'Satellite Streets',
+    'Navigation day',
+  ];
+
+  return (
+    &lt;Navbar bg="light" expand="lg" className="bg-light bg-gradient text-dark">
+      &lt;Navbar.Brand href="/MonitoringSystem" className="d-flex align-items-center">
+        &lt;img src={logoPlanet} alt="" height="65vh" className="d-inline-block align-middle" />
+        &lt;span className="ms-2">Monitoring system&lt;/span>
+      &lt;/Navbar.Brand>
+      &lt;Navbar.Toggle aria-controls="navbarSupportedContent" />
+      &lt;Navbar.Collapse id="navbarSupportedContent">
+        &lt;Nav className="ml-auto d-flex align-items-center">
+          &lt;Nav.Link href="/MonitoringSystem/About" role="button">About&lt;/Nav.Link>
+          &lt;Nav.Link href="/MonitoringSystem/Contact" role="button">Contact&lt;/Nav.Link>
+          &lt;CustomDropdown
+            options={show_names}
+            defaultText="Map style"
+            onChange={(option) => onpressMap(real_names[show_names.indexOf(option)])}
+          />
+           &lt;Nav.Item>
+            &lt;GeocodingForm handlePress={(ltlng) => onChange(ltlng)} />
+          &lt;/Nav.Item>
+          &lt;Nav.Item>
+          &lt;InputFile SetinputFile={SetinputFile}/>
+          &lt;/Nav.Item>
+        &lt;/Nav>
+      &lt;/Navbar.Collapse>
+    &lt;/Navbar>
+  );
+}
+
+export default CustomNavbar;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

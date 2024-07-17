@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/map/geojsonLayerFromInputFile.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/map/geojsonLayerFromInputFile.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Add a layer to the map based on the input file type
+ * @param {Object} map - The map object.
+ * @param {Object} data - The data object.
+ * @param {string} inputFileName - The name of the input file.
+ * @returns {null} - The function does not return anything, it adds a layer to the map.
+ * @example
+ * geojsonLayer(map,data,inputFileName);
+ * @example
+ * map.on('load', () => {
+ * geojsonLayer(map,data,inputFileName);
+ * }
+ */
+function geojsonLayer(map,data,inputFileName){
+    if(data.features[0].geometry.type === 'Point'){
+      map.addLayer({
+        id:inputFileName,
+        type: 'circle',
+        source:inputFileName,
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#f00'
+        }
+      });
+    }else if(data.features[0].geometry.type === 'Polygon'){
+      map.addLayer({
+        id:inputFileName,
+        type: 'fill',
+        source:inputFileName,
+        paint: {
+          'fill-color': '#088',
+          'fill-opacity': 0.8
+        }
+      });}else if(data.features[0].geometry.type === 'LineString'){
+        map.addLayer({
+          id:inputFileName,
+          type: 'line',
+          source:inputFileName,
+          paint: {
+            'line-color': '#f00',
+            'line-width': 2
+          }
+        });} else if(data.features[0].geometry.type === 'MultiPolygon'){
+          map.addLayer({
+            id:inputFileName,
+            type: 'fill',
+            source:inputFileName,
+            paint: {
+              'fill-color': '#088',
+              'fill-opacity': 0.8
+            }
+          });
+        } else if(data.features[0].geometry.type === 'MultiLineString'){
+          map.addLayer({
+            id:inputFileName,
+            type: 'line',
+            source:inputFileName,
+            paint: {
+              'line-color': '#f00',
+              'line-width': 2
+            }
+          });
+        } else if(data.features[0].geometry.type === 'MultiPoint'){
+          map.addLayer({
+            id:inputFileName,
+            type: 'circle',
+            source:inputFileName,
+            paint: {
+              'circle-radius': 5,
+              'circle-color': '#f00'
+            }
+          });} else if(data.features[0].geometry.type === 'GeometryCollection'){
+            map.addLayer({
+              id:inputFileName,
+              type: 'fill',
+              source:inputFileName,
+              paint: {
+                'fill-color': '#088',
+                'fill-opacity': 0.8
+              }
+            });
+          } else if (data.features[0].geometry.type === 'FeatureCollection'){
+            map.addLayer({
+              id:inputFileName,
+              type: 'fill',
+              source:inputFileName,
+              paint: {
+                'fill-color': '#088',
+                'fill-opacity': 0.8
+              }
+            });
+          } else if (data.features[0].geometry.type === 'Feature'){
+            map.addLayer({
+              id:inputFileName,
+              type: 'fill',
+              source:inputFileName,
+              paint: {
+                'fill-color': '#088',
+                'fill-opacity': 0.8
+              }
+            });
+          }
+  }
+export default geojsonLayer;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

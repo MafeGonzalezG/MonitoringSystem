@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Sidebar/Sidebar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Sidebar/Sidebar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Sidebar.css';  // Importing the CSS file for additional styling
+import Card from './Card';
+/**
+ * Sidebar component using react-bootstrap.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.onChange - The function that handles the change event.
+ * @param {string} props.mapStyle - The current map style.
+ * @returns {JSX.Element} The rendered Sidebar component.
+ */
+
+const Sidebar = ({ onChange, mapStyle }) => {
+  const [selectedDropdown, setSelectedDropdown] = useState(null);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+
+  useEffect(() => {
+    setSelectedDropdown(null);
+  }, [mapStyle]);
+
+  const handleDropdownChange = (option, index) => {
+    setSelectedDropdown(index);
+    onChange(option);
+  };
+
+  const dropdownData = [
+    { title: "Nature", options: ['Cadastre', 'Mangroves', 'Hot Spots', 'Carbon Sequestration'], disabledOptions: ['Cadastre'] },
+    { title: "Climate", options: ['Precipitation', 'Pressure', 'Temperature', 'Clouds', 'Wind', 'IDEAM Station Temperatures'] },
+    { title: "Communities", options: ['Black Communities', 'Mining', 'Communities', 'Education', 'Military Zones', 'Reserves', 'Informality', 'Indigenous Reserves'], disabledOptions: ['Black Communities', 'Indigenous Reserves'] },
+    { title: "Biodiversity", options: ['Family Agriculture', 'Cesar Aquifers', 'Test'] },
+    { title: "Risk Map and Impacts", options: ['Deforestation', 'Earthquakes', 'Air Quality', 'Fires', 'Events', 'Faults'] },
+  ];
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
+  return (
+    &lt;div className='main-side-container'>
+      &lt;Button variant="secondary" onClick={toggleSidebar} className="sidebar-toggle-button bg-transparent mb-0 p-0">
+        {isSidebarVisible ? &lt;i className="bi bi-list h3">&lt;/i> :&lt;i className="bi bi-list h3">&lt;/i>}
+      &lt;/Button>
+      {isSidebarVisible &amp;&amp; (
+        &lt;Container className="sidebar bg-transparent bg-gradient text-dark">
+          {dropdownData.map((dropdown, index) => (
+            &lt;Row key={index}>
+              &lt;Col>
+                &lt;Card
+                  title={dropdown.title}
+                  options={dropdown.options}
+                  onChange={(option) => handleDropdownChange(option, index)}
+                  isSelected={selectedDropdown === index}
+                  disabledOptions={dropdown.disabledOptions}
+                />
+              &lt;/Col>
+            &lt;/Row>
+          ))}
+        &lt;/Container>
+      )}
+    &lt;/div>
+  );
+};
+
+export default Sidebar;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LatLngControl.html">LatLngControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddFileToMap">AddFileToMap</a></li><li><a href="global.html#Card">Card</a></li><li><a href="global.html#ColorCycleButton">ColorCycleButton</a></li><li><a href="global.html#ContactForm">ContactForm</a></li><li><a href="global.html#CustomDropdown">CustomDropdown</a></li><li><a href="global.html#CustomNavbar">CustomNavbar</a></li><li><a href="global.html#GeocodingForm">GeocodingForm</a></li><li><a href="global.html#Layers">Layers</a></li><li><a href="global.html#LayersLogic">LayersLogic</a></li><li><a href="global.html#Popup">Popup</a></li><li><a href="global.html#Routing">Routing</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#Slidebar">Slidebar</a></li><li><a href="global.html#SpinnerModal">SpinnerModal</a></li><li><a href="global.html#XmlParser">XmlParser</a></li><li><a href="global.html#checkLayer">checkLayer</a></li><li><a href="global.html#elevation">elevation</a></li><li><a href="global.html#fetchAllFeatures">fetchAllFeatures</a></li><li><a href="global.html#flyToLayerBounds">flyToLayerBounds</a></li><li><a href="global.html#geojsonLayer">geojsonLayer</a></li><li><a href="global.html#prettyFormat">prettyFormat</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 12:56:32 GMT-0500 (hora estándar de Colombia)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
