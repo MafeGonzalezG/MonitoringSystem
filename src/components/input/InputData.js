@@ -11,7 +11,8 @@ function InputFile({SetinputFile}) {
     }, [selectedFile, SetinputFile]);
     return (
         <div>
-            <input type="file" onChange={handleFileChange} className="form-control form-control-sm"/>
+            <label htmlFor="imageUpload" className="btn btn-primary btn-block btn-outlined">Upload Files</label>
+            <input type="file" id="imageUpload" onChange={handleFileChange} style={{"display":"none"}} className="form-control form-control-sm"/>
         </div>
     );
 }

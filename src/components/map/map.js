@@ -6,12 +6,26 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import LayersLogic from './layersLogic.js';
 import useDidMountEffect from '../customHooks/customHookMounted.js';  
 import LatLngControl from './customControl.js';
+import AddFileToMap from './addFileTomap.js';
 /**
  * Map rendering component.
  *
  * @component
  * @param {Object} props - The component accepts text props.
- * @param {text} props.country - The name of the country to focus on the map.
+ * @param {text} props.mapStyle - The map style to be rendered.
+ * @param {Function} props.setYearList - The function that sets the year list.
+ * @param {Function} props.setlnglatclick - The function that sets the lnglatclick.
+ * @param {Function} props.setShowBar - The function that sets the show bar.
+ * @param {Function} props.setPopUpview - The function that sets the popup view.
+ * @param {Function} props.setPopUpSettings - The function that sets the popup settings.
+ * @param {Function} props.setSourceisLoading - The function that sets the source loading state.
+ * @param {text} props.inputFile - The file to be added to the map.
+ * @param {text} props.mapType - The type of the map.
+ * @param {text} props.year - The year to be displayed on the map.
+ * @returns {JSX.Element} The rendered map component.
+ * @example
+ * // Render a map component 
+ * <MapComponent mapStyle={mapStyle} setYearList={setYearList} lnglat={lnglat} setShowBar = {setShowBar}  mapType={mapType} year={year} setPopUpview={setPopUpview} setPopUpSettings={setPopUpSettings} />
  * @returns {JSX.Element} The rendered map component.
  *
  * @example
@@ -23,6 +37,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYWNtb3JhIiwiYSI6ImNsdHlnbGszMDBpMGUyaG8wMHNzd
 const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading,inputFile}) => {
 
   const [map, setMap] = useState(null);
+  const [currentSource, setCurrentSource] = useState(null);
   const initializeMap = () => {
     const newMap = new mapboxgl.Map({
         container: 'map', // container ID
@@ -77,7 +92,8 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
       map.setStyle('mapbox://styles/mapbox/' + mapStyle);
     }
   },[mapStyle]);
-  LayersLogic({setYearList, lnglat, map,mapType, year, setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading,inputFile});
+  LayersLogic({setYearList, lnglat, map,mapType, year,currentSource,setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading,setCurrentSource});
+  AddFileToMap({inputFile,map,setCurrentSource,setSourceisLoading,setPopUpview,setPopUpSettings})
   return (
       <div id="map" ></div>
   );

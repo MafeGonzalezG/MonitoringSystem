@@ -6,6 +6,11 @@ import Slidebar from '../components/Slidebar/Slidebar';
 import Popup from '../components/popup/popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SpinnerModal from './LoadingModal';
+/**
+ * The main page of the app.
+ * @component
+ * @returns {JSX.Element} The rendered Mapview component.
+ */
 export default function Mapview() {
   const [mapStyle, setMapStyle] = useState('light-v11');
   const [mapType, setMapType] = useState();
@@ -19,15 +24,15 @@ export default function Mapview() {
   const [inputFile, SetinputFile] = useState(null);
 
   return (
-    <div className="App">
+    <div className="App vh-100">
       <MapComponent mapStyle={mapStyle} setYearList={setYearList} lnglat={lnglat} setShowBar = {setShowBar}  mapType={mapType} year={year} setPopUpview={setPopUpview} setPopUpSettings={setPopUpSettings} 
         setSourceisLoading={setSourceisLoading} inputFile={inputFile} /> 
       <SpinnerModal show={sourceisLoading} />
-      <div className="app-body">
+      <div className="app-body d-flex flex-column vh-100">
         <CustomNavbar onpressMap={setMapStyle} onChange={setLnglat} SetinputFile={SetinputFile}/>
         <div className="container-fluid h-100 w-100">
           <div className="row no-gutters h-100 w-100 d-flex align-items-end justify-content-center">
-            <div className="col-3 justify-content-center">
+            <div className="col-3  align-self-start">
               <Sidebar onChange={setMapType} mapStyle={mapStyle} />
             </div>
             <div className="col-4 d-flex justify-content-center">

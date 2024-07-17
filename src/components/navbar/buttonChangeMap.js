@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import "./buttonchangemap.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+/**
+ * A button that cycles through colors when clicked.
+ * @param {object} props - The component's props.
+ * @param {Function} props.onpressMap - A function that changes the map.
+ * @returns {JSX.Element} - The component
+ */
 function ColorCycleButton ({onpressMap}) {
   const colors = ['success','secondary', 'primary', 'danger']; // Bootstrap color variants
   const maps = ['outdoors-v12','light-v11', 'satellite-v9', 'navigation-night-v1']; // Bootstrap color variants

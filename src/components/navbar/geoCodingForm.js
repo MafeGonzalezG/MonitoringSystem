@@ -1,7 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Form, FormControl } from 'react-bootstrap';
 import './geocoding.css'
-
+/**
+ * A form that fetches and displays geocoding suggestions.
+ * @component
+ * @param {object} props - The component props.
+ * @param {Function} props.handlePress - A function that handles the selected suggestion.
+ * @returns {JSX.Element} - The component
+ * @example
+ * <GeocodingForm handlePress={handlePress} />
+ * 
+ * @example
+ * function handlePress(coordinates) {
+ *  console.log('Selected coordinates:', coordinates);
+ * }
+ *  
+ *  <GeocodingForm handlePress={handlePress} />
+ *  
+ */
 const GeocodingForm = ({ handlePress }) => {
   const [input, setInput] = useState('');
   const [suggestions, setSuggestions] = useState([]);

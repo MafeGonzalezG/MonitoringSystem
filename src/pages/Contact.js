@@ -3,7 +3,12 @@ import React, { useState } from 'react';
 import CustomNavbar from '../components/navbar/navbar';
 
 import './ContactForm.css';
-
+/**
+ * 
+ * This is the contact form page of the app.
+ * @component
+ * @returns {JSX.Element} The rendered ContactForm component.
+ */
 const ContactForm = () => {
     const [formData, setFormData] = useState({
       name: '',

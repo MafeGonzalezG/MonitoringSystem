@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-
+/**
+ * A custom XML parser component.
+ * @component
+ * @param {object} props - The component props.
+ * @param {string} props.url - The URL of the XML file.
+ * @param {object} props.metadataObj - The object containing the metadata keys and their corresponding XML paths.
+ * @returns {JSX.Element} - The XmlParser component
+ */
 const XmlParser = ({ url,metadataObj}) => {
     const [metadata, setMetadata] = useState(null);
     const [error, setError] = useState(null);

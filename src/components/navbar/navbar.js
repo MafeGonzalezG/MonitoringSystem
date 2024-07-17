@@ -12,11 +12,13 @@ import InputFile from '../input/InputData';
  * @component
  * @param {Object} props - The component accepts onChange props.
  * @param {function} props.onChange - The change+enter press event handler.
+ * @param {function} props.onpressMap - The map style change event handler.
+ * @param {function} props.SetinputFile - The input file event handler.
  * @returns {JSX.Element} The rendered Navbar component.
  *
  * @example
  * // Render a navbar with a search bar that logs the input value on enter press.
- * <Navbar onChange={()=>console.log('value changed');} />
+ * <Navbar onChange={()=>console.log('value changed');} onpressMap={()=>console.log('map style changed');} SetinputFile={()=>console.log('input file added');}/>
  */
 function CustomNavbar({ onpressMap, onChange, SetinputFile }) {
   const real_names = [

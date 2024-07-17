@@ -1,5 +1,14 @@
 import OpenWeatherMap from "../apis/openWeather";
-
+/**
+ * @function Layers
+ * @description This function returns the layer object for the map
+ * @param {string} mapType - The type of layer to be added to the map.
+ * @returns {Object} - The layer object for the map.
+ * @example
+ * Layers('Precipitation'); -> returns the precipitation layer object.
+ * @example
+ * Layers('Temperature'); -> returns the temperature layer object.
+ */
 function Layers(mapType) {
   const layers = {
     Precipitation: {
@@ -135,14 +144,14 @@ function Layers(mapType) {
       epsg: "srs=EPSG:4326",
       layer: 0,
     }, //maybe service is now blocked
-    "Agricultura Familiar": {
-      id: "agricultura_familiar",
+    "Family Agriculture": {
+      id: "family_agriculture",
       sourcetype: "raster",
       layertype: "raster",
       url: `https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857&transparent=true`,
     },
-    "Acuiferos Cesar": {
-      id: "acuiferos_cesar",
+    "Cesar Aquifers": {
+      id: "cesar_aquifers",
       url: `https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857&transparent=true`,
       metadata_url:
         "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS",
@@ -152,12 +161,12 @@ function Layers(mapType) {
       legendType: "jsonsource",
       legendSource:
         "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/legend?f=pjson",
-      legendTitle: "Acuiferos Cesar",
+      legendTitle: "Cesar Aquifers",
       legendSourceMetadata: {
         'item':0,}
     },
-    Informalidad: {
-      id: "informalidad",
+    Informality: {
+      id: "informality",
       url: `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&transparent=true&width=265&height=256&layers=0&version=1.1.0&srs=EPSG:3857`,
       metadata_url: `https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS`,
       sourcetype: "raster",
@@ -166,18 +175,18 @@ function Layers(mapType) {
       legendType: "jsonsource",
       legendSource:
         "https://geoservicios.upra.gov.co/arcgis/rest/services/formalizacion_propiedad/estimacion_informalidad/MapServer/legend?f=pjson",
-      legendTitle: "Informalidad",
+      legendTitle: "Informality",
       legendSourceMetadata: {
         'item':0,}
     },
-    Manglares: {
-      id: "manglares",
+    Mangroves: {
+      id: "Mangroves",
       url: "https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&service=WMS&styles=&version=1.3.0&format=image/png&layers=0&crs=EPSG:3857&width=256&height=256&bbox={bbox-epsg-3857}&transparent=true",
       layertype: "raster",
       sourcetype: "raster",
       legend: true,
       legendType: "xmlsource",
-      legendTitle: "Manglares",
+      legendTitle: "Mangroves",
       legendSource:
         "https://gis.invemar.org.co/arcgis/rest/services/SIGMA/MANGLARES_COLOMBIA/MapServer/info/metadata",
       legendSourceMetadata: {
@@ -185,8 +194,8 @@ function Layers(mapType) {
         'Proposito':'idPurp',
         'credito':'idCredit',}
     },
-    "Carbon Secuestro": {
-      id: "carbon_secuestro",
+    "Carbon Sequestration": {
+      id: "carbon_sequestration",
       url: "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0",
       sourcetype: "image",
       layertype: "raster",
@@ -196,12 +205,12 @@ function Layers(mapType) {
       legend: true,
       legendSource: "https://mapas.igac.gov.co/server/rest/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/legend?f=pjson",
       legendType: "jsonsource",
-      legendTitle: "Carbon Secuestro",
+      legendTitle: "Carbon Sequestration",
       legendSourceMetadata: {
         'item':0,}
     },
-    "Comunidades Negras": {
-      id: "comunidades_negras",
+    "Black Communities": {
+      id: "black_communities",
       url: "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/COMUNIDAD_NEGRA_TITULADA/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=true&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson&token=",
       sourcetype: "geojson",
       preprocessing: false,
@@ -227,9 +236,10 @@ function Layers(mapType) {
       id: "militaryzones",
       layertype: "circle",
       sourcetype: "geojson",
-      preprocessing: true,
+      preprocessing: false,
       title: "zone",
       temporal: false,
+      url :"https://www.datos.gov.co/resource/ii2p-naes.geojson"
     },
     "Water Quality": {
       id: "waterquality",
@@ -241,16 +251,16 @@ function Layers(mapType) {
       year_list: [2018, 2019, 2020, 2021],
       year_name: "ano",
     },
-    Resguardos: {
-      id: "resguardos",
+    Reserves: {
+      id: "reserves",
       sourcetype: "geojson",
       layertype: "circle",
       preprocessing: true,
       title: "name",
       temporal: false,
     },
-    "Temperatura Estaciones IDEAM": {
-      id: "temperatura_estaciones_ideam",
+    "IDEAM Station Temperatures": {
+      id: "ideamstationtemperatures",
       sourcetype: "geojson",
       layertype: "circle",
       preprocessing: true,
@@ -287,8 +297,8 @@ function Layers(mapType) {
       legendPositions: [0, 10, 20, 30, 40],
       legendColors: ["blue", "green", "yellow", "orange", "red"],
     },
-    Fallas: {
-      id: "fallas",
+    Faults: {
+      id: "faults",
       sourcetype: "geojson",
       layertype: "line",
       preprocessing: false,
@@ -364,8 +374,8 @@ function Layers(mapType) {
       url: "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",
       large :true,
     },
-    "Reservas Indigenas":{
-      id: "reservas_indigenas",
+    "Indigenous Reserves":{
+      id: "indigenousreserves",
       sourcetype: "geojson",
       layertype: "fill",
       preprocessing: true,

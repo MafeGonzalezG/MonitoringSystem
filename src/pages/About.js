@@ -1,6 +1,12 @@
 import CustomNavbar from '../components/navbar/navbar';
 import React, { useState } from 'react';
 import "./About.css";
+/**
+ * 
+ * This is the about page of the app.
+ * @component
+ * @returns {JSX.Element} The rendered About component.
+ */
 export default function About(){
 
 
