@@ -29,7 +29,7 @@ const ContactForm = () => {
     return (
         <div className="App">
         <div className="app-body">
-    <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null}/>
+    <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null} SetinputFile={(input)=>null}/>
       <div className="container mt-2">
         <h2>Contact Us</h2>
         <form onSubmit={handleSubmit}>

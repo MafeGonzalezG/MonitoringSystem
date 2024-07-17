@@ -8,8 +8,8 @@ export const Routing = () => {
         <Router>
             <Routes>
                 <Route path="/MonitoringSystem" element={<Mapview />} />
-                <Route path="MonitoringSystem/About" element={<About />} />
-                <Route path="MonitoringSystem/Contact" element={<Contact />} />
+                <Route path="/MonitoringSystem/About" element={<About />} />
+                <Route path="/MonitoringSystem/Contact" element={<Contact />} />
             </Routes>
         </Router>
     );

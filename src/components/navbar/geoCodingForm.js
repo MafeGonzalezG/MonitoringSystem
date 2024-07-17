@@ -44,7 +44,12 @@ const GeocodingForm = ({ handlePress }) => {
           onChange={handleChange}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              handlePress(input);
+              //when pressing enter select the first suggestion
+              if (suggestions.length > 0) {
+                handleSuggestionClick(suggestions[0]);
+              } else {
+                handleSuggestionClick({ properties: { name_preferred: input }, geometry: { coordinates: [0,0] } });
+              }
               e.preventDefault();
             }
           }}

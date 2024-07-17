@@ -7,7 +7,7 @@ export default function About(){
     return (
         <div className="App">
             <div className="app-body">
-                <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null}/>
+                <CustomNavbar onpressMap={(map)=>null} onChange={(newdir) =>null} SetinputFile={(input)=>null}/>
                     <div className="card-body m-2">
                         <h1>About</h1>
                         <p>

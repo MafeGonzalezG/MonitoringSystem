@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './navbar.css';
 import GeocodingForm from './geoCodingForm';
 import logoPlanet from '../../assets/images/logo_planet.png';
-import greenLife from '../../assets/images/greenlife.png';
 import InputFile from '../input/InputData';
 /**
  * Navigation bar component.
@@ -47,7 +46,6 @@ function CustomNavbar({ onpressMap, onChange, SetinputFile }) {
     <Navbar bg="light" expand="lg" className="bg-light bg-gradient text-dark">
       <Navbar.Brand href="/MonitoringSystem" className="d-flex align-items-center">
         <img src={logoPlanet} alt="" height="65vh" className="d-inline-block align-middle" />
-        <img src={greenLife} alt="" height="65vh" className="d-inline-block align-middle" />
         <span className="ms-2">Monitoring system</span>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarSupportedContent" />
