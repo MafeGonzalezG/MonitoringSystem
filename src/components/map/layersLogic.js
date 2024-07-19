@@ -35,13 +35,14 @@ function LayersLogic({
   mapType,
   year,
   currentSource,
+  currentLayers,
   setShowBar,
   setPopUpview,
   setPopUpSettings,
   setSourceisLoading,
-  setCurrentSource
+  setCurrentSource,
+  setCurrentLayers
 }) {
-  const [currentLayers, setCurrentLayers] = useState([]);
   const [switcher, setSwitcher] = useState(false);
   const [clickLocation, setClickLocation] = useState([]);
   const preprocessing_geojsons = {
