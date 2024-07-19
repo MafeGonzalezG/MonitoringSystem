@@ -7,6 +7,9 @@ import LayersLogic from './layersLogic.js';
 import useDidMountEffect from '../customHooks/customHookMounted.js';  
 import LatLngControl from './customControl.js';
 import AddFileToMap from './addFileTomap.js';
+import * as turf from '@turf/turf';
+import AreaControl from './customAreaControl.js';
+import FilterControl from './customFilterPerArea.js';
 /**
  * Map rendering component.
  *
@@ -38,6 +41,8 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
 
   const [map, setMap] = useState(null);
   const [currentSource, setCurrentSource] = useState(null);
+  const [currentLayers, setCurrentLayers] = useState([]);
+  const [filterControl, setFilterControl] = useState(null);
   const initializeMap = () => {
     const newMap = new mapboxgl.Map({
         container: 'map', // container ID
@@ -49,14 +54,15 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
     newMap.addControl(new mapboxgl.FullscreenControl(),'top-right');
     newMap.addControl(new LatLngControl(),'bottom-right');
     const draw = new MapboxDraw({
-      displayControlsDefault: false,
-      controls: {
-          polygon: true,
-          trash: true
-      }
+      displayControlsDefault: true
       });
-    newMap.addControl(draw,'top-right');
+    const areaControl = new AreaControl();
+    let isControlAdded = false;
     newMap.addControl(new mapboxgl.ScaleControl(),'bottom-right');
+    newMap.addControl(draw,'top-right');
+    const filterControl = new FilterControl();
+    setFilterControl(filterControl);
+    newMap.addControl(filterControl, 'top-right');
     newMap.on('draw.create', updateArea);
     newMap.on('draw.delete', updateArea);
     newMap.on('draw.update', updateArea);
@@ -64,11 +70,32 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
     function updateArea(e) {
       const data = draw.getAll();
       if (data.features.length > 0) {
-        // Do something with the drawn polygon data
-        console.log('Polygon data:', data);
+        // If it is a polygon display the area
+        const areas = [];
+        const lengths = [];
+        data.features.forEach((feature) => {
+          if(feature.geometry.type === 'Polygon'){
+            const area = turf.area(feature);
+            if(!isControlAdded){
+              isControlAdded = true;
+              newMap.addControl(areaControl, 'bottom-right');
+            }
+            areas.push(area);
+          }else if(feature.geometry.type === 'LineString'){
+            const length = turf.length(feature);
+            if(!isControlAdded){
+              isControlAdded = true;
+              newMap.addControl(areaControl, 'bottom-right');
+            } 
+            lengths.push(length);
+          }}
+        );
+        areaControl.updateArea(areas,lengths);
+        filterControl.setDrawnFeatures(data);
       } else {
         // No polygons are drawn
         console.log('No polygons');
+        newMap.removeControl(areaControl);
       }
     }
   };
@@ -92,7 +119,11 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
       map.setStyle('mapbox://styles/mapbox/' + mapStyle);
     }
   },[mapStyle]);
-  LayersLogic({setYearList, lnglat, map,mapType, year,currentSource,setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading,setCurrentSource});
+  useEffect(() => {
+    if (filterControl){
+      filterControl.setLayersToFilter(currentLayers);}
+  },[currentLayers,filterControl]);
+  LayersLogic({setYearList, lnglat, map,mapType, year,currentSource,currentLayers,setShowBar,setPopUpview,setPopUpSettings,setSourceisLoading,setCurrentSource,setCurrentLayers});
   AddFileToMap({inputFile,map,setCurrentSource,setSourceisLoading,setPopUpview,setPopUpSettings})
   return (
       <div id="map" ></div>
