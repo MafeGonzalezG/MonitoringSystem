@@ -56,7 +56,8 @@ class LatLngControl {
     }
     async _updateLatLng(e) {
         const lngLat = e.lngLat;
-        const elevation_current = await elevation(lngLat.lng,lngLat.lat);
+        // const elevation_current = await elevation(lngLat.lng,lngLat.lat);
+        const elevation_current = 0;
         this._container.innerHTML = `Longitude: ${lngLat.lng.toFixed(4)}<br>
         Latitude: ${lngLat.lat.toFixed(4)} <br> Elevation: ${elevation_current} m`;
     }

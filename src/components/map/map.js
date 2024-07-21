@@ -96,6 +96,7 @@ const MapComponent = ({mapStyle,setYearList,lnglat,setlnglatclick,mapType,year, 
         // No polygons are drawn
         console.log('No polygons');
         newMap.removeControl(areaControl);
+        filterControl.resetFilter();
       }
     }
   };
