@@ -169,11 +169,11 @@ function LayersLogic({
       case "event-driven":
         setSourceisLoading(false);
         setPopUpview(true);
-        setPopUpSettings({
+        setPopUpSettings([{
           type: "directInput",
           title: "Air quality indicator",
           content: "Click anywhere on the map to see air quality indicators",
-        });
+        }]);
         break;
       default:
         break;
@@ -196,39 +196,16 @@ function LayersLogic({
       }catch(e){
         console.log(e)
         setPopUpview(true);
-        setPopUpSettings({
+        setPopUpSettings([{
           type: "directInput",
           title: "There was an error loading the layer",
           content: "Error loading the layer",
-        });
+        }]);
       }
     }
-    if (layerdic.legend && layerdic.legendType === "gradient") {
+    if (layerdic.legend) {
       setPopUpview(true);
-      setPopUpSettings({
-        type: "gradient",
-        title: layerdic.legendTitle,
-        legendPositions: layerdic.legendPositions,
-        legendColors: layerdic.legendColors,
-      });
-    }
-    if (layerdic.legend && layerdic.legendType === "xmlsource") {
-      setPopUpview(true);
-      setPopUpSettings({
-        type: "xmlsource",
-        title: layerdic.legendTitle,
-        legendSource: layerdic.legendSource,
-        legendSourceMetadata: layerdic.legendSourceMetadata,
-      });
-    }
-    if (layerdic.legend && layerdic.legendType === "jsonsource") {
-      setPopUpview(true);
-      setPopUpSettings({
-        type: "jsonsource",
-        title: layerdic.legendTitle,
-        legendSource: layerdic.legendSource,
-        legendSourceMetadata: layerdic.legendSourceMetadata,
-      });
+      setPopUpSettings(layerdic.legendSettings);
     }
     if (layerdic.sourcetype !== "event-driven") {
       setCurrentSource(layerdic.id);
@@ -236,11 +213,11 @@ function LayersLogic({
         console.error("Error in map:", e.error);
         setSourceisLoading(false);
         setPopUpview(true);
-        setPopUpSettings({
+        setPopUpSettings([{
           type: "directInput",
           title: "There was an error loading the layer",
           content: "Error loading the layer",
-        });
+        }]);
       });
     }
   }, [mapType, switcher]);
@@ -315,11 +292,11 @@ function LayersLogic({
               return `<p style="margin: 0;"><strong>${key}</strong>: ${value}</p>`;
             })
             .join("");
-          setPopUpSettings({
+          setPopUpSettings([{
             tittle: layerdic.title,
             type: "directInput",
             content: popupContent,
-          });
+          }]);
         });
     }
   }, [clickLocation]);

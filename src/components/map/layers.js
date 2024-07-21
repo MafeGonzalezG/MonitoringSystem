@@ -17,6 +17,7 @@ function Layers(mapType) {
       sourcetype: "raster",
       url: OpenWeatherMap("precipitation_new"),
       legend: true,
+      legendSettings: [ {
       legendType: "gradient",
       legendTitle: "Precipitation (mm)",
       legendPositions: [0, 0.1, 0.2, 0.5, 1, 10, 140],
@@ -28,7 +29,7 @@ function Layers(mapType) {
         "rgba(110, 110, 205, 0.3)",
         "rgba(80, 80, 225, 0.7)",
         "rgba(20, 20, 255, 0.9)",
-      ],
+      ],}],
     },
     Temperature: {
       id: "temperature",
@@ -36,6 +37,7 @@ function Layers(mapType) {
       sourcetype: "raster",
       url: OpenWeatherMap("temp_new"),
       legend: true,
+      legendSettings: [ {
       legendType: "gradient",
       legendTitle: "Temperature °C",
       legendPositions: [-65, -55, -45, -40, -30, -20, -10, 0, 10, 20, 25, 30],
@@ -52,7 +54,7 @@ function Layers(mapType) {
         "rgba(255, 240, 40, 1)",
         "rgba(255, 194, 40, 1)",
         "rgba(252, 128, 20, 1)",
-      ],
+      ],}],
     },
     Wind: {
       id: "wind",
@@ -60,6 +62,7 @@ function Layers(mapType) {
       sourcetype: "raster",
       url: OpenWeatherMap("wind_new"),
       legend: true,
+      legendSettings : [ {
       legendType: "gradient",
       legendTitle: "Wind (m/s)",
       legendPositions: [1, 5, 15, 15, 25, 50, 100, 200],
@@ -72,7 +75,7 @@ function Layers(mapType) {
         "rgba(116,76,172, 0.9)",
         "rgba(70,0,175,1)",
         "rgba(13,17,38,1)",
-      ],
+      ],}],
     },
     Pressure: {
       id: "pressure",
@@ -80,6 +83,7 @@ function Layers(mapType) {
       sourcetype: "raster",
       url: OpenWeatherMap("pressure_new"),
       legend: true,
+      legendSettings: [ {
       legendType: "gradient",
       legendTitle: "Pressure (Pa)",
       legendPositions: [
@@ -95,7 +99,7 @@ function Layers(mapType) {
         "rgba(251,85,21,1)",
         "rgba(243,54,59,1)",
         "rgba(198,0,0,1)",
-      ],
+      ],}],
     },
     Clouds: {
       id: "clouds",
@@ -103,6 +107,7 @@ function Layers(mapType) {
       sourcetype: "raster",
       url: OpenWeatherMap("clouds_new"),
       legend: true,
+      legendSettings: [{
       legendType: "gradient",
       legendTitle: "Clouds (%)",
       legendPositions: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
@@ -119,6 +124,7 @@ function Layers(mapType) {
         "rgba(242, 241, 255, 1)",
         "rgba(240, 240, 255, 1)",
       ],
+    }]
     },
     Earthquakes: {
       id: "earthquakes",
@@ -129,11 +135,22 @@ function Layers(mapType) {
       bbox: [-84.764004, -4.998033, -66.003125, 16.998958],
       layer: 5,
       legend : true,
+      legendSettings: [ {
       legendType: "jsonsource",
       legendSource: "https://srvags.sgc.gov.co/arcgis/rest/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/legend?f=pjson",
       legendTitle: "Earthquakes",
       legendSourceMetadata: {
-        'item':10,}
+        'item':10,}},
+      {
+      legendType: "xmlsource",
+      legendSource: "https://srvags.sgc.gov.co/arcgis/rest/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/info/metadata",
+      legendTitle: null,
+      legendSourceMetadata: {
+        'abstract':'idAbs',
+        'Proposito':'idPurp',
+        'credito':'idCredit',}
+      }
+    ]
     },
     Cuencas: {
       id: "cuencas",
@@ -158,12 +175,14 @@ function Layers(mapType) {
       layertype: "raster",
       sourcetype: "raster",
       legend: true,
+      legendSettings: [ {
       legendType: "jsonsource",
       legendSource:
         "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/legend?f=pjson",
       legendTitle: "Cesar Aquifers",
       legendSourceMetadata: {
         'item':0,}
+      }]
     },
     Informality: {
       id: "informality",
@@ -172,12 +191,14 @@ function Layers(mapType) {
       sourcetype: "raster",
       layertype: "raster",
       legend: true,
+      legendSettings: [ {
       legendType: "jsonsource",
       legendSource:
         "https://geoservicios.upra.gov.co/arcgis/rest/services/formalizacion_propiedad/estimacion_informalidad/MapServer/legend?f=pjson",
       legendTitle: "Informality",
       legendSourceMetadata: {
         'item':0,}
+      }]
     },
     Mangroves: {
       id: "Mangroves",
@@ -185,6 +206,7 @@ function Layers(mapType) {
       layertype: "raster",
       sourcetype: "raster",
       legend: true,
+      legendSettings: [ {
       legendType: "xmlsource",
       legendTitle: "Mangroves",
       legendSource:
@@ -193,6 +215,7 @@ function Layers(mapType) {
         'abstract':'idAbs',
         'Proposito':'idPurp',
         'credito':'idCredit',}
+      }]
     },
     "Carbon Sequestration": {
       id: "carbon_sequestration",
@@ -203,11 +226,13 @@ function Layers(mapType) {
       bbox: [-82.240682, -4.323733, -66.483327, 16.181351],
       layer: 0,
       legend: true,
+      legendSettings: [ {
       legendSource: "https://mapas.igac.gov.co/server/rest/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/legend?f=pjson",
       legendType: "jsonsource",
       legendTitle: "Carbon Sequestration",
       legendSourceMetadata: {
         'item':0,}
+      }]
     },
     "Black Communities": {
       id: "black_communities",
@@ -292,10 +317,12 @@ function Layers(mapType) {
         "circle-stroke-color":'transparent'
       },
       legend: true,
+      legendSettings: [ {
       legendType: "gradient",
       legendTitle: "Temperature (°C)",
       legendPositions: [0, 10, 20, 30, 40],
       legendColors: ["blue", "green", "yellow", "orange", "red"],
+      }]
     },
     Faults: {
       id: "faults",
@@ -309,12 +336,14 @@ function Layers(mapType) {
         "line-width": 2,
       },
       legend: true,
+      legendSettings: [ {
       legendSource:"https://www.arcgis.com/sharing/rest/content/items/c05c6dbf27f645eb883bae3a9cd0d08f/info/metadata/metadata.xml",
       legendType: "xmlsource",
       legendTitle: "Fallas",
       legendSourceMetadata: {
         'abstract':'idAbs',
         'restrictions':'resConst >Consts > useLimit'}
+      }]
     },
     Communities: {
       id: "communities",
@@ -333,12 +362,14 @@ function Layers(mapType) {
       temporal: false,
       url: "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson",
       legend: true,
+      legendSettings: [ {
       legendTitle: "Hot Spots",
       legendType: "xmlsource",
       legendSource: "https://services2.arcgis.com/g8WusZB13b9OegfU/ArcGIS/rest/services/Emerging_Hot_Spots_2023/FeatureServer/info/metadata",
       legendSourceMetadata: {
         'abstract':'idAbs',
         'restrictions':'resConst >Consts > useLimit',}
+      }]
     },
     Education: {
       id: "education",
@@ -421,11 +452,12 @@ function Layers(mapType) {
         "circle-stroke-color":'transparent'
       },
       legend: true,
+      legendSettings: [ {
       legendType: "gradient",
       legendTitle: "Temperature (°C)",
       legendPositions: [0, 10, 20, 30, 40],
       legendColors: ["blue", "green", "yellow", "orange", "red"],
-    }    
+    }    ]},
   };
   return layers[mapType];
 }
