@@ -20,7 +20,7 @@ export default function Mapview() {
   const [sourceisLoading, setSourceisLoading] = useState(false);
   const [yearList, setYearList] = useState([]);
   const [popUpview, setPopUpview] = useState(false);
-  const [popUpSettings, setPopUpSettings] = useState({});
+  const [popUpSettings, setPopUpSettings] = useState([]);
   const [inputFile, SetinputFile] = useState(null);
 
   return (

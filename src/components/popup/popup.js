@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../legend/Gradient.css';
 import './popup.css';
 import Gradient from '../legend/Gradient';
 import XmlParser from './xmlRetrieval';
 import JsonParserLegend from './jsonRetrieval';
+
 /**
  * A popup component that displays information when triggered.
  * @component
@@ -14,7 +14,7 @@ import JsonParserLegend from './jsonRetrieval';
  * @returns {JSX.Element} - The Popup component
  */
 
-function Popup({ onChange, popUpSettings}) {  
+function Popup({ onChange, popUpSettings }) {
     const handleClick = () => {
         onChange(false);
     };
@@ -22,14 +22,22 @@ function Popup({ onChange, popUpSettings}) {
     return (
         <div className="Popup bg-light">
             <button type="button" className="btn-close" aria-label="Close" onClick={handleClick}></button>
-            <h1 className='popup-title'>{popUpSettings.title}</h1>
-            {/* <p className='popup-content'>Some information goes here...</p> */}
-            {popUpSettings.type==='gradient'?<Gradient colors={popUpSettings.legendColors} labels={popUpSettings.legendPositions}/>:
-            popUpSettings.type==='jsonsource'?<JsonParserLegend urljson={popUpSettings.legendSource} metadataObj={popUpSettings.legendSourceMetadata}/>:
-            popUpSettings.type ==='directInput'?<div dangerouslySetInnerHTML={{ __html: popUpSettings.content }}></div>
-            :<XmlParser url={popUpSettings.legendSource} metadataObj={popUpSettings.legendSourceMetadata}/>}
+            {popUpSettings.map((element, index) => (
+                <div key={index}>
+                    <h1 className='popup-title'>{element.legendTitle}</h1>
+                    {element.legendType === 'gradient' ? (
+                        <Gradient colors={element.legendColors} labels={element.legendPositions} />
+                    ) : element.legendType === 'jsonsource' ? (
+                        <JsonParserLegend urljson={element.legendSource} metadataObj={element.legendSourceMetadata} />
+                    ) : element.legendType === 'directInput' ? (
+                        <div dangerouslySetInnerHTML={{ __html: element.content }}></div>
+                    ) : (
+                        <XmlParser url={element.legendSource} metadataObj={element.legendSourceMetadata} />
+                    )}
+                </div>
+            ))}
         </div>
     );
-  }
-  
-  export default Popup;
+}
+
+export default Popup;

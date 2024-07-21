@@ -26,7 +26,7 @@
     "shpjs": "^6.0.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://acmoral.github.io/MonitoringSystem",
+  "homepage": "/MonitoringSystem/#",
   "browser": {
     "fs": false,
     "os": false,

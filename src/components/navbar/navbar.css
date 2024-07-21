@@ -40,8 +40,9 @@
   padding: 0 10px;
   font-size:  clamp(10px, 2.5vh, 80px);
   margin-left: 15px;
+  max-width: 50vw;
 }
 
 .nav-item .geocoding-form {
-  width: 15vw;
+  width: 18vw;
 }

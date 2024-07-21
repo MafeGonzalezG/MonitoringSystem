@@ -46,15 +46,15 @@ function CustomNavbar({ onpressMap, onChange, SetinputFile }) {
 
   return (
     <Navbar bg="light" expand="lg" className="bg-light bg-gradient text-dark">
-      <Navbar.Brand href="/MonitoringSystem" className="d-flex align-items-center">
+      <Navbar.Brand href="#" className="d-flex align-items-center">
         <img src={logoPlanet} alt="" height="65vh" className="d-inline-block align-middle" />
         <span className="ms-2">Monitoring system</span>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarSupportedContent" />
       <Navbar.Collapse id="navbarSupportedContent">
         <Nav className="ml-auto d-flex align-items-center">
-          <Nav.Link href="/MonitoringSystem/About" role="button">About</Nav.Link>
-          <Nav.Link href="/MonitoringSystem/Contact" role="button">Contact</Nav.Link>
+          <Nav.Link href="#/About" role="button">About</Nav.Link>
+          <Nav.Link href="#/Contact" role="button">Contact</Nav.Link>
           <CustomDropdown
             options={show_names}
             defaultText="Map style"
