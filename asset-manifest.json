@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/MonitoringSystem/static/css/main.8dd9039b.css",
-    "main.js": "/MonitoringSystem/static/js/main.121d7d8d.js",
+    "main.css": "/MonitoringSystem/static/css/main.09557714.css",
+    "main.js": "/MonitoringSystem/static/js/main.0836188a.js",
     "static/js/453.eb8aea86.chunk.js": "/MonitoringSystem/static/js/453.eb8aea86.chunk.js",
     "static/media/bootstrap-icons.woff?": "/MonitoringSystem/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
     "static/media/bootstrap-icons.woff2?": "/MonitoringSystem/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
     "static/media/logo_planet.png": "/MonitoringSystem/static/media/logo_planet.1956133198842ca6f4e5.png",
     "index.html": "/MonitoringSystem/index.html",
-    "main.8dd9039b.css.map": "/MonitoringSystem/static/css/main.8dd9039b.css.map",
-    "main.121d7d8d.js.map": "/MonitoringSystem/static/js/main.121d7d8d.js.map",
+    "main.09557714.css.map": "/MonitoringSystem/static/css/main.09557714.css.map",
+    "main.0836188a.js.map": "/MonitoringSystem/static/js/main.0836188a.js.map",
     "453.eb8aea86.chunk.js.map": "/MonitoringSystem/static/js/453.eb8aea86.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8dd9039b.css",
-    "static/js/main.121d7d8d.js"
+    "static/css/main.09557714.css",
+    "static/js/main.0836188a.js"
   ]
 }
