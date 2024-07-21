@@ -180,18 +180,28 @@ function LayersLogic({
     }
 
     if (!layerdic.preprocessing) {
-      map.addSource(layerdic.id, { ...baseSoure, ...compSource });
-      const beforeLayer = map.getLayer("building") ? "building" : undefined;
-      map.addLayer(
-        {
-          id: layerdic.id,
-          type: layerdic.layertype,
-          source: layerdic.id,
-          paint: { ...layerdic.paint },
-        },
-        beforeLayer
-      );
-      setCurrentLayers([layerdic.id]);
+      try{
+        map.addSource(layerdic.id, { ...baseSoure, ...compSource });
+        const beforeLayer = map.getLayer("building") ? "building" : undefined;
+        map.addLayer(
+          {
+            id: layerdic.id,
+            type: layerdic.layertype,
+            source: layerdic.id,
+            paint: { ...layerdic.paint },
+          },
+          beforeLayer
+        );
+        setCurrentLayers([layerdic.id]);
+      }catch(e){
+        console.log(e)
+        setPopUpview(true);
+        setPopUpSettings({
+          type: "directInput",
+          title: "There was an error loading the layer",
+          content: "Error loading the layer",
+        });
+      }
     }
     if (layerdic.legend && layerdic.legendType === "gradient") {
       setPopUpview(true);

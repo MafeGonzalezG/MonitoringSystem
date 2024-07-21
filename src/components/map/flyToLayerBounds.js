@@ -13,6 +13,7 @@ import mapboxgl from "mapbox-gl";
  */
 function flyToLayerBounds(layerId,map) {
     var source = map.getSource(layerId);
+    console.log(source);
     if (!source) return;
     if(source.type === 'geojson'){
       if(typeof source._data === 'string'){
@@ -32,8 +33,13 @@ function flyToLayerBounds(layerId,map) {
               feature.geometry.coordinates[0].forEach((coord) => {
                 bounds.extend(coord);
               });
+            }else if (feature.geometry.type === 'LineString') {
+              feature.geometry.coordinates.forEach((coord) => {
+                bounds.extend(coord);
+              });
             }
           }
+          console.log(bounds);
           map.fitBounds(bounds, {
             padding: 20
           });}
