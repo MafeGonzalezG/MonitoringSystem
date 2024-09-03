@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+matplotlib = "*"
+streamlit = "*"
+h3 = "*"
+folium = "*"
+geopandas = "*"
+streamlit-folium = "*"
+streamlit-elements = "*"
+h3pandas = "*"
+h3converter = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
