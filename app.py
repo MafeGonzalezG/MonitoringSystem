@@ -123,10 +123,9 @@ def charge_df(file_path, resolution, first_n_rows = None ):
                         lat_col = "latitude", 
                         lng_col = "longitude")
         
-    resolution_column = h3df.index.name
-    h3df = h3df.groupby(resolution_column).mean(numeric_only=True).reset_index().set_index(resolution_column)
+    #resolution_column = h3df.index.name
+    #h3df = h3df.groupby(resolution_column).mean(numeric_only=True).reset_index().set_index(resolution_column)
     gdfh3 = h3df.h3.h3_to_geo_boundary()
-    st.write(gdfh3.columns)
     return gdfh3
 
 def sidebar_widgets():
