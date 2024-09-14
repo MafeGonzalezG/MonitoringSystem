@@ -1,0 +1,48 @@
+{
+  "name": "monitoringsystem",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.4.3",
+    "@naivemap/mapbox-gl-image-layer": "^0.5.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@turf/turf": "^7.0.0",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "fs": "^0.0.1-security",
+    "gh-pages": "^6.1.1",
+    "jquery": "^3.7.1",
+    "jquery-csv": "^1.0.21",
+    "mapbox-gl": "^3.3.0",
+    "popper.js": "^1.16.1",
+    "react": "^18.3.1",
+    "react-bootstrap": "^2.10.2",
+    "react-dom": "^18.3.1",
+    "react-map-gl": "^7.1.7",
+    "react-router-dom": "^6.23.1",
+    "react-scripts": "^5.0.1",
+    "shpjs": "^6.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "vite": "^5.4.1"
+  }
+}
