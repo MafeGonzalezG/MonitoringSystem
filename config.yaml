@@ -1,0 +1,39 @@
+cookie:
+  expiry_days: 30
+  key: some_signature_key
+  name: some_cookie_name
+credentials:
+  usernames:
+    mafeplanetai:
+      email: mafe.gonzales@planetai.space
+      failed_login_attempts: 0
+      logged_in: false
+      name: Maria Fernanda Gonzales
+      password: GyZiaq1WFd6C4j
+    ivanplanetai:
+      email: ivan.vilar@planetai.space
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ivan Vilar
+      password: uN2MMDEN4Cx3C9
+    santiagoplanetai:
+      email: santiago.vargas@planetai.space
+      failed_login_attempts: 0
+      logged_in: false
+      name: Santiago Vargas
+      password: hCO0u9dgw9kPIO
+    juanplanetai:
+      email: jesteban.agudelo@planetai.space
+      failed_login_attempts: 0
+      logged_in: false
+      name: Juan Esteban Agudelo Ortiz
+      password: hsoZ5cp1WfA59T
+    andresplanetai:
+      email: andres.galarza@planetai.space
+      failed_login_attempts: 0
+      logged_in: false
+      name: Andres Galarza
+      password: 7c1HUkxGwgz8Ma
+pre-authorized:
+  emails:
+  - melsby@gmail.com

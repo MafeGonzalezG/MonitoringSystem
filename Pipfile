@@ -8,13 +8,9 @@ numpy = "*"
 pandas = "*"
 matplotlib = "*"
 streamlit = "*"
-h3 = "*"
-folium = "*"
-geopandas = "*"
-streamlit-folium = "*"
-streamlit-elements = "*"
 h3pandas = "*"
-h3converter = "*"
+branca = "*"
+streamlit-authenticator = "*"
 
 [dev-packages]
 
