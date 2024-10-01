@@ -11,6 +11,7 @@ streamlit = "*"
 h3pandas = "*"
 branca = "*"
 streamlit-authenticator = "*"
+mypy = "*"
 
 [dev-packages]
 

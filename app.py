@@ -5,7 +5,6 @@ from h3converter import h3converter
 import h3pandas
 
 
-import geopandas as gpd
 import pandas as pd
 
 import matplotlib.pyplot as plt
@@ -50,7 +49,7 @@ def app():
             zoom, feature_group_to_add = sidebar_widgets()
             
             # Load the data
-            first_n_rows = 10000
+            first_n_rows = 1000
             cacahual_gdfh3 = charge_df(file_path="./db/cacahual_db.csv", 
                                     resolution = zoom - 3,
                                     first_n_rows = first_n_rows)
