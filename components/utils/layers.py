@@ -486,5 +486,5 @@ def layers(map_type: str) -> dict:
     
 def OpenWeatherMap(type):
     API_key ='81951b48765f92b240133d040298e4e9'
-    api = f"https://tile.openweathermap.org/map/{type}/{z}/{x}/{y}.png?appid={API_key}"
+    api = f"https://tile.openweathermap.org/map/{type}"+"/{z}/{x}/{y}"+f".png?appid={API_key}"
     return api
