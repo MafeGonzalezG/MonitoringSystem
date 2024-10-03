@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit_authenticator as stauth
 
 #Components
-from Login import update_config_file
+from components.Login import update_config_file
 
 """
 =========================

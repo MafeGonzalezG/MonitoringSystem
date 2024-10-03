@@ -34,6 +34,3 @@ credentials:
       logged_in: false
       name: Andres Galarza
       password: 7c1HUkxGwgz8Ma
-pre-authorized:
-  emails:
-  - melsby@gmail.com

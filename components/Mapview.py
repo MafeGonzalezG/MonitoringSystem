@@ -140,10 +140,15 @@ def sidebar_widgets() -> None:
                              step = 1)
     st.session_state["zoom"] = zoom
     
-    # Feature group selectbox
+    """ # Feature group selectbox
     fg_to_add = st.sidebar.selectbox(label = "Data to add",
                                      options = ["None",
                                                 "Carbon removals mean value", 
                                                 "Tropical tree cover mean value"])
-    
+     """
+     
+     # Feature group selectbox
+    fg_to_add = st.sidebar.selectbox(label = "Data to add",
+                                     options = ["None",
+                                                "Precipitation"])
     return zoom, fg_to_add
