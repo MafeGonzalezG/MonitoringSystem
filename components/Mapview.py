@@ -30,8 +30,6 @@ def create_feature_group(gdf:gpd.GeoDataFrame,
         feature_group_name (str): Name to give to the feature group.
     Returns:
         [folium.FeatureGroup, branca.colormap.LinearColormap]: Feature group and colormap to add to the map.
-        
-    
     """
     # Create a feature group
     fg = folium.FeatureGroup(name=feature_group_name)

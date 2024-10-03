@@ -6,6 +6,8 @@ def layers(map_type: str) -> dict:
   Returns:
     dict. Dictionary with the info of the layers of the map.
   """
+  
+  ### Raster
   Precipitation = {
     "id": "precipitation",
     "layertype": "raster",
@@ -212,6 +214,19 @@ def layers(map_type: str) -> dict:
       'credito':'idCredit',}
     }]
   }
+  Deforestation = {
+    "id": "deforestation",
+    "sourcetype": "image",
+    "layertype": "raster",
+    "temporal": True,
+    "url": "https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_",
+    "year_list" : [2002, 2007, 2012, 2014, 2016, 2028, 2020, 2021,2022],
+    "bbox": [-77.670617,-4.225780,-66.847215,4.948186],
+    "epsg": 'srs="epsg":4170',
+    "layer": 0,
+  }
+  
+  ### GeoJSON
   Carbon_Sequestration = {
     "id": "carbon_sequestration",
     "url": "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0",
@@ -233,9 +248,9 @@ def layers(map_type: str) -> dict:
     "id": "black_communities",
     "url": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/COMUNIDAD_NEGRA_TITULADA/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=True&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=True&quantizationParameters=&sqlFormat=none&f=pgeojson&token=",
     "sourcetype": "geojson",
-    preprocessing: false,
+    "preprocessing": False,
     "layertype": "fill",
-    title: "NOMBRE",
+    "title": "NOMBRE",
   }, #now it requires a token :c
   Fires = {
     "id": "fires",
@@ -378,17 +393,6 @@ def layers(map_type: str) -> dict:
     ],
     "year_name": "ano",
   }
-  Deforestation = {
-    "id": "deforestation",
-    "sourcetype": "image",
-    "layertype": "raster",
-    "temporal": True,
-    "url": "https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_",
-    "year_list" : [2002, 2007, 2012, 2014, 2016, 2028, 2020, 2021,2022],
-    "bbox": [-77.670617,-4.225780,-66.847215,4.948186],
-    "epsg": 'srs="epsg":4170',
-    "layer": 0,
-  }
   Mining = {
     "id": "mining",
     "sourcetype": "geojson",
@@ -409,6 +413,8 @@ def layers(map_type: str) -> dict:
     "url": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",
     "large":True,
   }
+  
+  ### Event-driven
   Air_Quality = {
     "id": 'airquality',
     "sourcetype": 'event-driven',
