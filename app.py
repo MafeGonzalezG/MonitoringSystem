@@ -47,10 +47,16 @@ def app():
         with st.spinner("Loading maps..."):
             
             # Sidebar widgets
-            zoom, feature_group_to_add = sidebar_widgets()
+            zoom = sidebar_widgets()
+            m = create_base_map()
             
-            if not feature_group_to_add == "None":
-                py_layers(map_type = feature_group_to_add)
+            
+            if st.session_state["feature_group_to_add"]:
+                fg = py_layers(map_type = st.session_state["feature_group_to_add"])
+                fg.add_to(m)
+            
+            folium.LayerControl().add_to(m)
+            st_folium(m)
             
             # # Load the data
             #first_n_rows = 1000

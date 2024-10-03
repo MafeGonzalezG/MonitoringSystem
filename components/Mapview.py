@@ -14,6 +14,39 @@ import geopandas as gpd
 Data and map functions
 =========================
 """
+def create_base_map() -> folium.Map:
+    """
+    Function to create a base map.
+    
+    Args:
+    None
+    Returns:
+        folium.Map: Base map.
+    """
+    m = folium.Map(location=[3.5252777777778, -67.415833333333],
+                   max_bounds = True,
+                   zoom_start = 6)
+    folium.plugins.Fullscreen(
+        position="topright",
+        title="Expand me",
+        title_cancel="Exit me",
+        force_separate_button=True,
+    ).add_to(m)
+    
+    
+    folium.TileLayer(
+        "OpenStreetMap").add_to(m)
+    folium.TileLayer(
+        "OpenTopoMap").add_to(m)
+    folium.TileLayer(
+        "Stadia.AlidadeSatellite").add_to(m)
+    
+    folium.plugins.Draw(export = True).add_to(m)
+    folium.plugins.Geocoder().add_to(m)
+    folium.plugins.LocateControl().add_to(m)
+    folium.plugins.MousePosition().add_to(m)
+    
+    return m
 
 def create_feature_group(gdf:gpd.GeoDataFrame, 
                          data_to_plot:str, 
@@ -146,9 +179,50 @@ def sidebar_widgets() -> None:
                                                 "Carbon removals mean value", 
                                                 "Tropical tree cover mean value"])
      """
-     
-     # Feature group selectbox
-    fg_to_add = st.sidebar.selectbox(label = "Data to add",
-                                     options = ["None",
-                                                "Precipitation"])
-    return zoom, fg_to_add
+    
+    def clean_feature_group():
+        """State callback to store the feature group to add to the map.
+        Args:
+        None
+        Returns:
+            None
+        """
+        st.session_state["feature_group_to_add"] = None
+    
+    fg_to_add = None
+    # Feature group selectbox
+    weather = st.sidebar.selectbox(label = "Weather",
+                        options = ["Precipitation",
+                                "Temperature",
+                                "Wind",
+                                "Pressure",
+                                "Clouds"],
+                        index=None,
+                        placeholder="Select the weather data to add",
+                        #on_change=clean_feature_group
+                        )
+    
+    geoinfo = st.sidebar.selectbox(label = "Geoinfo",
+                                    options = ["Earthquakes",
+                                               "Cuencas",
+                                               #"Family Agriculture",
+                                               #"Cesar Aquifers",
+                                               ],
+                                    index=None,
+                                    placeholder="Select the geoinfo data to add",
+                                    #on_change=clean_feature_group
+                                    )
+                                      
+    
+    st.session_state["feature_group_to_add"] = None
+        
+    if weather:
+        fg_to_add = weather
+    if geoinfo:
+        fg_to_add = geoinfo
+    
+    
+    
+    st.session_state["feature_group_to_add"] = fg_to_add
+    return zoom
+

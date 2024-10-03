@@ -1,3 +1,5 @@
+import streamlit as st
+
 def jsLayers(map_type: str) -> dict:
   """
   Function for organizing the information of the layers to be displayed in the map.
@@ -6,8 +8,11 @@ def jsLayers(map_type: str) -> dict:
   Returns:
     dict. Dictionary with the info of the layers of the map.
   """
-  
+  ##################################
   ### Raster
+  ##################################
+  
+  # Weather
   Precipitation = {
     "id": "precipitation",
     "layertype": "raster",
@@ -98,7 +103,7 @@ def jsLayers(map_type: str) -> dict:
       "rgba(198,0,0,1)",
     ],}],
   }
-  Clouds =  {
+  Clouds = {
     "id": "clouds",
     "layertype": "raster",
     "sourcetype": "raster",
@@ -123,6 +128,8 @@ def jsLayers(map_type: str) -> dict:
     ],
   }]
   }
+  
+  # Geoinfo
   Earthquakes = {
     "id": "earthquakes",
     "layertype": "raster",
@@ -148,7 +155,7 @@ def jsLayers(map_type: str) -> dict:
       'credito':'idCredit',}
     }
   ]
-  },
+  }
   Cuencas = {
     "id": "cuencas",
     "layertype": "raster",
@@ -162,7 +169,7 @@ def jsLayers(map_type: str) -> dict:
     "id": "family_agriculture",
     "sourcetype": "raster",
     "layertype": "raster",
-    "url": "https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
+    "url": "https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=False",
   }
   Cesar_Aquifers = {
     "id": "cesar_aquifers",
@@ -226,7 +233,10 @@ def jsLayers(map_type: str) -> dict:
     "layer": 0,
   }
   
+  ##################################
   ### GeoJSON
+  ##################################
+  
   Carbon_Sequestration = {
     "id": "carbon_sequestration",
     "url": "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0",
@@ -459,13 +469,16 @@ def jsLayers(map_type: str) -> dict:
     "legendColors": ["blue", "green", "yellow", "orange", "red"],
   }    ]}
   
+  
+  ##################################
+  
   layers = {
       "Precipitation": Precipitation,
       "Temperature": Temperature,
       "Wind": Wind,
       "Pressure": Pressure,
       "Clouds": Clouds,
-      "Earquakes": Earthquakes,
+      "Earthquakes": Earthquakes,
       "Cuencas": Cuencas,
       "Family Agriculture": Family_Agriculture,
       "Cesar Aquifers": Cesar_Aquifers,
@@ -490,9 +503,10 @@ def jsLayers(map_type: str) -> dict:
       "Test": Test
       }
   
+  
   return layers[map_type]
 
-def OpenWeatherMap(type):
+def OpenWeatherMap(type:str) -> str:
     API_key ='81951b48765f92b240133d040298e4e9'
-    api = f"https://tile.openweathermap.org/map/{type}"+f"/{z}/{x}/{y}"+f".png?appid={API_key}"
+    api = f"https://tile.openweathermap.org/map/{type}"+"/{z}/{x}/{y}"+f".png?appid={API_key}"
     return api
