@@ -169,7 +169,7 @@ def jsLayers(map_type: str) -> dict:
     "id": "family_agriculture",
     "sourcetype": "raster",
     "layertype": "raster",
-    "url": "https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=False",
+    "url": "https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
   }
   Cesar_Aquifers = {
     "id": "cesar_aquifers",
@@ -232,11 +232,6 @@ def jsLayers(map_type: str) -> dict:
     "epsg": 'srs="epsg":4170',
     "layer": 0,
   }
-  
-  ##################################
-  ### GeoJSON
-  ##################################
-  
   Carbon_Sequestration = {
     "id": "carbon_sequestration",
     "url": "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0",
@@ -254,6 +249,11 @@ def jsLayers(map_type: str) -> dict:
       'item':0,}
     }]
   }
+  ##################################
+  ### GeoJSON
+  ##################################
+  
+  
   Black_Communities = {
     "id": "black_communities",
     "url": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/COMUNIDAD_NEGRA_TITULADA/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=True&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=True&quantizationParameters=&sqlFormat=none&f=pgeojson&token=",
@@ -261,7 +261,7 @@ def jsLayers(map_type: str) -> dict:
     "preprocessing": False,
     "layertype": "fill",
     "title": "NOMBRE",
-  }, #now it requires a token :c
+  } #now it requires a token :c
   Fires = {
     "id": "fires",
     "preprocessing": True,
@@ -285,7 +285,7 @@ def jsLayers(map_type: str) -> dict:
     "title": "zone",
     "temporal": False,
     "url" :"https://www.datos.gov.co/resource/ii2p-naes.geojson"
-  },
+  }
   Water_Quality = {
     "id": "waterquality",
     "sourcetype": "geojson",

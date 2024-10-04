@@ -14,18 +14,43 @@ def py_layers(map_type: str) -> folium.FeatureGroup:
     fg = folium.FeatureGroup(name = layersDict["id"])
     st.write(layersDict["url"])
     
-    if layersDict["layertype"] == "raster":
+    if layersDict["sourcetype"] == "raster":
         folium.WmsTileLayer(
             url=layersDict["url"],
-            layers='planetai:carbon_removals_mean_value',
+            layers=layersDict["id"],
             fmt='image/png',
             transparent=True,
             overlay=True,
             control=True,
         ).add_to(fg)
-        
-        
-    if layersDict["layertype"] == "geojson":
+    
+    if layersDict["sourcetype"] == "image":
+        folium.WmsTileLayer(
+            url=layersDict["url"],
+            layers=layersDict["id"],
+            fmt='image/png',
+            transparent=True,
+            overlay=True,
+            control=True,
+        ).add_to(fg)
+            
+    if layersDict["sourcetype"] == "geojson":
         st.write("GeoJSON")
+        # Add the GeoJson to the feature group
+        folium.GeoJson(
+            layersDict["url"],
+            #gdf,
+            #style_function=lambda x: {
+            #    "fillColor": colormap(x["properties"][data_to_plot])
+            #    if x["properties"][data_to_plot] is not None
+            #    else "transparent",
+            #    "color": "black",
+            #    "fillOpacity": 0.4,
+            #    "weight": 1
+            #},
+            #tooltip=tooltip,
+            #popup=popup,
+        ).add_to(fg)
+        
         
     return fg

@@ -180,46 +180,66 @@ def sidebar_widgets() -> None:
                                                 "Tropical tree cover mean value"])
      """
     
-    def clean_feature_group():
-        """State callback to store the feature group to add to the map.
-        Args:
-        None
-        Returns:
-            None
-        """
-        st.session_state["feature_group_to_add"] = None
-    
     fg_to_add = None
     # Feature group selectbox
-    weather = st.sidebar.selectbox(label = "Weather",
+    raster_data = st.sidebar.selectbox(label = "Raster",
                         options = ["Precipitation",
                                 "Temperature",
                                 "Wind",
                                 "Pressure",
-                                "Clouds"],
+                                "Clouds",
+                                "Earthquakes",
+                                "Cuencas",
+                                "Family Agriculture",
+                                "Cesar Aquifers",
+                                "Informality",
+                                "Mangroves",
+                                "Deforestation",
+                                "Carbon Sequestration",
+                                ],
                         index=None,
-                        placeholder="Select the weather data to add",
-                        #on_change=clean_feature_group
+                        placeholder="Select the raster data to add",
                         )
     
-    geoinfo = st.sidebar.selectbox(label = "Geoinfo",
-                                    options = ["Earthquakes",
-                                               "Cuencas",
-                                               #"Family Agriculture",
-                                               #"Cesar Aquifers",
-                                               ],
-                                    index=None,
-                                    placeholder="Select the geoinfo data to add",
-                                    #on_change=clean_feature_group
-                                    )
+    geojson_data = st.sidebar.selectbox(label = "GeoJSON",
+                        options = [
+                                   "Black Communities",
+                                   "Fires",
+                                   "Events",
+                                   "Military Zones",
+                                   "Water Quality",
+                                   "Reserves",
+                                   "IDEAM Station Temperatures",
+                                   "Faults",
+                                   "Communities",
+                                   "Hot Spots",
+                                   "Education",
+                                   "Mining",
+                                   "Indigenous Reserves",
+                                   "Air Quality"
+                                ],
+                        index=None,
+                        placeholder="Select the raster data to add",
+                        )
+    
+    #geoinfo = st.sidebar.selectbox(label = "Geoinfo",
+    #                                options = ["Earthquakes",
+    #                                           "Cuencas",
+    #                                           "Family Agriculture",
+    #                                           "Cesar Aquifers",
+    #                                           "Mangroves"
+    #                                           ],
+    #                                index=None,
+    #                                placeholder="Select the geoinfo data to add",
+    #                                )
                                       
     
     st.session_state["feature_group_to_add"] = None
         
-    if weather:
-        fg_to_add = weather
-    if geoinfo:
-        fg_to_add = geoinfo
+    if raster_data:
+        fg_to_add = raster_data
+    if geojson_data:
+        fg_to_add = geojson_data
     
     
     
