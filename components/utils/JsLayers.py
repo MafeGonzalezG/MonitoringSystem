@@ -128,8 +128,32 @@ def jsLayers(map_type: str) -> dict:
     ],
   }]
   }
-  
-  # Geoinfo
+  Cesar_Aquifers = {
+    "id": "cesar_aquifers",
+    "url": "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
+    "metadata_url":
+      "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS",
+    "layertype": "raster",
+    "sourcetype": "raster",
+    "legend": True,
+    "legendSettings": [ {
+    "legendType": "jsonsource",
+    "legendSource":
+      "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/legend?f=pjson",
+    "legendTitle": "Cesar Aquifers",
+    "legendSourceMetadata": {
+      'item':0,}
+    }]
+  }
+  Family_Agriculture = {
+    "id": "family_agriculture",
+    "sourcetype": "raster",
+    "layertype": "raster",
+    "url": "https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
+  }
+  ##################################
+  ### Image
+  ##################################
   Earthquakes = {
     "id": "earthquakes",
     "layertype": "raster",
@@ -165,29 +189,6 @@ def jsLayers(map_type: str) -> dict:
     "epsg": "srs=epsg:4326",
     "layer": 0,
   } #maybe service is now blocked
-  Family_Agriculture = {
-    "id": "family_agriculture",
-    "sourcetype": "raster",
-    "layertype": "raster",
-    "url": "https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
-  }
-  Cesar_Aquifers = {
-    "id": "cesar_aquifers",
-    "url": "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
-    "metadata_url":
-      "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS",
-    "layertype": "raster",
-    "sourcetype": "raster",
-    "legend": True,
-    "legendSettings": [ {
-    "legendType": "jsonsource",
-    "legendSource":
-      "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/legend?f=pjson",
-    "legendTitle": "Cesar Aquifers",
-    "legendSourceMetadata": {
-      'item':0,}
-    }]
-  }
   Informality = {
     "id": "informality",
     "url": "https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&transparent=True&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857",
