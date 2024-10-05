@@ -161,6 +161,7 @@ def jsLayers(map_type: str) -> dict:
     "url": "https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer?request=GetMap&version=1.3.0",
     "epsg": "crs=CRS:84",
     "bbox": [-84.764004, -4.998033, -66.003125, 16.998958],
+    "temporal": False,
     "layer": 5,
     "legend": True,
     "legendSettings": [ {
@@ -186,6 +187,7 @@ def jsLayers(map_type: str) -> dict:
     "sourcetype": "image",
     "url": "https://mapas.igac.gov.co/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetMap&version=1.1.0",
     "bbox": [-85.452541, -4.239657, -66.554113, 16.238453],
+    "temporal": False,
     "epsg": "srs=epsg:4326",
     "layer": 0,
   } #maybe service is now blocked

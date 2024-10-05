@@ -173,6 +173,13 @@ def sidebar_widgets() -> None:
                              step = 1)
     st.session_state["zoom"] = zoom
     
+    year = st.sidebar.slider(label = "Year",
+                             min_value = 2000, 
+                             max_value = 2024, 
+                             value = 2020,
+                             step = 1)
+    st.session_state["year"] = year
+    
     """ # Feature group selectbox
     fg_to_add = st.sidebar.selectbox(label = "Data to add",
                                      options = ["None",
@@ -244,5 +251,5 @@ def sidebar_widgets() -> None:
     
     
     st.session_state["feature_group_to_add"] = fg_to_add
-    return zoom
+    return zoom, year
 

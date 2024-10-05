@@ -47,12 +47,12 @@ def app():
         with st.spinner("Loading maps..."):
             
             # Sidebar widgets
-            zoom = sidebar_widgets()
+            zoom, year = sidebar_widgets()
             m = create_base_map()
             
             
             if st.session_state["feature_group_to_add"]:
-                fg = py_layers(map_type = st.session_state["feature_group_to_add"])
+                fg = py_layers(map_type = st.session_state["feature_group_to_add"], year=year)
                 fg.add_to(m)
             
             folium.LayerControl().add_to(m)
