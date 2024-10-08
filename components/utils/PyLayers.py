@@ -28,8 +28,10 @@ def py_layers(map_type: str, year: int) -> folium.FeatureGroup:
         
         folium.WmsTileLayer(
             url=layersDict["url"],
-            layers=layersDict["id"],
-            fmt='image/png',
+            layers=layersDict["layer"],
+            height=layersDict["height"],
+            width=layersDict["width"],
+            fmt=layersDict["format"],
             transparent=True,
             overlay=True,
             control=True,
