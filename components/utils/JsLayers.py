@@ -130,7 +130,7 @@ def jsLayers(map_type: str) -> dict:
   }
   Cesar_Aquifers = {
     "id": "cesar_aquifers",
-    "url": "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
+    "url": "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/tile/{z}/{y}/{x}",
     "metadata_url":
       "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS",
     "layertype": "raster",
@@ -149,7 +149,7 @@ def jsLayers(map_type: str) -> dict:
     "id": "family_agriculture",
     "sourcetype": "raster",
     "layertype": "raster",
-    "url": "https://geoservicios.upra.gov.co/arcgis/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857&transparent=True",
+    "url": "https://geoservicios.upra.gov.co/arcgis/rest/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/tile/{z}/{y}/{x}",
   }
   ##################################
   ### Image
@@ -158,9 +158,9 @@ def jsLayers(map_type: str) -> dict:
     "id": "earthquakes",
     "layertype": "raster",
     "sourcetype": "image",
-    "url": "https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer?request=GetMap&version=1.3.0",
+    "url": "https://srvags.sgc.gov.co/arcgis/rest/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/export?bbox=-88.3121881374116,0.7222632705420313,-57.23604672850278,17.06689031690706&format=png&transparent=false&timeRelation=esriTimeRelationOverlaps&f=image",
     "epsg": "crs=CRS:84",
-    "bbox": [-84.764004, -4.998033, -66.003125, 16.998958],
+    "bbox": [-88.31218813741162,0.7222632705420313,-57.23604672850278,17.066890316907063],
     "temporal": False,
     "layer": 5,
     "legend": True,
