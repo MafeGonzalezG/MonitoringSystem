@@ -26,16 +26,15 @@ def py_layers(map_type: str, year: int) -> folium.FeatureGroup:
     
     if layersDict["sourcetype"] == "image":
         
-        folium.WmsTileLayer(
+        folium.raster_layers.WmsTileLayer(
             url=layersDict["url"],
-            layers=layersDict["layer"],
-            height=layersDict["height"],
-            width=layersDict["width"],
+            name=layersDict["id"],
             fmt=layersDict["format"],
+            layers=layersDict["layer"],  # Adjust the layer ID if needed
             transparent=True,
-            overlay=True,
-            control=True,
-            bbox = layersDict["bbox"],
+            version=layersDict["version"],
+            styles='',
+            attr=layersDict["attributions"]
         ).add_to(fg)
             
     if layersDict["sourcetype"] == "geojson":
