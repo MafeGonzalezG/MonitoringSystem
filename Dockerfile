@@ -1,25 +1,20 @@
-FROM python:3.13.0-slim
+FROM python:3.11.0-slim
 
-WORKDIR /app
+RUN pip install pipenv
 
-# Install pipenv
-RUN pip3 install --upgrade pip
-RUN pip3 install pipenv
+# Set the working directory
+ENV APP_HOME /usr/local/bin/src/webapp
 
-# Copy the Pipfile and Pipfile.lock
-COPY Pipfile* /app/
+WORKDIR ${APP_HOME}
 
-# Install dependencies using pipenv with verbose output
-RUN cd /app && pipenv install --system --deploy --ignore-pipfile
+COPY Pipfile Pipfile.lock ${APP_HOME}/
 
-# Copy the rest of the application code
-COPY . .
+COPY . ${APP_HOME}/
 
-# Expose the port that Streamlit will run on
+RUN pipenv install --system --deploy
+
 EXPOSE 8501
 
-# Check if the Streamlit app is running
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-# Command to run the Streamlit app
-CMD ["pipenv", "run", "streamlit", "run", "your_app.py"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0" ]

@@ -273,6 +273,8 @@ def sidebar_widgets() -> None:
         fg_to_add = land_use
     if environment:
         fg_to_add = environment
+    if geological:
+        fg_to_add = geological
     if military:
         fg_to_add = military
     #if geojson_data:

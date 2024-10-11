@@ -11,9 +11,12 @@ streamlit = "*"
 h3pandas = "*"
 branca = "*"
 streamlit-authenticator = "*"
-mypy = "*"
+h3converter = "*"
+folium = "*"
+streamlit-folium = "*"
 
 [dev-packages]
+mypy = "*"
 
 [requires]
 python_version = "3.11"

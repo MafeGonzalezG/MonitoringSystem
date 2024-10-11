@@ -386,7 +386,7 @@ def jsLayers(map_type: str) -> dict:
     }]
   }
   Tectonic_Failures = {
-    "id": "faults",
+    "id": "failures",
     "sourcetype": "geojson",
     "layertype": "line",
     "preprocessing": False,
