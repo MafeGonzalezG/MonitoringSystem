@@ -275,8 +275,8 @@ def sidebar_widgets() -> None:
         fg_to_add = environment
     if military:
         fg_to_add = military
-    if geojson_data:
-        fg_to_add = geojson_data
+    #if geojson_data:
+    #    fg_to_add = geojson_data
     
     
     
