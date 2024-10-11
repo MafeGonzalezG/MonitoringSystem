@@ -15,9 +15,11 @@ def jsLayers(map_type: str) -> dict:
   # Weather
   Precipitation = {
     "id": "precipitation",
+    "name": "Precipitation",
     "layertype": "raster",
     "sourcetype": "raster",
     "url": OpenWeatherMap("precipitation_new"),
+    "attributions": "OpenWeatherMap",
     "legend": True,
     "legendSettings": [ {
     "legendType": "gradient",
@@ -35,9 +37,11 @@ def jsLayers(map_type: str) -> dict:
   }
   Temperature = {
     "id": "temperature",
+    "name": "Temperature",
     "layertype": "raster",
     "sourcetype": "raster",
     "url": OpenWeatherMap("temp_new"),
+    "attributions": "OpenWeatherMap",
     "legend": True,
     "legendSettings": [ {
     "legendType": "gradient",
@@ -60,9 +64,11 @@ def jsLayers(map_type: str) -> dict:
   }
   Wind = {
     "id": "wind",
+    "name": "Wind",
     "layertype": "raster",
     "sourcetype": "raster",
     "url": OpenWeatherMap("wind_new"),
+    "attributions": "OpenWeatherMap",
     "legend": True,
     "legendSettings": [ {
     "legendType": "gradient",
@@ -81,9 +87,11 @@ def jsLayers(map_type: str) -> dict:
   }
   Pressure = {
     "id": "pressure",
+    "name": "Pressure",
     "layertype": "raster",
     "sourcetype": "raster",
     "url": OpenWeatherMap("pressure_new"),
+    "attributions": "OpenWeatherMap",
     "legend": True,
     "legendSettings": [ {
     "legendType": "gradient",
@@ -105,9 +113,11 @@ def jsLayers(map_type: str) -> dict:
   }
   Clouds = {
     "id": "clouds",
+    "name": "Clouds",
     "layertype": "raster",
     "sourcetype": "raster",
     "url": OpenWeatherMap("clouds_new"),
+    "attributions": "OpenWeatherMap",
     "legend": True,
     "legendSettings": [{
     "legendType": "gradient",
@@ -131,6 +141,7 @@ def jsLayers(map_type: str) -> dict:
   Cesar_Aquifers = {
     "id": "cesar_aquifers",
     "url": "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/tile/{z}/{y}/{x}",
+    "attributions": "UPRA",
     "metadata_url":
       "https://geoservicios.upra.gov.co/arcgis/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/WMSServer?request=GetCapabilities&service=WMS",
     "layertype": "raster",
@@ -147,22 +158,20 @@ def jsLayers(map_type: str) -> dict:
   }
   Family_Agriculture = {
     "id": "family_agriculture",
+    "name": "Family Agriculture",
     "sourcetype": "raster",
     "layertype": "raster",
     "url": "https://geoservicios.upra.gov.co/arcgis/rest/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/tile/{z}/{y}/{x}",
+    "attributions": "UPRA",
   }
-  ##################################
-  ### Image
-  ##################################
   Earthquakes = {
     "id": "earthquakes",
     "layertype": "raster",
-    "sourcetype": "image",
+    "sourcetype": "raster",
     "url": "https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer",
     "version": "1.3.0",
     "attributions": "SGC",
     "epsg": "crs=CRS:84",
-    "bbox": [-84.764004,-4.998033,-66.003125,16.998958],
     "temporal": False,
     "layer": 5,
     "format": "image/png",
@@ -187,9 +196,11 @@ def jsLayers(map_type: str) -> dict:
   Cuencas = {
     "id": "cuencas",
     "layertype": "raster",
-    "sourcetype": "image",
-    "url": "https://mapas.igac.gov.co/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer?request=GetMap&version=1.1.0",
-    "bbox": [-85.452541, -4.239657, -66.554113, 16.238453],
+    "sourcetype": "raster",
+    "url": "https://mapas.igac.gov.co/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer",
+    "version": "1.1.0",
+    "format": "image/png",
+    "attributions": "IGAC",
     "temporal": False,
     "epsg": "srs=epsg:4326",
     "layer": 0,
@@ -212,7 +223,10 @@ def jsLayers(map_type: str) -> dict:
   }
   Mangroves = {
     "id": "Mangroves",
-    "url": "https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer?request=GetMap&service=WMS&styles=&version=1.3.0&format=image/png&layers=0&crs=epsg:3857&width=256&height=256&bbox={bbox-epsg-3857}&transparent=True",
+    "url": "https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer",
+    "version": "1.3.0",
+    "format": "image/png",
+    "layer": "0",
     "layertype": "raster",
     "sourcetype": "raster",
     "legend": True,
@@ -229,7 +243,7 @@ def jsLayers(map_type: str) -> dict:
   }
   Deforestation = {
     "id": "deforestation",
-    "sourcetype": "image",
+    "sourcetype": "raster",
     "layertype": "raster",
     "temporal": True,
     "url": "https://gis.siatac.co/arcgis/services/MAC_DatosAbiertos/Cob_Region_100K_",
@@ -241,7 +255,7 @@ def jsLayers(map_type: str) -> dict:
   Carbon_Sequestration = {
     "id": "carbon_sequestration",
     "url": "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0",
-    "sourcetype": "image",
+    "sourcetype": "raster",
     "layertype": "raster",
     "epsg": "crs=CRS:84",
     "bbox": [-82.240682, -4.323733, -66.483327, 16.181351],
@@ -254,6 +268,23 @@ def jsLayers(map_type: str) -> dict:
     "legendSourceMetadata": {
       'item':0,}
     }]
+  }
+  
+  #Sentinel wms services
+  instance_id = "6cfcff16-7d83-45c8-a78f-7b81488fd4a1"
+  wms_url = f"https://sh.dataspace.copernicus.eu/ogc/wms/{instance_id}"
+  True_Color = {
+    "id": "true_color",
+    "name": "True Color",
+    "url": wms_url,
+    "sourcetype": "raster",
+    "layertype": "raster",
+    "version": "1.1.1",
+    "maxcc": 20,
+    "layer": "TRUE_COLOR",
+    "format": "image/jpeg",
+    "attributions": "Copernicus",
+    "srs": "EPSG:3857",
   }
   ##################################
   ### GeoJSON
@@ -277,6 +308,8 @@ def jsLayers(map_type: str) -> dict:
   }
   Events = {
     "id": "events",
+    "fields": ["title", "date"],
+    "aliases": ["Title", "Date"],
     "layertype": "circle",
     "sourcetype": "geojson",
     "preprocessing": False,
@@ -285,6 +318,8 @@ def jsLayers(map_type: str) -> dict:
   }
   Military_Zones = {
     "id": "militaryzones",
+    "fields": ["ciudad", "direccion", "telefono", "correo_electronico"],
+    "aliases": ["Ciudad", "Dirección", "Teléfono", "Correo Electrónico"],
     "layertype": "circle",
     "sourcetype": "geojson",
     "preprocessing": False,
@@ -479,35 +514,42 @@ def jsLayers(map_type: str) -> dict:
   ##################################
   
   layers = {
-      "Precipitation": Precipitation,
-      "Temperature": Temperature,
-      "Wind": Wind,
-      "Pressure": Pressure,
-      "Clouds": Clouds,
-      "Earthquakes": Earthquakes,
-      "Cuencas": Cuencas,
-      "Family Agriculture": Family_Agriculture,
-      "Cesar Aquifers": Cesar_Aquifers,
-      "Informality": Informality,
-      "Mangroves": Mangroves,
-      "Carbon Sequestration": Carbon_Sequestration,
-      "Black Communities": Black_Communities,
-      "Fires": Fires,
-      "Events": Events,
-      "Military Zones": Military_Zones,
-      "Water Quality": Water_Quality,
-      "Reserves": Reserves,
-      "IDEAM Station Temperatures": IDEAM_Station_Temperatures,
-      "Faults": Faults,
-      "Communities": Communities,
-      "Hot Spots": Hot_Spots,
-      "Education": Education,
-      "Deforestation": Deforestation,
-      "Mining": Mining,
-      "Indigenous Reserves": Indigenous_Reserves,
-      "Air Quality": Air_Quality,
-      "Test": Test
-      }
+    ########################################
+    ### Raster
+    ########################################
+    "Precipitation": Precipitation,
+    "Temperature": Temperature,
+    "Wind": Wind,
+    "Pressure": Pressure,
+    "Clouds": Clouds,
+    "Earthquakes": Earthquakes,
+    "Cuencas": Cuencas,
+    "Family Agriculture": Family_Agriculture,
+    "Cesar Aquifers": Cesar_Aquifers,
+    "Informality": Informality,
+    "Mangroves": Mangroves,
+    "Carbon Sequestration": Carbon_Sequestration,
+    "True Color": True_Color,
+    ########################################
+    ### GeoJSON
+    ########################################
+    "Black Communities": Black_Communities,
+    "Fires": Fires,
+    "Events": Events,
+    "Military Zones": Military_Zones,
+    "Water Quality": Water_Quality,
+    "Reserves": Reserves,
+    "IDEAM Station Temperatures": IDEAM_Station_Temperatures,
+    "Faults": Faults,
+    "Communities": Communities,
+    "Hot Spots": Hot_Spots,
+    "Education": Education,
+    "Deforestation": Deforestation,
+    "Mining": Mining,
+    "Indigenous Reserves": Indigenous_Reserves,
+    "Air Quality": Air_Quality,
+    "Test": Test
+    }
   
   
   return layers[map_type]

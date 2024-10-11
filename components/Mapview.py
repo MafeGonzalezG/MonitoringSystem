@@ -25,7 +25,7 @@ def create_base_map() -> folium.Map:
     """
     m = folium.Map(location=[3.5252777777778, -67.415833333333],
                    max_bounds = True,
-                   zoom_start = 6)
+                   zoom_start = 10)
     folium.plugins.Fullscreen(
         position="topright",
         title="Expand me",
@@ -35,11 +35,12 @@ def create_base_map() -> folium.Map:
     
     
     folium.TileLayer(
-        "OpenStreetMap").add_to(m)
+        "Stadia.AlidadeSatellite").add_to(m)
     folium.TileLayer(
         "OpenTopoMap").add_to(m)
     folium.TileLayer(
-        "Stadia.AlidadeSatellite").add_to(m)
+        "OpenStreetMap").add_to(m)
+    
     
     folium.plugins.Draw(export = True).add_to(m)
     folium.plugins.Geocoder().add_to(m)
@@ -189,24 +190,43 @@ def sidebar_widgets() -> None:
     
     fg_to_add = None
     # Feature group selectbox
-    raster_data = st.sidebar.selectbox(label = "Raster",
+    weather = st.sidebar.selectbox(label = "Weather",
                         options = ["Precipitation",
                                 "Temperature",
                                 "Wind",
                                 "Pressure",
-                                "Clouds",
-                                "Earthquakes",
-                                "Cuencas",
-                                "Family Agriculture",
-                                "Cesar Aquifers",
-                                "Informality",
-                                "Mangroves",
-                                "Deforestation",
-                                "Carbon Sequestration",
+                                "Clouds"
                                 ],
                         index=None,
-                        placeholder="Select the raster data to add",
+                        placeholder="Select the weather data to add",
                         )
+    
+    risks = st.sidebar.selectbox(label = "Risks",
+                                 options = [
+                                      "Earthquakes"
+                                 ],
+                                 index=None,
+                                placeholder="Select the risk data to add",
+                                )
+    
+    land_use = st.sidebar.selectbox(label = "Land Use",
+                                    options = [
+                                        "Family Agriculture",
+                                    ],
+                                    index=None,
+                                    placeholder="Select the land use data to add",
+                                    )
+                                    
+    
+    environment = st.sidebar.selectbox(label = "Environment",
+                                        options = [
+                                             "True Color",
+                                             "Cesar Aquifers",
+                                             "Mangroves"
+                                        ],
+                                        index=None,
+                                        placeholder="Select the environment data to add",
+                                        )    
     
     geojson_data = st.sidebar.selectbox(label = "GeoJSON",
                         options = [
@@ -228,25 +248,21 @@ def sidebar_widgets() -> None:
                         index=None,
                         placeholder="Select the raster data to add",
                         )
-    
-    #geoinfo = st.sidebar.selectbox(label = "Geoinfo",
-    #                                options = ["Earthquakes",
-    #                                           "Cuencas",
-    #                                           "Family Agriculture",
-    #                                           "Cesar Aquifers",
-    #                                           "Mangroves"
-    #                                           ],
-    #                                index=None,
-    #                                placeholder="Select the geoinfo data to add",
-    #                                )
                                       
     
     st.session_state["feature_group_to_add"] = None
         
-    if raster_data:
-        fg_to_add = raster_data
+    if weather:
+        fg_to_add = weather
+    if risks:
+        fg_to_add = risks
+    if land_use:
+        fg_to_add = land_use
+    if environment:
+        fg_to_add = environment
     if geojson_data:
         fg_to_add = geojson_data
+    
     
     
     
