@@ -306,7 +306,7 @@ def jsLayers(map_type: str) -> dict:
     "layertype": "circle",
     "title": "satellite",
   }
-  Events = {
+  NASA_Events = {
     "id": "events",
     "fields": ["title", "date"],
     "aliases": ["Title", "Date"],
@@ -319,7 +319,7 @@ def jsLayers(map_type: str) -> dict:
   Military_Zones = {
     "id": "militaryzones",
     "fields": ["ciudad", "direccion", "telefono", "correo_electronico"],
-    "aliases": ["Ciudad", "Dirección", "Teléfono", "Correo Electrónico"],
+    "aliases": ["City", "Direction", "Telephone number", "Email address"],
     "layertype": "circle",
     "sourcetype": "geojson",
     "preprocessing": False,
@@ -385,7 +385,7 @@ def jsLayers(map_type: str) -> dict:
     "legendColors": ["blue", "green", "yellow", "orange", "red"],
     }]
   }
-  Faults = {
+  Tectonic_Failures = {
     "id": "faults",
     "sourcetype": "geojson",
     "layertype": "line",
@@ -417,7 +417,9 @@ def jsLayers(map_type: str) -> dict:
   Hot_Spots = {
     "id": "hotspots",
     "sourcetype": "geojson",
-    "layertype": "fill",
+    "layertype": "multipolygon",
+    "fields": ["PATTERN", "Shape__Area", "Shape__Length"],
+    "aliases": ["Pattern", "Area", "Length"],
     "preprocessing": False,
     "title": "PATTERN",
     "temporal": False,
@@ -447,7 +449,9 @@ def jsLayers(map_type: str) -> dict:
   Mining = {
     "id": "mining",
     "sourcetype": "geojson",
-    "layertype": "fill",
+    "layertype": "multipolygon",
+    "fields": ["type", "company", "status", "area_ha"],
+    "aliases": ["Type", "Company", "Status", "Area (ha)"],
     "preprocessing": True,
     "title": "status",
     "temporal": False,
@@ -463,7 +467,7 @@ def jsLayers(map_type: str) -> dict:
     "temporal": False,
     "url": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",
     "large":True,
-  }
+  } #Token required
   
   ### Event-driven
   Air_Quality = {
@@ -535,12 +539,12 @@ def jsLayers(map_type: str) -> dict:
     ########################################
     "Black Communities": Black_Communities,
     "Fires": Fires,
-    "Events": Events,
+    "NASA Events": NASA_Events,
     "Military Zones": Military_Zones,
     "Water Quality": Water_Quality,
     "Reserves": Reserves,
     "IDEAM Station Temperatures": IDEAM_Station_Temperatures,
-    "Faults": Faults,
+    "Tectonic Failures": Tectonic_Failures,
     "Communities": Communities,
     "Hot Spots": Hot_Spots,
     "Education": Education,

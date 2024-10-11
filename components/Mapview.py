@@ -25,7 +25,7 @@ def create_base_map() -> folium.Map:
     """
     m = folium.Map(location=[3.5252777777778, -67.415833333333],
                    max_bounds = True,
-                   zoom_start = 10)
+                   zoom_start = 6)
     folium.plugins.Fullscreen(
         position="topright",
         title="Expand me",
@@ -203,7 +203,8 @@ def sidebar_widgets() -> None:
     
     risks = st.sidebar.selectbox(label = "Risks",
                                  options = [
-                                      "Earthquakes"
+                                      "Earthquakes",
+                                      "NASA Events"
                                  ],
                                  index=None,
                                 placeholder="Select the risk data to add",
@@ -212,11 +213,11 @@ def sidebar_widgets() -> None:
     land_use = st.sidebar.selectbox(label = "Land Use",
                                     options = [
                                         "Family Agriculture",
+                                        "Mining", 
                                     ],
                                     index=None,
                                     placeholder="Select the land use data to add",
-                                    )
-                                    
+                                    )                     
     
     environment = st.sidebar.selectbox(label = "Environment",
                                         options = [
@@ -228,28 +229,40 @@ def sidebar_widgets() -> None:
                                         placeholder="Select the environment data to add",
                                         )    
     
-    geojson_data = st.sidebar.selectbox(label = "GeoJSON",
-                        options = [
-                                   "Black Communities",
-                                   "Fires",
-                                   "Events",
-                                   "Military Zones",
-                                   "Water Quality",
-                                   "Reserves",
-                                   "IDEAM Station Temperatures",
-                                   "Faults",
-                                   "Communities",
-                                   "Hot Spots",
-                                   "Education",
-                                   "Mining",
-                                   "Indigenous Reserves",
-                                   "Air Quality"
-                                ],
-                        index=None,
-                        placeholder="Select the raster data to add",
-                        )
-                                      
+    geological  = st.sidebar.selectbox(label = "Geological information",
+                                       options = [
+                                           "Tectonic Failures",
+                                           "Hot Spots"
+                                       ],
+                                       index=None,
+                                       placeholder="Select the geological data to add",
+                                       )
     
+    military = st.sidebar.selectbox(label = "Military",
+                                    options = [
+                                        "Military Zones",
+                                    ],
+                                    index=None,
+                                    placeholder="Select the military data to add",
+    )
+    
+    #geojson_data = st.sidebar.selectbox(label = "GeoJSON",
+    #                    options = [
+    #                               #"Black Communities",
+    #                               #"Fires",
+    #                               #"Water Quality",
+    #                               #"Reserves",
+    #                               #"IDEAM Station Temperatures",
+    #                               #"Communities",
+    #                               #"Education",
+    #                               #"Indigenous Reserves",
+    #                               #"Air Quality"
+    #                            ],
+    #                    index=None,
+    #                    placeholder="Select the raster data to add",
+    #                    )
+    #                                  
+    #
     st.session_state["feature_group_to_add"] = None
         
     if weather:
@@ -260,6 +273,8 @@ def sidebar_widgets() -> None:
         fg_to_add = land_use
     if environment:
         fg_to_add = environment
+    if military:
+        fg_to_add = military
     if geojson_data:
         fg_to_add = geojson_data
     

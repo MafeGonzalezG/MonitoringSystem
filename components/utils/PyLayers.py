@@ -35,40 +35,86 @@ def py_layers(map_type: str, year: int) -> folium.FeatureGroup:
     if layersDict["sourcetype"] == "geojson":
         st.write("GeoJSON")
         
-        
-        # Popup
-        tooltip = folium.GeoJsonTooltip(
-            fields=layersDict["fields"],
-            aliases=layersDict["aliases"],
-            localize=True,
-            sticky=False,
-            labels=True,
-            style="""
-                background-color: #F0EFEF;
-                border: 2px solid black;
-                border-radius: 3px;
-                box-shadow: 3px;
-            """,
-            max_width=800,
-        )
-        
-        # Add the GeoJson to the feature group
-        folium.GeoJson(
-            layersDict["url"],
-            marker=folium.Marker(icon=folium.Icon(icon='star')),
-            tooltip=tooltip,
-            #gdf,
-            #style_function=lambda x: {
-            #    "fillColor": colormap(x["properties"][data_to_plot])
-            #    if x["properties"][data_to_plot] is not None
-            #    else "transparent",
-            #    "color": "black",
-            #    "fillOpacity": 0.4,
-            #    "weight": 1
-            #},
-            #tooltip=tooltip,
-            #popup=popup,
-        ).add_to(fg)
+        if layersDict["layertype"] == "circle":
+            # tooltip
+            tooltip = folium.GeoJsonTooltip(
+                fields=layersDict["fields"],
+                aliases=layersDict["aliases"],
+                localize=True,
+                sticky=False,
+                labels=True,
+                style="""
+                    background-color: #F0EFEF;
+                    border: 2px solid black;
+                    border-radius: 3px;
+                    box-shadow: 3px;
+                """,
+                max_width=800,
+            )
+            
+            # Add the GeoJson to the feature group
+            folium.GeoJson(
+                layersDict["url"],
+                marker=folium.Marker(icon=folium.Icon(icon='star')),
+                tooltip=tooltip,
+                #gdf,
+                #style_function=lambda x: {
+                #    "fillColor": colormap(x["properties"][data_to_plot])
+                #    if x["properties"][data_to_plot] is not None
+                #    else "transparent",
+                #    "color": "black",
+                #    "fillOpacity": 0.4,
+                #    "weight": 1
+                #},
+                #tooltip=tooltip,
+                #popup=popup,
+            ).add_to(fg)
+            
+        if layersDict["layertype"] == "line":
+            folium.GeoJson(
+                layersDict["url"],
+                #gdf,
+                #style_function=lambda x: {
+                #    "fillColor": colormap(x["properties"][data_to_plot])
+                #    if x["properties"][data_to_plot] is not None
+                #    else "transparent",
+                #    "color": "black",
+                #    "fillOpacity": 0.4,
+                #    "weight": 1
+                #},
+                #tooltip=tooltip,
+                #popup=popup,
+            ).add_to(fg)
+        if layersDict["layertype"] == "multipolygon":
+            # tooltip
+            tooltip = folium.GeoJsonTooltip(
+                fields=layersDict["fields"],
+                aliases=layersDict["aliases"],
+                localize=True,
+                sticky=True,
+                labels=True,
+                style="""
+                    background-color: #F0EFEF;
+                    border: 2px solid black;
+                    border-radius: 3px;
+                    box-shadow: 3px;
+                """,
+                max_width=800,
+            )
+            folium.GeoJson(
+                layersDict["url"],
+                tooltip=tooltip,
+                #gdf,
+                #style_function=lambda x: {
+                #    "fillColor": colormap(x["properties"][data_to_plot])
+                #    if x["properties"][data_to_plot] is not None
+                #    else "transparent",
+                #    "color": "black",
+                #    "fillOpacity": 0.4,
+                #    "weight": 1
+                #},
+                #popup=popup,
+            ).add_to(fg)
         
         
     return fg
