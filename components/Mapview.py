@@ -212,7 +212,7 @@ def sidebar_widgets() -> None:
     
     land_use = st.sidebar.selectbox(label = "Land Use",
                                     options = [
-                                        "Family Agriculture",
+                                        #"Family Agriculture",
                                         "Mining", 
                                     ],
                                     index=None,
@@ -222,8 +222,8 @@ def sidebar_widgets() -> None:
     environment = st.sidebar.selectbox(label = "Environment",
                                         options = [
                                              "True Color",
-                                             "Cesar Aquifers",
-                                             "Mangroves"
+                                             #"Cesar Aquifers",
+                                             #"Mangroves"
                                         ],
                                         index=None,
                                         placeholder="Select the environment data to add",
@@ -277,8 +277,6 @@ def sidebar_widgets() -> None:
         fg_to_add = geological
     if military:
         fg_to_add = military
-    #if geojson_data:
-    #    fg_to_add = geojson_data
     
     
     

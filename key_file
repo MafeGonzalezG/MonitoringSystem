@@ -1,0 +1,18 @@
+{
+	"id": "ApiKey-d73d8d7b-e791-4414-a67c-6088d08b6af7",
+	"crn": "crn:v1:bluemix:public:iam-identity::a/63ed26d103d84d518ddaad31283a2401F-2808877F::apikey:ApiKey-d73d8d7b-e791-4414-a67c-6088d08b6af7",
+	"iam_id": "IBMid-697000DML8",
+	"account_id": "63ed26d103d84d518ddaad31283a2401",
+	"name": "cliapikey",
+	"description": "My CLI API key",
+	"apikey": "Cy2e5JOJL1gfYoq3Yn1b7M-47qYB9UMLUu0fMwhjdv6a",
+	"locked": false,
+	"entity_tag": "1-5393663fae06b0294788541032ce2c1f",
+	"created_at": "2024-10-14T12:24+0000",
+	"created_by": "IBMid-697000DML8",
+	"modified_at": "2024-10-14T12:24+0000",
+	"action_when_leaked": "disable",
+	"support_sessions": false,
+	"disabled": false,
+	"leaked": false
+}

@@ -57,33 +57,11 @@ def py_layers(map_type: str, year: int) -> folium.FeatureGroup:
                 layersDict["url"],
                 marker=folium.Marker(icon=folium.Icon(icon='star')),
                 tooltip=tooltip,
-                #gdf,
-                #style_function=lambda x: {
-                #    "fillColor": colormap(x["properties"][data_to_plot])
-                #    if x["properties"][data_to_plot] is not None
-                #    else "transparent",
-                #    "color": "black",
-                #    "fillOpacity": 0.4,
-                #    "weight": 1
-                #},
-                #tooltip=tooltip,
-                #popup=popup,
             ).add_to(fg)
             
         if layersDict["layertype"] == "line":
             folium.GeoJson(
                 layersDict["url"],
-                #gdf,
-                #style_function=lambda x: {
-                #    "fillColor": colormap(x["properties"][data_to_plot])
-                #    if x["properties"][data_to_plot] is not None
-                #    else "transparent",
-                #    "color": "black",
-                #    "fillOpacity": 0.4,
-                #    "weight": 1
-                #},
-                #tooltip=tooltip,
-                #popup=popup,
             ).add_to(fg)
         if layersDict["layertype"] == "multipolygon":
             # tooltip
@@ -104,16 +82,6 @@ def py_layers(map_type: str, year: int) -> folium.FeatureGroup:
             folium.GeoJson(
                 layersDict["url"],
                 tooltip=tooltip,
-                #gdf,
-                #style_function=lambda x: {
-                #    "fillColor": colormap(x["properties"][data_to_plot])
-                #    if x["properties"][data_to_plot] is not None
-                #    else "transparent",
-                #    "color": "black",
-                #    "fillOpacity": 0.4,
-                #    "weight": 1
-                #},
-                #popup=popup,
             ).add_to(fg)
         
         

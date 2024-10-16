@@ -140,6 +140,7 @@ def jsLayers(map_type: str) -> dict:
   }
   Cesar_Aquifers = {
     "id": "cesar_aquifers",
+    "name": "Cesar Aquifers",
     "url": "https://geoservicios.upra.gov.co/arcgis/rest/services/adecuacion_tierras_rurales/acuiferos_cesar/MapServer/tile/{z}/{y}/{x}",
     "attributions": "UPRA",
     "metadata_url":
@@ -161,11 +162,12 @@ def jsLayers(map_type: str) -> dict:
     "name": "Family Agriculture",
     "sourcetype": "raster",
     "layertype": "raster",
-    "url": "https://geoservicios.upra.gov.co/arcgis/rest/services/uso_suelo_rural/areas_probables_agricultura_familiar/MapServer/tile/{z}/{y}/{x}",
+    "url": "https://geoservicios.upra.gov.co/arcgis/rest/services/uso_suelo_rural/areas_nameprobables_agricultura_familiar/MapServer/tile/{z}/{y}/{x}",
     "attributions": "UPRA",
   }
   Earthquakes = {
     "id": "earthquakes",
+    "name": "Earthquakes",
     "layertype": "raster",
     "sourcetype": "raster",
     "url": "https://srvags.sgc.gov.co/arcgis/services/Amenaza_Sismica/Amenaza_Sismica_Nacional/MapServer/WMSServer",
@@ -195,6 +197,7 @@ def jsLayers(map_type: str) -> dict:
   }
   Cuencas = {
     "id": "cuencas",
+    "name": "Cuencas",
     "layertype": "raster",
     "sourcetype": "raster",
     "url": "https://mapas.igac.gov.co/server/services/minasyenergia/cuencassedimentarias2010/MapServer/WMSServer",
@@ -207,6 +210,7 @@ def jsLayers(map_type: str) -> dict:
   } #maybe service is now blocked
   Informality = {
     "id": "informality",
+    "name": "Informality",
     "url": "https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetMap&service=WMS&bbox={bbox-epsg-3857}&styles=&format=image/png&transparent=True&width=265&height=256&layers=0&version=1.1.0&srs=epsg:3857",
     "metadata_url": "https://geoservicios.upra.gov.co/arcgis/services/formalizacion_propiedad/Indice_Informalidad_2014_Dep/MapServer/WMSServer?request=GetCapabilities&service=WMS",
     "sourcetype": "raster",
@@ -223,6 +227,7 @@ def jsLayers(map_type: str) -> dict:
   }
   Mangroves = {
     "id": "Mangroves",
+    "name": "Mangroves",
     "url": "https://gis.invemar.org.co/arcgis/services/SIGMA/MANGLARES_COLOMBIA/MapServer/WMSServer",
     "version": "1.3.0",
     "format": "image/png",
@@ -243,6 +248,7 @@ def jsLayers(map_type: str) -> dict:
   }
   Deforestation = {
     "id": "deforestation",
+    "name": "Deforestation",
     "sourcetype": "raster",
     "layertype": "raster",
     "temporal": True,
@@ -254,6 +260,7 @@ def jsLayers(map_type: str) -> dict:
   }
   Carbon_Sequestration = {
     "id": "carbon_sequestration",
+    "name": "Carbon Sequestration",
     "url": "https://mapas.igac.gov.co/server/services/ambiente/potencialsecuestrocarbonoorganico/MapServer/WMSServer?request=GetMap&version=1.3.0",
     "sourcetype": "raster",
     "layertype": "raster",
@@ -296,12 +303,14 @@ def jsLayers(map_type: str) -> dict:
     "url": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/COMUNIDAD_NEGRA_TITULADA/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=&returnGeometry=True&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=True&quantizationParameters=&sqlFormat=none&f=pgeojson&token=",
     "sourcetype": "geojson",
     "preprocessing": False,
+    "hexagons": False,
     "layertype": "fill",
     "title": "NOMBRE",
   } #now it requires a token :c
   Fires = {
     "id": "fires",
     "preprocessing": True,
+    "hexagons": False,
     "sourcetype": "geojson",
     "layertype": "circle",
     "title": "satellite",
@@ -313,6 +322,7 @@ def jsLayers(map_type: str) -> dict:
     "layertype": "circle",
     "sourcetype": "geojson",
     "preprocessing": False,
+    "hexagons": False,
     "url": "https://eonet.gsfc.nasa.gov/api/v3/events/geojson?&days=20",
     "title": "title",
   }
@@ -323,6 +333,7 @@ def jsLayers(map_type: str) -> dict:
     "layertype": "circle",
     "sourcetype": "geojson",
     "preprocessing": False,
+    "hexagons": False,
     "title": "zone",
     "temporal": False,
     "url" :"https://www.datos.gov.co/resource/ii2p-naes.geojson"
@@ -342,6 +353,7 @@ def jsLayers(map_type: str) -> dict:
     "sourcetype": "geojson",
     "layertype": "circle",
     "preprocessing": True,
+    "hexagons": False,
     "title": "name",
     "temporal": False,
   }
@@ -350,6 +362,7 @@ def jsLayers(map_type: str) -> dict:
     "sourcetype": "geojson",
     "layertype": "circle",
     "preprocessing": True,
+    "hexagons": False,
     "title": "nombre",
     "temporal": True,
     "year_list": [
@@ -387,9 +400,11 @@ def jsLayers(map_type: str) -> dict:
   }
   Tectonic_Failures = {
     "id": "failures",
+    "name": "Tectonic Failures",
     "sourcetype": "geojson",
     "layertype": "line",
     "preprocessing": False,
+    "hexagons": False,
     "url": "https://services1.arcgis.com/Og2nrTKe5bptW02d/arcgis/rest/services/MAPAGEOLOGIA/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=geojson",
     "title": "nombre",
     "paint": {
@@ -411,6 +426,7 @@ def jsLayers(map_type: str) -> dict:
     "sourcetype": "geojson",
     "layertype": "circle",
     "preprocessing": True,
+    "hexagons": False,
     "title": "nombre_del_resguardo",
     "temporal": False,
   }
@@ -421,6 +437,7 @@ def jsLayers(map_type: str) -> dict:
     "fields": ["PATTERN", "Shape__Area", "Shape__Length"],
     "aliases": ["Pattern", "Area", "Length"],
     "preprocessing": False,
+    "hexagons": False,
     "title": "PATTERN",
     "temporal": False,
     "url": "https://services2.arcgis.com/g8WusZB13b9OegfU/arcgis/rest/services/Emerging_Hot_Spots_2023/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson",
@@ -439,6 +456,7 @@ def jsLayers(map_type: str) -> dict:
     "sourcetype": "geojson",
     "layertype": "circle",
     "preprocessing": True,
+    "hexagons": False,
     "title": "departamento",
     "temporal": True,
     "year_list": [
@@ -453,6 +471,7 @@ def jsLayers(map_type: str) -> dict:
     "fields": ["type", "company", "status", "area_ha"],
     "aliases": ["Type", "Company", "Status", "Area (ha)"],
     "preprocessing": True,
+    "hexagons": False,
     "title": "status",
     "temporal": False,
     "url": "http://gis-gfw.wri.org/arcgis/rest/services/country_data/south_america/MapServer/7/query?outFields=*&where=1%3D1&f=geojson",
@@ -463,12 +482,20 @@ def jsLayers(map_type: str) -> dict:
     "sourcetype": "geojson",
     "layertype": "fill",
     "preprocessing": True,
+    "hexagons": False,
     "title": "NOMBRE",
     "temporal": False,
     "url": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",
     "large":True,
   } #Token required
-  
+  Carbon_removals = {
+    "id": "carbonremovals",
+    "url": "../data/cacahual.csv",
+    "sourcetype": "geojson",
+    "layertype": "hexagons",
+    "preprocessing": True,
+    "hexagons": True,
+  }
   ### Event-driven
   Air_Quality = {
     "id": 'airquality',
