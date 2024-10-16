@@ -498,16 +498,17 @@ def jsLayers(map_type: str) -> dict:
     "preprocessing": True,
     "hexagons": True,
   }
-  Carbon_removals_mean_value = {
-    "id": "carbon_removals_mean_value",
-    "name": "Carbon removals mean value",
+  Tropical_tree_cover_mean_value = {
+    "id": "tropical_tree_cover_mean_value",
+    "name": "Tropical tree cover mean value",
     "url": "data/cacahual_db.csv",
-    "label_to_plot": "Carbon removals mean value (m.u.)",
+    "label_to_plot": "Tropical tree cover mean value (m.u.)",
     "sourcetype": "geojson",
     "layertype": "hexagons",
     "preprocessing": True,
     "hexagons": True,
   }
+  
   ### Event-driven
   Air_Quality = {
     "id": 'airquality',
@@ -592,7 +593,8 @@ def jsLayers(map_type: str) -> dict:
     "Indigenous Reserves": Indigenous_Reserves,
     "Air Quality": Air_Quality,
     "Test": Test,
-    "Carbon removals mean value": Carbon_removals_mean_value
+    "Carbon removals mean value": Carbon_removals_mean_value,
+    "Tropical tree cover mean value": Tropical_tree_cover_mean_value,
     }
   
   

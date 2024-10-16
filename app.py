@@ -53,12 +53,13 @@ def app():
             
             if st.session_state["feature_group_to_add"]:
                 fg, cm = py_layers(map_type = st.session_state["feature_group_to_add"], year=year, zoom=zoom)
-                    
+                fg.add_to(m)
+                if cm:
+                    cm.add_to(m)
+            
             folium.LayerControl().add_to(m)
-            if cm:
-                cm.add_to(m)
+            
             st_folium(m, 
-                      feature_group_to_add = fg,
                       zoom = zoom)
 
 ############################################################################################################

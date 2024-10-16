@@ -117,7 +117,8 @@ def sidebar_widgets() -> None:
                                              "True Color",
                                              #"Cesar Aquifers",
                                              #"Mangroves",
-                                             "Carbon removals mean value"
+                                             "Carbon removals mean value",
+                                             "Tropical tree cover mean value"
                                         ],
                                         index=None,
                                         placeholder="Select the environment data to add",

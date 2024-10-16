@@ -99,7 +99,7 @@ def py_layers(map_type: str, year: int, zoom: int | None = None) -> folium.Featu
     if cm:
         return fg, cm
     else:
-        return fg, None
+        return fg, False
 
 
 def create_feature_group(gdf:gpd.GeoDataFrame, 
