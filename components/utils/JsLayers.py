@@ -488,9 +488,21 @@ def jsLayers(map_type: str) -> dict:
     "url": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/RESGUARDO_INDIGENA_LEGALIZADO/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson",
     "large":True,
   } #Token required
-  Carbon_removals = {
-    "id": "carbonremovals",
-    "url": "../data/cacahual.csv",
+  Carbon_removals_mean_value = {
+    "id": "carbon_removals_mean_value",
+    "name": "Carbon removals mean value",
+    "url": "data/cacahual_db.csv",
+    "label_to_plot": "Carbon removals mean value (m.u.)",
+    "sourcetype": "geojson",
+    "layertype": "hexagons",
+    "preprocessing": True,
+    "hexagons": True,
+  }
+  Carbon_removals_mean_value = {
+    "id": "carbon_removals_mean_value",
+    "name": "Carbon removals mean value",
+    "url": "data/cacahual_db.csv",
+    "label_to_plot": "Carbon removals mean value (m.u.)",
     "sourcetype": "geojson",
     "layertype": "hexagons",
     "preprocessing": True,
@@ -579,7 +591,8 @@ def jsLayers(map_type: str) -> dict:
     "Mining": Mining,
     "Indigenous Reserves": Indigenous_Reserves,
     "Air Quality": Air_Quality,
-    "Test": Test
+    "Test": Test,
+    "Carbon removals mean value": Carbon_removals_mean_value
     }
   
   

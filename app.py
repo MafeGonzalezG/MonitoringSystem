@@ -52,51 +52,14 @@ def app():
             
             
             if st.session_state["feature_group_to_add"]:
-                fg = py_layers(map_type = st.session_state["feature_group_to_add"], year=year)
-                fg.add_to(m)
-            
+                fg, cm = py_layers(map_type = st.session_state["feature_group_to_add"], year=year, zoom=zoom)
+                    
             folium.LayerControl().add_to(m)
-            st_folium(m)
-            
-            # # Load the data
-            #first_n_rows = 1000
-            #cacahual_gdfh3 = charge_df(file_path="./db/cacahual_db.csv", 
-            #                        resolution = zoom - 3,
-            #                        first_n_rows = first_n_rows)
-            #
-            ## Create the feature groups and the colormaps
-            #fg_cm_dic = {"Carbon removals mean value": create_feature_group(gdf=cacahual_gdfhs3, 
-            #                                                            data_to_plot="carbon_removals_mean_value", 
-            #                                                            label_to_plot="Carbon removals mean value (m.u.)", 
-            #                                                            feature_group_name="Carbon removals mean value"),
-            #            "Tropical tree cover mean value": create_feature_group(gdf=cacahual_gdfh3, 
-            #                                                                data_to_plot="tropical_tree_cover_mean_value", 
-            #                                                                label_to_plot="Tropical tree cover mean value (m.u.)", 
-            #                                                                feature_group_name="Tropical tree cover mean value"),
-            #            "None": [None, None]}
-            #
-            ## Create the map
-            #m = folium.Map(location=[3.5252777777778, -67.415833333333],
-            #            max_bounds = True)
-            #folium.plugins.Fullscreen(
-            #    position="topright",
-            #    title="Expand me",
-            #    title_cancel="Exit me",
-            #    force_separate_button=True,
-            #).add_to(m)
-            #
-            ## Add the colormap to the map
-            #if fg_cm_dic[feature_group_to_add][1]:
-            #    colormap = fg_cm_dic[feature_group_to_add][1]
-            #    colormap.add_to(m)
-            #
-            ## Obtain the feature group to add
-            #fg = fg_cm_dic[feature_group_to_add][0]
-            #
-            ## Display the map
-            #st_folium(m,
-            #        feature_group_to_add=fg,
-            #        zoom = st.session_state["zoom"]) 
+            if cm:
+                cm.add_to(m)
+            st_folium(m, 
+                      feature_group_to_add = fg,
+                      zoom = zoom)
 
 ############################################################################################################
 # Data and map functions
